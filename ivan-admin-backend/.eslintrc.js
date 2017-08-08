@@ -7,9 +7,10 @@ module.exports = {
     extends: 'standard',
     parser: 'babel-eslint',
     parserOptions: {
+        ecmaVersion: 2017,
         sourceType: 'module'
     },
-    "rules": {
+    'rules': {
         // allow paren-less arrow functions
         'arrow-parens': 0,
         // allow async-await

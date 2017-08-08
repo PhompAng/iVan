@@ -1,18 +1,9 @@
 {
-  "presets": [
-    ["env", {
-      "modules": false,
-      "targets": {
-        "browsers": ["> 1%", "last 2 versions", "not ie <= 8"]
-      }
+  "presets": ["es2015", "es2016", "es2017", "stage-2"],
+  "plugins": [
+    ["babel-plugin-root-import", {
+      "rootPathSuffix": "src"
     }],
-    "stage-2"
-  ],
-  "plugins": ["transform-runtime"],
-  "env": {
-    "test": {
-      "presets": ["env", "stage-2"],
-      "plugins": ["istanbul"]
-    }
-  }
+    "add-module-exports"
+  ]
 }
