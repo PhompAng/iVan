@@ -33,8 +33,8 @@
     data () {
       return {
         form: {
-          email: '',
-          password: ''
+          email: 'user@example.com',
+          password: '123456'
         }
       }
     },
@@ -42,10 +42,13 @@
       onSubmit () {
         firebase.auth()
           .signInWithEmailAndPassword(this.form.email, this.form.password)
-          .then(function () {
+          .then(() => {
             let currentUser = firebase.auth().currentUser
             if (currentUser != null) {
               console.log(currentUser.getIdToken(true))
+              currentUser.getIdToken(true).then((idToken) => {
+                this.$http.post('login', {idToken}).then((response) => console.log(response))
+              })
             }
           })
           .catch(function (error) {
