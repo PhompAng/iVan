@@ -19,4 +19,13 @@ export default (app) => {
             res.send(err)
         }
     })
+    app.post('/login', async function (req, res) {
+        try {
+            var decodedToken = await admin.auth().verifyIdToken(req.body.idToken)
+            console.log(decodedToken.uid)
+            res.send(decodedToken.uid)
+        } catch (err) {
+            console.log(err)
+        }
+    })
 }
