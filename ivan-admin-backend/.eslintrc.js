@@ -11,6 +11,7 @@ module.exports = {
         sourceType: 'module'
     },
     'rules': {
+        'indent': 2,
         // allow paren-less arrow functions
         'arrow-parens': 0,
         // allow async-await
