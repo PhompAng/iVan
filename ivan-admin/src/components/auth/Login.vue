@@ -4,17 +4,17 @@
       <div class="card">
         <h3 class="card-header">Login</h3>
         <div class="card-block">
-          <form v-on:submit.prevent="onSubmit">
+          <form v-on:submit.prevent="login">
             <div class="form-group row">
-              <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
               <div class="col-sm-10">
-                <input v-model="form.email" type="email" class="form-control" id="inputEmail3" placeholder="Email">
+                <input v-model="form.email" type="email" class="form-control" id="inputEmail" placeholder="Email">
               </div>
             </div>
             <div class="form-group row">
-              <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
               <div class="col-sm-10">
-                <input v-model="form.password" type="password" class="form-control" id="inputPassword3" placeholder="Password">
+                <input v-model="form.password" type="password" class="form-control" id="inputPassword" placeholder="Password">
               </div>
             </div>
 
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-  import * as firebase from 'firebase'
+  import { SIGNIN } from '@/vuex/action-types'
+
   export default {
     name: 'Login',
     data () {
@@ -39,22 +40,13 @@
       }
     },
     methods: {
-      onSubmit () {
-        firebase.auth()
-          .signInWithEmailAndPassword(this.form.email, this.form.password)
-          .then(() => {
-            let currentUser = firebase.auth().currentUser
-            if (currentUser != null) {
-              console.log(currentUser.getIdToken(true))
-              currentUser.getIdToken(true).then((idToken) => {
-                this.$http.post('login', {idToken}).then((response) => console.log(response))
-              })
-            }
-          })
-          .catch(function (error) {
-            console.log(error.message)
-          })
+      login () {
+        this.$store.dispatch(SIGNIN, this.form)
       }
     }
   }
 </script>
+
+<style scoped>
+
+</style>

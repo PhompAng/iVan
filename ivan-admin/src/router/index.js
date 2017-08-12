@@ -9,7 +9,10 @@ Vue.use(VueResource)
 Vue.http.options.root = 'http://127.0.0.1:3000'
 Vue.http.options.xhr = {withCredentials: true}
 
-export default new Router({
+var router = new Router({
+  hashbang: false,
+  linkActiveClass: 'active',
+  mode: 'history',
   routes: [
     {
       path: '/',
@@ -23,3 +26,5 @@ export default new Router({
     }
   ]
 })
+
+export default router

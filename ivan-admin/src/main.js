@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import BootstrapVue from 'bootstrap-vue/dist/bootstrap-vue.esm'
+import store from '@/vuex/store'
 import * as firebase from 'firebase'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
@@ -14,7 +15,6 @@ var config = {
   databaseURL: 'https://ivan-f1006.firebaseio.com',
   storageBucket: 'ivan-f100.appspot.com'
 }
-firebase.initializeApp(config)
 
 Vue.config.productionTip = false
 
@@ -24,6 +24,17 @@ Vue.use(BootstrapVue)
 new Vue({
   el: '#app',
   router,
+  store,
+  created () {
+    firebase.initializeApp(config)
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.replace('/')
+      } else {
+        this.$router.replace('/login')
+      }
+    })
+  },
   template: '<App/>',
   components: { App }
 })

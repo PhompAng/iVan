@@ -1,13 +1,21 @@
 <template>
-  <div id="app" class="container">
-    <router-view></router-view>
+  <div id="app">
+    <navbar></navbar>
+    <div class="container">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'app'
-}
+  import Navbar from '@/components/Navbar'
+
+  export default {
+    name: 'app',
+    components: {
+      Navbar
+    }
+  }
 </script>
 
 <style>
@@ -15,6 +23,5 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  margin-top: 60px;
 }
 </style>
