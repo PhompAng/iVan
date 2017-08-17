@@ -19,34 +19,35 @@
 </template>
 
 <script>
-  import Sidebar from '@/components/Sidebar'
-  import Navbar from '@/components/Navbar'
-  import { mapGetters } from 'vuex'
-  import { GET_USER } from '@/vuex/getter-types'
+import Sidebar from '@/components/Sidebar'
+import Navbar from '@/components/Navbar'
+import { mapGetters } from 'vuex'
+import { GET_USER } from '@/vuex/getter-types'
 
-  export default {
-    name: 'app',
-    components: {
-      Navbar, Sidebar
-    },
-    computed: mapGetters({
-      user: GET_USER
-    }),
-    methods: {
-      menuToggle () {
-        $('#app').toggleClass('toggled')
-      }
+export default {
+  name: 'app',
+  components: {
+    Navbar, Sidebar
+  },
+  computed: mapGetters({
+    user: GET_USER
+  }),
+  methods: {
+    menuToggle () {
+      $('#app').toggleClass('toggled')
     }
   }
+}
 </script>
 
 <style>
-  #app {
-    font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  .main {
-    padding: 15px;
-  }
+#app {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.main {
+  padding: 15px;
+}
 </style>
