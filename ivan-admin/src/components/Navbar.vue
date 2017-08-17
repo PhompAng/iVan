@@ -1,7 +1,7 @@
 <template>
   <b-navbar toggleable variant="faded" type="light" toggle-breakpoint="md">
 
-    <b-nav-toggle target="nav_collapse"></b-nav-toggle>
+    <b-nav-toggle @click.native="menuToggle" target="nav_collapse"></b-nav-toggle>
 
     <b-navbar-brand class="navbar-brand" href="#">
       <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -42,6 +42,9 @@
     methods: {
       logout () {
         this.$store.dispatch(SIGNOUT)
+      },
+      menuToggle () {
+        this.$emit('toggle')
       }
     }
   }

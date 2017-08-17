@@ -48,5 +48,10 @@
 </script>
 
 <style scoped>
-
+  .login {
+    position: fixed;
+    left: 0;
+    top: 60px;
+    right: 0;
+  }
 </style>

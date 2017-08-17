@@ -8,6 +8,7 @@ import store from '@/vuex/store'
 import * as firebase from 'firebase'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'bootstrap/dist/css/bootstrap.css'
+import '@/assets/simple-sidebar.css'
 
 var config = {
   apiKey: 'AIzaSyAMAqh5zXFpqgnlonv9uzfgujqdS4E1JPs',
