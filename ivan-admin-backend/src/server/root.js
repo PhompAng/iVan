@@ -4,16 +4,21 @@ export default (app) => {
     app.get('/', function (req, res) {
         res.send('Hello World!')
     })
-    app.get('/gen', async function (req, res) {
+    app.post('/gen', async function (req, res) {
         try {
             var userRecord = await admin.auth().createUser({
-                email: "user@example.com",
+                email: req.body.email,
                 emailVerified: false,
-                password: "123456",
-                displayName: "John Doe",
+                password: req.body.password,
+                displayName: req.body.displayName,
                 disabled: false
             })
-            res.send(userRecord.uid)
+            var ref = admin.database().ref()
+            var result = await ref.child("users").child(userRecord.uid).set({
+                role: 99
+            })
+
+            res.send(result)
         } catch (err) {
             console.log("Error creating new user:", err)
             res.send(err)
