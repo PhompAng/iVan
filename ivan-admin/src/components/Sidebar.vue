@@ -9,17 +9,17 @@
       </a>
     </div>
     <ul class="nav-item">
-      <li class="active">
-        <a href="#">
+      <li>
+        <router-link :to="{name: 'Dashboard'}">
           <i class="ti-panel"></i>
           <span>Dashboard</span>
-        </a>
+        </router-link>
       </li>
       <li>
-        <a href="#">
-          <i class="ti-panel"></i>
-          <span>aaaa</span>
-        </a>
+        <router-link :to="{name: 'Schools'}">
+          <i class="ti-home"></i>
+          <span>School</span>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -37,6 +37,12 @@
 </script>
 
 <style scoped>
+  a {
+    color: #fff;
+  }
+  a.router-link-exact-active {
+    color: #42b983;
+  }
   .simple-text {
     color: #fff;
     font-size: 16px;
@@ -70,15 +76,13 @@
     width: 100%;
     color: #fff;
   }
-  .nav-item > li.active {
-    color: #42b983;
-    border-left: 5px solid #fff;
-  }
   .nav-item > li > a {
-    padding: 0 25px;
-    margin: 15px 0px;
-    color: inherit;
+    margin: 5px 0;
+    padding: 10px 25px;
     display: block;
+  }
+  .nav-item > li > a.router-link-exact-active {
+    border-left: 5px solid #fff;
   }
   .nav-item > li > a > i {
     font-size: 24px;

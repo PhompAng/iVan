@@ -3,7 +3,7 @@
     <div class="col-md-8">
       <div class="card">
         <h3 class="card-header">Login</h3>
-        <div class="card-block">
+        <div class="card-body">
           <form v-on:submit.prevent="login">
             <div class="form-group row">
               <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>

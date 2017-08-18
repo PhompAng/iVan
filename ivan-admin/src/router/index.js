@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import VueResource from 'vue-resource'
 import Hello from '@/components/Hello'
 import Login from '@/components/auth/Login'
+import Schools from '@/components/school/Schools'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -16,13 +17,18 @@ var router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
+      name: 'Dashboard',
       component: Hello
     },
     {
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/schools',
+      name: 'Schools',
+      component: Schools
     }
   ]
 })

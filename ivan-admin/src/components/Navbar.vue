@@ -1,9 +1,9 @@
 <template>
-  <b-navbar toggleable variant="faded" type="light" toggle-breakpoint="md">
+  <b-navbar class="navbar-expand-md navbar-light bg-light" toggleable variant="faded" type="light" toggle-breakpoint="md">
 
     <b-nav-toggle @click.native="menuToggle" target="nav_collapse"></b-nav-toggle>
 
-    <b-navbar-brand class="navbar-brand" href="#">
+    <b-navbar-brand href="">
       <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
       NavBar
     </b-navbar-brand>
