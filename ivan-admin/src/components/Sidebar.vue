@@ -78,11 +78,12 @@
   }
   .nav-item > li > a {
     margin: 5px 0;
-    padding: 10px 25px;
+    padding: 10px 30px;
     display: block;
   }
   .nav-item > li > a.router-link-exact-active {
     border-left: 5px solid #fff;
+    padding-left: 25px;
   }
   .nav-item > li > a > i {
     font-size: 24px;
