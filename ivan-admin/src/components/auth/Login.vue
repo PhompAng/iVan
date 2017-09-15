@@ -27,31 +27,34 @@
 </template>
 
 <script>
-  import { SIGNIN } from '@/vuex/action-types'
+import { SIGNIN } from '@/vuex/action-types'
 
-  export default {
-    name: 'Login',
-    data () {
-      return {
-        form: {
-          email: 'user@example.com',
-          password: '123456'
-        }
-      }
-    },
-    methods: {
-      login () {
-        this.$store.dispatch(SIGNIN, this.form)
+export default {
+  name: 'Login',
+  data () {
+    return {
+      form: {
+        email: 'user@example.com',
+        password: '123456'
       }
     }
+  },
+  methods: {
+    login () {
+      this.$store.dispatch(SIGNIN, this.form)
+      .then((user) => {
+        this.$router.push('/')
+      })
+    }
   }
+}
 </script>
 
 <style scoped>
-  .login {
-    position: fixed;
-    left: 0;
-    top: 60px;
-    right: 0;
-  }
+.login {
+  position: fixed;
+  left: 0;
+  top: 60px;
+  right: 0;
+}
 </style>

@@ -13,32 +13,45 @@ const getters = {
 
 const actions = {
   [action.SIGNIN] ({commit}, form) {
-    firebase.auth()
+    return new Promise((resolve, reject) => {
+      firebase.auth()
       .signInWithEmailAndPassword(form.email, form.password)
       .then((user) => {
-        commit(mutation.SET_USER, user)
+        firebase.database().ref().child('users/' + user.uid).once('value')
+        .then((snapshot) => {
+          let role = (snapshot.val() && snapshot.val().role) || 0
+          user.role = role
+          commit(mutation.SET_USER, user)
+          resolve(user)
+        })
       })
       .catch((error) => {
         console.log(error.message)
+        reject(error)
       })
+    })
   },
   [action.SIGNOUT] ({commit}) {
-    firebase.auth()
+    return new Promise((resolve, reject) => {
+      firebase.auth()
       .signOut()
       .then(() => {
         commit(mutation.SET_USER, null)
+        resolve()
       })
       .catch((error) => {
         console.log(error)
+        reject(error)
       })
+    })
   }
 }
 
 const mutations = {
   [mutation.SET_USER] (state, user) {
     if (user) {
-      state.user.uid = user.uid
-      state.user.displayName = user.displayName
+      state.user = JSON.parse(JSON.stringify(user))
+      state.user.role = user.role
     } else {
       state.user = {}
     }

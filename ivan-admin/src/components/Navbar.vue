@@ -42,6 +42,9 @@
     methods: {
       logout () {
         this.$store.dispatch(SIGNOUT)
+        .then(() => {
+          this.$router.push('login')
+        })
       },
       menuToggle () {
         this.$emit('toggle')
