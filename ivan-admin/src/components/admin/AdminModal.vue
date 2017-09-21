@@ -3,7 +3,7 @@
     <b-modal id="adminModal"
              ref="modal"
              size="lg"
-             title="Create Admin"
+             :title="this.title"
              ok-title="Done"
              :no-close-on-backdrop="true"
              :no-close-on-esc="true"
@@ -46,21 +46,23 @@
           </div>
         </div>
 
-        <div class="row">
-          <div class="form-group col-6">
-            <label for="email">Email</label>
-            <input type='email' v-model="form.email" class="form-control" placeholder="">
+        <div v-if="isCreate">
+          <div class="row">
+            <div class="form-group col-6">
+              <label for="email">Email</label>
+              <input type='email' v-model="form.email" class="form-control" placeholder="">
+            </div>
           </div>
-        </div>
 
-        <div class="row">
-          <div class="form-group col">
-            <label for="password">Password</label>
-            <input v-model="form.password" type='password' class="form-control" ref="password" placeholder="">
-          </div>
-          <div class="form-group col">
-            <label for="confirmPassword">Confirm Password</label>
-            <input v-model="form.password" type='password' class="form-control" ref="confirmPassword" placeholder="">
+          <div class="row">
+            <div class="form-group col">
+              <label for="password">Password</label>
+              <input v-model="form.password" type='password' class="form-control" ref="password" placeholder="">
+            </div>
+            <div class="form-group col">
+              <label for="confirmPassword">Confirm Password</label>
+              <input v-model="form.password" type='password' class="form-control" ref="confirmPassword" placeholder="">
+            </div>
           </div>
         </div>
 
@@ -74,7 +76,7 @@ import { CREATE_ADMIN, UPDATE_ADMIN } from '@/vuex/action-types'
 import { GET_SCHOOL_SELECT } from '@/vuex/getter-types'
 import { mapGetters } from 'vuex'
 export default {
-  name: 'SchoolModal',
+  name: 'AdminsModal',
   props: ['showModal', 'form', 'isCreate'],
   data () {
     return {
@@ -84,7 +86,10 @@ export default {
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT]
-    })
+    }),
+    title () {
+      return this.isCreate ? 'Create Admin' : 'Edit Admin'
+    }
   },
   watch: {
     showModal: function (val) {

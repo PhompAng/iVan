@@ -58,7 +58,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('schools/' + form.id).set(form)
       .then(() => {
-        if (form.file !== null) {
+        if (form.file != null) {
           firebase.storage().ref().child('schools/' + form.id).put(form.file)
           .then((snapshot) => {
             resolve(snapshot)

@@ -33,13 +33,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { GET_SCHOOL_SELECT } from '@/vuex/getter-types'
-import { DELETE_ADMIN, FETCH_ADMIN } from '@/vuex/action-types'
+import { GET_SCHOOL_SELECT, GET_ADMINS } from '@/vuex/getter-types'
+import { DELETE_ADMIN, FETCH_ADMIN, FETCH_SCHOOL } from '@/vuex/action-types'
 import AdminModal from '@/components/admin/AdminModal'
 import swal from 'sweetalert'
 
 export default {
-  name: 'Schools',
+  name: 'Admins',
   data () {
     return {
       fields: {
@@ -52,7 +52,6 @@ export default {
       showModal: false,
       isCreate: true,
       school: '',
-      admins: [],
       form: {
         name: {
           th_first: 'ฟ้าค',
@@ -70,17 +69,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      schools: [GET_SCHOOL_SELECT]
+      schools: [GET_SCHOOL_SELECT],
+      admins: [GET_ADMINS]
     })
-  },
-  created: function () {
-    if (this.schools.length > 0) {
-      this.school = this.schools[0].value
-    }
   },
   watch: {
     school: function (params) {
-      this.admins = this.$store.getters.getSchoolAdmins(params)
+      // this.admins = this.$store.getters.getSchoolAdmins(params)
+      this.$store.dispatch(FETCH_ADMIN, params)
+      this.form.school = params
+    },
+    schools: function (params) {
+      if (params.length > 0 && this.school === '') {
+        this.school = params[0].value
+        this.form.school = params[0].value
+        this.$store.dispatch(FETCH_ADMIN, params[0].value)
+      }
     }
   },
   methods: {
@@ -107,6 +111,7 @@ export default {
       .then((value) => {
         if (value) {
           let form = JSON.parse(JSON.stringify(item))
+          console.log(form)
           this.$store.dispatch(DELETE_ADMIN, form)
           .then(() => {
             swal('Delete Success!', {
@@ -114,7 +119,11 @@ export default {
             })
           })
           .catch((error) => {
-            console.log(error)
+            swal({
+              title: 'Error!',
+              text: error,
+              icon: 'warning'
+            })
           })
         }
       })
@@ -138,7 +147,7 @@ export default {
   },
   beforeRouteEnter (to, form, next) {
     next(vm => {
-      vm.$store.dispatch(FETCH_ADMIN)
+      vm.$store.dispatch(FETCH_SCHOOL)
     })
   }
 }
