@@ -3,7 +3,7 @@
     <b-modal id="modal"
              ref="modal"
              size="lg"
-             v-bind:title="titleName"
+             :title="title"
              ok-title="Done"
              :no-close-on-backdrop="true"
              :ok-disabled="okDisabled"
@@ -76,7 +76,7 @@ import { Typeahead, ADDRESS_FIELD } from 'vue-thailand-address-typeahead'
 
 export default {
   name: 'SchoolModal',
-  props: ['showModal', 'form', 'isCreate', 'titleName'],
+  props: ['showModal', 'form', 'isCreate'],
   data () {
     return {
       addressField: ADDRESS_FIELD,
@@ -94,6 +94,11 @@ export default {
       } else {
         this.$refs.modal.hide()
       }
+    }
+  },
+  computed: {
+    title () {
+      return this.isCreate ? 'Create School' : 'Edit School'
     }
   },
   methods: {

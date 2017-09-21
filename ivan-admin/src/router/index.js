@@ -52,7 +52,10 @@ var router = new Router({
   {
     path: '/admins',
     name: 'Admins',
-    component: Admins
+    component: Admins,
+    meta: {
+      role: 99
+    }
   }
   ]
 })

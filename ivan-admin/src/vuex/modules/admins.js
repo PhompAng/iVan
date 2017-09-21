@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import * as getter from '@/vuex/getter-types'
 import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
@@ -19,20 +20,6 @@ const getters = {
       arr.push(admin)
     })
     return arr
-  },
-  [getter.GET_SCHOOL_ADMINS]: state => school => {
-    if (!state.admins) {
-      return []
-    }
-    let arr = []
-    Object.entries(state.admins).forEach(([key, val]) => {
-      let admin = JSON.parse(JSON.stringify(val))
-      if (admin.school === school) {
-        admin['id'] = key
-        arr.push(admin)
-      }
-    })
-    return arr
   }
 }
 
@@ -44,25 +31,27 @@ const actions = {
       })
       delete form.password
       firebase.database().ref().child('admins/' + user.uid).set(form)
-      firebase.storage().ref().child('admins/' + user.uid).put(form.file)
+      if (form.file != null) {
+        firebase.storage().ref().child('admins/' + user.uid).put(form.file)
+      }
     })
   },
   [action.UPDATE_ADMIN] ({commit}, form) {
-    let user = firebase.auth().currentUser
-    user.updateEmail(form.email)
-    user.updatePassword(form.password)
-    delete form.password
-    firebase.database().ref().child('admins/' + user.uid).set(form)
-    firebase.storage().ref().child('admins/' + user.uid).put(form.file)
+    firebase.database().ref().child('admins/' + form.id).set(form)
+    if (form.file != null) {
+      firebase.storage().ref().child('admins/' + form.id).put(form.file)
+    }
   },
-  [action.FETCH_ADMIN] ({commit}) {
-    firebase.database().ref('/admins').on('value', function (snapshot) {
+  [action.FETCH_ADMIN] ({commit}, schoolId) {
+    firebase.database().ref().child('admins')
+    .orderByChild('school')
+    .equalTo(schoolId)
+    .on('value', function (snapshot) {
       commit(mutation.FETCH_ADMIN, snapshot.val())
     })
   },
   [action.DELETE_ADMIN] ({commit}, form) {
-    firebase.database().ref().child('admins/' + form.id).remove()
-    firebase.database().ref().child('users/' + form.id).remove()
+    Vue.http.delete('admins', {body: {uid: form.id}})
   }
 }
 
