@@ -28,7 +28,7 @@
       </template>
     </b-table>
     <b-btn variant="primary" @click="createSchool">Create</b-btn>
-    <school-modal :showModal="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
+    <school-modal :showModal="showModal" :isCreate="isCreate" :form="form" :titleName="titleName" v-on:hide="clear"></school-modal>
 
   </div>
 </template>
@@ -54,6 +54,7 @@ export default {
       },
       showModal: false,
       isCreate: true,
+      titleName: 'Create School',
       form: {
         id: '',
         name: {
@@ -92,6 +93,7 @@ export default {
     update (item, index, e) {
       let form = JSON.parse(JSON.stringify(item))
       this.form = form
+      this.titleName = 'Edit School'
       this.isCreate = false
       this.showModal = true
     },
