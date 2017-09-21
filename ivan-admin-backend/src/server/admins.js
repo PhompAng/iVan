@@ -11,6 +11,7 @@ export default (app) => {
       ])
       res.send('Success')
     } catch (err) {
+      console.log(err)
       res.send(err)
     }
   })

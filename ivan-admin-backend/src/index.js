@@ -5,7 +5,7 @@ var serviceAccount = require('~/resources/ivan-f1006-firebase-adminsdk-qvw3d-7f3
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: 'https://ivan-f1006.firebaseio.com',
-  storageBucket: 'gs://ivan-f1006.appspot.com/'
+  storageBucket: 'ivan-f1006.appspot.com/'
 })
 
 server.listen(3000, function () {

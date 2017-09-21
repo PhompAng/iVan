@@ -111,7 +111,6 @@ export default {
       .then((value) => {
         if (value) {
           let form = JSON.parse(JSON.stringify(item))
-          console.log(form)
           this.$store.dispatch(DELETE_ADMIN, form)
           .then(() => {
             swal('Delete Success!', {

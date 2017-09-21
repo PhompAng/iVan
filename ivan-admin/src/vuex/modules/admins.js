@@ -25,22 +25,46 @@ const getters = {
 
 const actions = {
   [action.CREATE_ADMIN] ({commit}, form) {
-    firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
-      firebase.database().ref().child('users/' + user.uid).set({
-        role: 75
+    return new Promise((resolve, reject) => {
+      firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
+        firebase.database().ref().child('users/' + user.uid).set({
+          role: 75
+        })
+        delete form.password
+        firebase.database().ref().child('admins/' + user.uid).set(form)
+        if (form.file != null) {
+          firebase.storage().ref().child('admins/' + user.uid).put(form.file)
+          .then(() => {
+            resolve()
+          })
+        } else {
+          resolve()
+        }
       })
-      delete form.password
-      firebase.database().ref().child('admins/' + user.uid).set(form)
-      if (form.file != null) {
-        firebase.storage().ref().child('admins/' + user.uid).put(form.file)
-      }
+      .catch((error) => {
+        console.log(error)
+        reject(error)
+      })
     })
   },
   [action.UPDATE_ADMIN] ({commit}, form) {
-    firebase.database().ref().child('admins/' + form.id).set(form)
-    if (form.file != null) {
-      firebase.storage().ref().child('admins/' + form.id).put(form.file)
-    }
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().child('admins/' + form.id).set(form)
+      .then(() => {
+        if (form.file != null) {
+          firebase.storage().ref().child('admins/' + form.id).put(form.file)
+          .then(() => {
+            resolve()
+          })
+        } else {
+          resolve()
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        reject(error)
+      })
+    })
   },
   [action.FETCH_ADMIN] ({commit}, schoolId) {
     firebase.database().ref().child('admins')

@@ -109,13 +109,15 @@ export default {
       e.cancel()
       this.okDisabled = true
       if (this.isCreate) {
-        let form = JSON.parse(JSON.stringify(this.form))
-        this.$store.dispatch(CREATE_ADMIN, form)
-        this.hide()
+        this.$store.dispatch(CREATE_ADMIN, this.form)
+        .then(() => {
+          this.hide()
+        })
       } else {
-        let form = JSON.parse(JSON.stringify(this.form))
-        this.$store.dispatch(UPDATE_ADMIN, form)
-        this.hide()
+        this.$store.dispatch(UPDATE_ADMIN, this.form)
+        .then(() => {
+          this.hide()
+        })
       }
     }
   },
