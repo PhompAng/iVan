@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["server","listen","console","log"],"mappings":"AAAA,OAAOA,MAAP,MAAmB,UAAnB;;AAEAA,OAAOC,MAAP,CAAc,IAAd,EAAoB,YAAY;AAC5BC,YAAQC,GAAR,CAAY,qCAAZ;AACH,CAFD","file":"index.js","sourcesContent":["import server from '~/server'\n\nserver.listen(3000, function () {\n    console.log('Example app listening on port 3000!')\n})\n"]}

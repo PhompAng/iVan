@@ -1,0 +1,1 @@
+{"version":3,"sources":["../../src/server/index.js"],"names":["root","express","app"],"mappings":"AAAA,OAAOA,IAAP,MAAiB,QAAjB;AACA,OAAOC,OAAP,MAAoB,SAApB;;AAEA,MAAMC,MAAMD,SAAZ;AACAD,KAAKE,GAAL;;AAEA,eAAeA,GAAf","file":"index.js","sourcesContent":["import root from '~/server/root'\nimport express from 'express'\n\nconst app = express()\nroot(app)\n\nexport default app\n"]}

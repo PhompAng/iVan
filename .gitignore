@@ -103,7 +103,7 @@ out/
 
 # Gradle files
 .gradle/
-build/
+
 
 # Local configuration file (sdk path, etc)
 local.properties
@@ -173,6 +173,7 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
 
 # Runtime data
 pids
@@ -246,3 +247,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+*.lock
