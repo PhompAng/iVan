@@ -13,6 +13,7 @@
         "lint": "eslint src"
     },
     "dependencies": {
+        "babel-polyfill": "^6.26.0",
         "bluebird": "^3.5.0",
         "body-parser": "^1.17.2",
         "cors": "^2.8.4",

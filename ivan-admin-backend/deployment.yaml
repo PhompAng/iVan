@@ -1,0 +1,26 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ivan-backend
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: backend
+        service: backend
+    spec:
+      containers:
+      - name: ivan-backend
+        image: phompang/ivan-backend:0.0.1
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "1m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        readinessProbe:
+          httpGet:
+            path: /test
+            port: 3000

@@ -1,3 +1,4 @@
+import 'babel-polyfill'
 import server from '~/server'
 import * as admin from 'firebase-admin'
 var serviceAccount = require('~/resources/ivan-61013-firebase-adminsdk-nnum2-db72a74267')
