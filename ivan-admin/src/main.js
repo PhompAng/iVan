@@ -13,10 +13,10 @@ import '@/assets/simple-sidebar.css'
 import '@/assets/style.css'
 
 var config = {
-  apiKey: 'AIzaSyAMAqh5zXFpqgnlonv9uzfgujqdS4E1JPs',
-  authDomain: 'ivan-f1006.firebaseapp.com',
-  databaseURL: 'https://ivan-f1006.firebaseio.com',
-  storageBucket: 'gs://ivan-f1006.appspot.com/'
+  apiKey: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',
+  authDomain: 'ivan-61013.firebaseapp.com',
+  databaseURL: 'https://ivan-61013.firebaseio.com',
+  storageBucket: 'gs://ivan-61013.appspot.com/'
 }
 
 Vue.config.productionTip = false
@@ -24,7 +24,7 @@ Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(VueGoogleMaps, {
   load: {
-    key: 'AIzaSyAIjHegp8MadL2W-nCbQPuKLZu5QjDRBnI',
+    key: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',
     libraries: 'places'
   }
 })
