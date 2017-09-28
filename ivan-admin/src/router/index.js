@@ -5,9 +5,11 @@ import Hello from '@/components/Hello'
 import Login from '@/components/auth/Login'
 import Schools from '@/components/school/Schools'
 import ViewSchool from '@/components/school/ViewSchool'
+import ViewAdmin from '@/components/admin/ViewAdmin'
 import store from '../vuex/store'
 import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
+import Teachers from '@/components/teacher/Teachers'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -25,7 +27,7 @@ var router = new Router({
     name: 'Dashboard',
     component: Hello,
     meta: {
-      role: 0
+      role: [99, 75, 60]
     }
   },
   {
@@ -38,7 +40,7 @@ var router = new Router({
     name: 'Schools',
     component: Schools,
     meta: {
-      role: 99
+      role: [99]
     }
   },
   {
@@ -46,7 +48,7 @@ var router = new Router({
     name: 'ViewSchool',
     component: ViewSchool,
     meta: {
-      role: 99
+      role: [99]
     }
   },
   {
@@ -54,7 +56,23 @@ var router = new Router({
     name: 'Admins',
     component: Admins,
     meta: {
-      role: 99
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/admins/:id',
+    name: 'ViewAdmin',
+    component: ViewAdmin,
+    meta: {
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/teachers',
+    name: 'Teachers',
+    component: Teachers,
+    meta: {
+      role: [99, 60]
     }
   }
   ]
@@ -68,7 +86,7 @@ router.beforeEach((to, from, next) => {
   if (!currentUser && requireRole != null) {
     next('login')
   } else {
-    if (requireRole != null && userRole < requireRole.meta.role) {
+    if (requireRole != null && requireRole.meta.role.indexOf(userRole) === -1) {
       next('/')
     } else {
       next()

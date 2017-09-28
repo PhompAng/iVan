@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <b-card-group deck class="mb-3">
       <b-card header="Information">
         <div class="row">

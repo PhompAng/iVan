@@ -5,38 +5,38 @@ import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
 const state = {
-  admins: {}
+  teachers: {}
 }
 
 const getters = {
-  [getter.GET_ADMINS]: state => {
-    if (!state.admins) {
+  [getter.GET_TEACHERS]: state => {
+    if (!state.teachers) {
       return []
     }
     let arr = []
-    Object.entries(state.admins).forEach(([key, val]) => {
-      let admin = JSON.parse(JSON.stringify(val))
-      admin['id'] = key
-      arr.push(admin)
+    Object.entries(state.teachers).forEach(([key, val]) => {
+      let teacher = JSON.parse(JSON.stringify(val))
+      teacher['id'] = key
+      arr.push(teacher)
     })
     return arr
   }
 }
 
 const actions = {
-  [action.CREATE_ADMIN] ({commit}, form) {
+  [action.CREATE_TEACHER] ({commit}, form) {
     return new Promise((resolve, reject) => {
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
         user.updateProfile({
           displayName: form.name.en_first + ' ' + form.name.en_last
         })
         firebase.database().ref().child('users/' + user.uid).set({
-          role: 75
+          role: 60
         })
         delete form.password
-        firebase.database().ref().child('admins/' + user.uid).set(form)
+        firebase.database().ref().child('teachers/' + user.uid).set(form)
         if (form.file != null) {
-          firebase.storage().ref().child('admins/' + user.uid).put(form.file)
+          firebase.storage().ref().child('teachers/' + user.uid).put(form.file)
           .then(() => {
             resolve()
           })
@@ -50,12 +50,12 @@ const actions = {
       })
     })
   },
-  [action.UPDATE_ADMIN] ({commit}, form) {
+  [action.UPDATE_TEACHER] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref().child('admins/' + form.id).set(form)
+      firebase.database().ref().child('teachers/' + form.id).set(form)
       .then(() => {
         if (form.file != null) {
-          firebase.storage().ref().child('admins/' + form.id).put(form.file)
+          firebase.storage().ref().child('teachers/' + form.id).put(form.file)
           .then(() => {
             resolve()
           })
@@ -69,22 +69,22 @@ const actions = {
       })
     })
   },
-  [action.FETCH_ADMIN] ({commit}, schoolId) {
-    firebase.database().ref().child('admins')
+  [action.FETCH_TEACHER] ({commit}, schoolId) {
+    firebase.database().ref().child('teachers')
     .orderByChild('school')
     .equalTo(schoolId)
     .on('value', function (snapshot) {
-      commit(mutation.FETCH_ADMIN, snapshot.val())
+      commit(mutation.FETCH_TEACHER, snapshot.val())
     })
   },
-  [action.DELETE_ADMIN] ({commit}, form) {
-    Vue.http.delete('admins', {body: {uid: form.id}})
+  [action.DELETE_TEACHER] ({commit}, form) {
+    Vue.http.delete('teachers', {body: {uid: form.id}})
   }
 }
 
 const mutations = {
-  [mutation.FETCH_ADMIN] (state, snapshot) {
-    state.admins = JSON.parse(JSON.stringify(snapshot))
+  [mutation.FETCH_TEACHER] (state, snapshot) {
+    state.teachers = JSON.parse(JSON.stringify(snapshot))
   }
 }
 

@@ -15,25 +15,45 @@
           <span>Dashboard</span>
         </router-link>
       </li>
-      <li>
+      <li v-if="user.role >= 99">
         <router-link :to="{name: 'Schools'}">
           <i class="ti-home"></i>
           <span>Schools</span>
         </router-link>
       </li>
       <li>
-        <router-link :to="{name: 'Admins'}">
+        <a>
           <i class="ti-user"></i>
-          <span>Admins</span>
-        </router-link>
+          <span>User</span>
+        </a>
       </li>
+      <ul class="sub">
+        <li v-if="user.role >= 75">
+          <router-link :to="{name: 'Admins'}">
+            <span>Admins</span>
+          </router-link>
+        </li>
+        <li v-if="user.role >= 60">
+          <router-link :to="{name: 'Teachers'}">
+            <span>Teachers</span>
+          </router-link>
+        </li>
+      </ul>
     </ul>
   </div>
 </template>
 
 <script>
+import { GET_USER } from '@/vuex/getter-types'
+import { mapGetters } from 'vuex'
+
 export default {
   name: 'sidebar',
+  computed: {
+    ...mapGetters({
+      user: [GET_USER]
+    })
+  },
   data () {
     return {
 
@@ -51,6 +71,18 @@ a.router-link-exact-active {
   color: #42b983;
 }
 
+li {
+  list-style: none;
+}
+li > a {
+  margin-left: 5px;
+  display: block;
+}
+li > a.router-link-exact-active {
+  margin-left: 0;
+  border-left: 5px solid #42b983;
+}
+
 .simple-text {
   color: #fff;
   font-size: 16px;
@@ -58,7 +90,7 @@ a.router-link-exact-active {
   text-align: left;
 }
 
-.sidebar-nav>.logo {
+.sidebar-nav > .logo {
   padding: 15px 0;
   margin: 0 20px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.3);
@@ -68,40 +100,29 @@ a.router-link-exact-active {
   width: 40px;
   display: inline-block;
   height: 40px;
-  margin-left: 0px;
   margin-right: 5px;
 }
 
-.logo-img>img {
+.logo-img > img {
   width: 40px;
   height: 40px;
 }
 
 .nav-item {
-  list-style: none;
   padding: 0;
-  margin-top: 15px;
-  margin-bottom: 0;
 }
 
-.nav-item>li {
+.nav-item > li {
   display: inline-block;
   width: 100%;
   color: #fff;
 }
 
-.nav-item>li>a {
-  margin: 5px 0;
-  padding: 10px 30px;
-  display: block;
+.nav-item > li > a {
+  padding: 15px 30px;
 }
 
-.nav-item>li>a.router-link-exact-active {
-  border-left: 5px solid #fff;
-  padding-left: 25px;
-}
-
-.nav-item>li>a>i {
+.nav-item > li > a > i {
   font-size: 24px;
   float: left;
   line-height: 30px;
@@ -109,10 +130,20 @@ a.router-link-exact-active {
   text-align: center;
 }
 
-.nav-item>li>a>span {
+.nav-item > li > a > span {
   line-height: 30px;
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
+}
+
+.sub {
+  padding-left: 30px;
+}
+.sub > li > a {
+  padding: 5px 0;
+}
+.sub > li > a > span {
+  margin-left: 35px;
 }
 </style>
