@@ -1,23 +1,21 @@
 <template>
   <div>
-    <h2>Schools</h2>
+    <h2>Teachers</h2>
+    <div class="row">
+      <div class="form-group col-5">
+        <label for="school">School</label>
+        <b-form-select v-model="school" :options="schools" class="mb-3"></b-form-select>
+      </div>
+    </div>
+
     <b-table striped hover bordered
-             :items="schools"
+             :items="teachers"
              :fields="fields">
       <template slot="id" scope="data">{{data.index + 1}}</template>
-      <template slot="enName" scope="data">{{data.item.name.en}}</template>
-      <template slot="thName" scope="data">{{data.item.name.th}}</template>
-      <template slot="address" scope="data">
-        <p>{{data.item.address.line1}}</p>
-        <p>{{data.item.address.line2}}</p>
-        <p>{{data.item.address.district}} {{data.item.address.city}} {{data.item.address.province}}</p>
-        <p>{{data.item.address.postcode}}</p>
-      </template>
+      <template slot="enName" scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
+      <template slot="thName" scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
+      <template slot="tel" scope="data">{{data.item.telephone}}</template>
       <template slot="action" scope="data">
-        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
-          <i class="ti-eye"></i>
-          View
-        </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -28,63 +26,69 @@
         </b-button>
       </template>
     </b-table>
-    <b-btn variant="primary" @click="createSchool">Create</b-btn>
-    <school-modal :showModal="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
+    <b-btn variant="primary" @click="create">Create</b-btn>
+    <teacher-modal :showModal="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></teacher-modal>
 
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { GET_SCHOOLS } from '@/vuex/getter-types'
-import { DELETE_SCHOOL, FETCH_SCHOOL } from '@/vuex/action-types'
-import SchoolModal from '@/components/school/SchoolModal'
+import { GET_SCHOOL_SELECT, GET_TEACHERS } from '@/vuex/getter-types'
+import { DELETE_TEACHER, FETCH_TEACHER, FETCH_SCHOOL } from '@/vuex/action-types'
+import TeacherModal from '@/components/teacher/TeacherModal'
 import swal from 'sweetalert'
 
 export default {
-  name: 'Schools',
+  name: 'Teachers',
   data () {
     return {
       fields: {
         id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
         thName: { label: 'Thai name', sortable: true },
-        address: { label: 'Address' },
         tel: { label: 'Telephone' },
         action: { label: 'Action' }
       },
       showModal: false,
       isCreate: true,
+      school: '',
       form: {
-        id: '',
         name: {
-          th: '',
-          en: ''
+          th_first: 'ศุภณัฐ',
+          th_last: 'สวนทวี',
+          en_first: 'Supanut',
+          en_last: 'Suantawee'
         },
-        address: {
-          line1: '',
-          line2: '',
-          district: '',
-          city: '',
-          province: '',
-          postcode: ''
-        },
-        location: {
-          lat: 13.7308051,
-          lng: 100.7806353
-        },
-        file: null,
-        tel: ''
+        email: 'aaaaaa@fuck.co.th',
+        password: '123465',
+        school: '',
+        telephone: '0896728777',
+        file: null
       }
     }
   },
   computed: {
     ...mapGetters({
-      schools: [GET_SCHOOLS]
+      schools: [GET_SCHOOL_SELECT],
+      teachers: [GET_TEACHERS]
     })
   },
+  watch: {
+    school: function (params) {
+      this.$store.dispatch(FETCH_TEACHER, params)
+      this.form.school = params
+    },
+    schools: function (params) {
+      if (params.length > 0 && this.school === '') {
+        this.school = params[0].value
+        this.form.school = params[0].value
+        this.$store.dispatch(FETCH_TEACHER, params[0].value)
+      }
+    }
+  },
   methods: {
-    createSchool () {
+    create () {
       this.showModal = true
     },
     view (item, index, e) {
@@ -106,7 +110,8 @@ export default {
       })
       .then((value) => {
         if (value) {
-          this.$store.dispatch(DELETE_SCHOOL, item)
+          let form = JSON.parse(JSON.stringify(item))
+          this.$store.dispatch(DELETE_TEACHER, form)
           .then(() => {
             swal('Delete Success!', {
               icon: 'success'
@@ -125,23 +130,19 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.id = ''
-      this.form.name.th = ''
-      this.form.name.en = ''
-      this.form.address.line1 = ''
-      this.form.address.line2 = ''
-      this.form.address.district = ''
-      this.form.address.city = ''
-      this.form.address.province = ''
-      this.form.address.postcode = ''
-      this.form.location.lat = 13.7308051
-      this.form.location.lng = 100.7806353
-      this.form.tel = ''
+      this.form.name.th_first = ''
+      this.form.name.th_last = ''
+      this.form.name.en_first = ''
+      this.form.name.en_last = ''
+      this.form.email = ''
+      this.form.password = ''
+      this.form.school = ''
+      this.form.telephone = ''
       this.form.file = null
     }
   },
   components: {
-    SchoolModal
+    TeacherModal
   },
   beforeRouteEnter (to, form, next) {
     next(vm => {

@@ -10,3 +10,8 @@ export const CREATE_ADMIN = 'createAdmin'
 export const UPDATE_ADMIN = 'updateAdmin'
 export const FETCH_ADMIN = 'fetchAdmin'
 export const DELETE_ADMIN = 'deleteAdmin'
+
+export const FETCH_TEACHER = 'fetchTeacher'
+export const CREATE_TEACHER = 'createTeacher'
+export const UPDATE_TEACHER = 'updateTeacher'
+export const DELETE_TEACHER = 'deleteTeacher'

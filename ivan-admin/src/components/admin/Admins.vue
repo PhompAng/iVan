@@ -1,7 +1,8 @@
 <template>
   <div>
+    <h2>Admins</h2>
     <div class="row">
-      <div class="form-group col-3">
+      <div class="form-group col-5">
         <label for="school">School</label>
         <b-form-select v-model="school" :options="schools" class="mb-3"></b-form-select>
       </div>
