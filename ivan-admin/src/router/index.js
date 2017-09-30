@@ -5,11 +5,11 @@ import Hello from '@/components/Hello'
 import Login from '@/components/auth/Login'
 import Schools from '@/components/school/Schools'
 import ViewSchool from '@/components/school/ViewSchool'
-import ViewAdmin from '@/components/admin/ViewAdmin'
 import store from '../vuex/store'
 import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
 import Teachers from '@/components/teacher/Teachers'
+import Parents from '@/components/parent/Parents'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -60,19 +60,19 @@ var router = new Router({
     }
   },
   {
-    path: '/admins/:id',
-    name: 'ViewAdmin',
-    component: ViewAdmin,
-    meta: {
-      role: [99, 75]
-    }
-  },
-  {
     path: '/teachers',
     name: 'Teachers',
     component: Teachers,
     meta: {
-      role: [99, 60]
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/parents',
+    name: 'Parents',
+    component: Parents,
+    meta: {
+      role: [99, 75, 60, 50]
     }
   }
   ]

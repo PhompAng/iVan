@@ -15,3 +15,8 @@ export const FETCH_TEACHER = 'fetchTeacher'
 export const CREATE_TEACHER = 'createTeacher'
 export const UPDATE_TEACHER = 'updateTeacher'
 export const DELETE_TEACHER = 'deleteTeacher'
+
+export const FETCH_PARENT = 'fetchParent'
+export const CREATE_PARENT = 'createParent'
+export const UPDATE_PARENT = 'updateParent'
+export const DELETE_PARENT = 'deleteParent'
