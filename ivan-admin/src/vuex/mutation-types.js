@@ -5,3 +5,5 @@ export const FETCH_SCHOOL = 'fetchSchool'
 export const FETCH_ADMIN = 'fetchAdmin'
 
 export const FETCH_TEACHER = 'fetchTeacher'
+
+export const FETCH_PARENT = 'fetchParent'

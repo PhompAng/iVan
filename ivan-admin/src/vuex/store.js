@@ -4,6 +4,7 @@ import users from './modules/users'
 import schools from './modules/schools'
 import admins from './modules/admins'
 import teachers from './modules/teachers'
+import parents from './modules/parents'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -31,7 +32,8 @@ export default new Vuex.Store({
     users,
     schools,
     admins,
-    teachers
+    teachers,
+    parents
   },
   plugins: [createPersistedState()],
   strict: process.env.NODE_ENV !== 'production'

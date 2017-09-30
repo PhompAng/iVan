@@ -38,6 +38,11 @@
             <span>Teachers</span>
           </router-link>
         </li>
+        <li v-if="user.role >= 50">
+          <router-link :to="{name: 'Parents'}">
+            <span>Parents</span>
+          </router-link>
+        </li>
       </ul>
     </ul>
   </div>
