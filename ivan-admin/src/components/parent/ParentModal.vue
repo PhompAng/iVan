@@ -106,25 +106,18 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { modalToggleable } from '@/components/mixins/modalToggleable'
+import { modalMap } from '@/components/mixins/modalMap'
+import { fillAddress } from '@/components/mixins/fillAddress'
 import { CREATE_PARENT, UPDATE_PARENT } from '@/vuex/action-types'
 import { GET_SCHOOL_SELECT } from '@/vuex/getter-types'
 import { mapGetters } from 'vuex'
-import { Typeahead, ADDRESS_FIELD } from 'vue-thailand-address-typeahead'
+import { Typeahead } from 'vue-thailand-address-typeahead'
 
 export default {
   name: 'ParentModal',
-  props: ['showModal', 'form', 'isCreate'],
-  data () {
-    return {
-      okDisabled: false,
-      addressField: ADDRESS_FIELD,
-      marker: {
-        lat: 0,
-        lng: 0
-      }
-    }
-  },
+  props: ['form', 'isCreate'],
+  mixins: [modalToggleable, modalMap, fillAddress],
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT]
@@ -133,29 +126,10 @@ export default {
       return this.isCreate ? 'Create Parent' : 'Edit Parent'
     }
   },
-  watch: {
-    showModal: function (val) {
-      if (val) {
-        this.$refs.modal.show()
-      } else {
-        this.$refs.modal.hide()
-      }
-    }
-  },
   methods: {
     shown () {
-      Vue.$gmapDefaultResizeBus.$emit('resize')
-      this.marker.lat = this.form.location.lat
-      this.marker.lng = this.form.location.lng
-    },
-    mapClick (e) {
-      console.log('Lat: ' + e.latLng.lat() + ' and Longitude is: ' + e.latLng.lng())
-      this.marker.lat = e.latLng.lat()
-      this.marker.lng = e.latLng.lng()
-    },
-    hide () {
-      this.okDisabled = false
-      this.$emit('hide')
+      this.onShow()
+      this.mapHack()
     },
     update (e) {
       e.cancel()
@@ -171,12 +145,6 @@ export default {
           this.hide()
         })
       }
-    },
-    fillAddress (district, amphoe, province, zipcode) {
-      this.form.address.district = district
-      this.form.address.city = amphoe
-      this.form.address.province = province
-      this.form.address.postcode = zipcode
     }
   },
   components: {

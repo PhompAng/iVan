@@ -72,7 +72,7 @@ var router = new Router({
     name: 'Parents',
     component: Parents,
     meta: {
-      role: [99, 75, 60, 50]
+      role: [99, 75, 60]
     }
   }
   ]

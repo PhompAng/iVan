@@ -43,10 +43,14 @@ const actions = {
     return new Promise((resolve, reject) => {
       let ref = firebase.database().ref().child('schools/').push(form)
       ref.then(() => {
-        firebase.storage().ref().child('schools/' + ref.key).put(form.file)
-        .then((snapshot) => {
-          resolve(snapshot)
-        })
+        if (form.file != null) {
+          firebase.storage().ref().child('schools/' + ref.key).put(form.file)
+          .then((snapshot) => {
+            resolve(snapshot)
+          })
+        } else {
+          resolve()
+        }
       })
       .catch((error) => {
         console.log(error.message)

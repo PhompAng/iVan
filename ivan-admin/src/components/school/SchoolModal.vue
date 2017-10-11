@@ -70,32 +70,16 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import { modalToggleable } from '@/components/mixins/modalToggleable'
+import { modalMap } from '@/components/mixins/modalMap'
+import { fillAddress } from '@/components/mixins/fillAddress'
 import { CREATE_SCHOOL, UPDATE_SCHOOL } from '@/vuex/action-types'
-import { Typeahead, ADDRESS_FIELD } from 'vue-thailand-address-typeahead'
+import { Typeahead } from 'vue-thailand-address-typeahead'
 
 export default {
   name: 'SchoolModal',
-  props: ['showModal', 'form', 'isCreate'],
-  data () {
-    return {
-      addressField: ADDRESS_FIELD,
-      okDisabled: false,
-      marker: {
-        lat: 0,
-        lng: 0
-      }
-    }
-  },
-  watch: {
-    showModal: function (val) {
-      if (val) {
-        this.$refs.modal.show()
-      } else {
-        this.$refs.modal.hide()
-      }
-    }
-  },
+  mixins: [modalToggleable, modalMap, fillAddress],
+  props: ['form', 'isCreate'],
   computed: {
     title () {
       return this.isCreate ? 'Create School' : 'Edit School'
@@ -103,14 +87,8 @@ export default {
   },
   methods: {
     shown () {
-      Vue.$gmapDefaultResizeBus.$emit('resize')
-      this.marker.lat = this.form.location.lat
-      this.marker.lng = this.form.location.lng
-    },
-    mapClick (e) {
-      console.log('Lat: ' + e.latLng.lat() + ' and Longitude is: ' + e.latLng.lng())
-      this.marker.lat = e.latLng.lat()
-      this.marker.lng = e.latLng.lng()
+      this.onShow()
+      this.mapHack()
     },
     update (e) {
       e.cancel()
@@ -128,16 +106,6 @@ export default {
           this.hide()
         })
       }
-    },
-    hide () {
-      this.okDisabled = false
-      this.$emit('hide')
-    },
-    fillAddress (district, amphoe, province, zipcode) {
-      this.form.address.district = district
-      this.form.address.city = amphoe
-      this.form.address.province = province
-      this.form.address.postcode = zipcode
     }
   },
   components: {

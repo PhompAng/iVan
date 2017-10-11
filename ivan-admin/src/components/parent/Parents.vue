@@ -1,7 +1,8 @@
 <template>
   <div>
+    <loading :isShow="this.loading"></loading>
     <h2>Parents</h2>
-    <div class="row">
+    <div class="row" v-if="this.user.role == 99">
       <div class="form-group col-5">
         <label for="school">School</label>
         <b-form-select v-model="school" :options="schools" class="mb-3"></b-form-select>
@@ -27,22 +28,24 @@
       </template>
     </b-table>
     <b-btn variant="primary" @click="create">Create</b-btn>
-    <parent-modal :showModal="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></parent-modal>
+    <parent-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></parent-modal>
 
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { GET_SCHOOL_SELECT, GET_PARENTS } from '@/vuex/getter-types'
+import { GET_SCHOOL_SELECT, GET_PARENTS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_PARENT, FETCH_PARENT, FETCH_SCHOOL } from '@/vuex/action-types'
 import ParentModal from '@/components/parent/ParentModal'
+import Loading from '@/components/Loading'
 import swal from 'sweetalert'
 
 export default {
   name: 'Parents',
   data () {
     return {
+      loading: true,
       fields: {
         id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
@@ -83,10 +86,12 @@ export default {
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT],
-      parents: [GET_PARENTS]
+      parents: [GET_PARENTS],
+      user: [GET_USER]
     })
   },
   watch: {
+    '$route': 'fetch',
     school: function (params) {
       this.$store.dispatch(FETCH_PARENT, params)
       this.form.school = params
@@ -96,10 +101,22 @@ export default {
         this.school = params[0].value
         this.form.school = params[0].value
         this.$store.dispatch(FETCH_PARENT, params[0].value)
+        this.loading = false
       }
     }
   },
+  created () {
+    this.fetch()
+  },
   methods: {
+    fetch () {
+      if (this.user.role === 99) {
+        this.$store.dispatch(FETCH_SCHOOL)
+      } else {
+        this.school = this.user.school
+        this.loading = false
+      }
+    },
     create () {
       this.showModal = true
     },
@@ -162,12 +179,7 @@ export default {
     }
   },
   components: {
-    ParentModal
-  },
-  beforeRouteEnter (to, form, next) {
-    next(vm => {
-      vm.$store.dispatch(FETCH_SCHOOL)
-    })
+    ParentModal, Loading
   }
 }
 </script>
