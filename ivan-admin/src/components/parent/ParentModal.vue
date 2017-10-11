@@ -37,10 +37,6 @@
 
         <div class="row">
           <div class="form-group col">
-            <label for="school">School</label>
-            <b-form-select v-model="form.school" :options="schools" class="mb-3"></b-form-select>
-          </div>
-          <div class="form-group col">
             <label for="file_input">File</label>
             <b-form-file id="file_input" v-model="form.file"></b-form-file>
             <!-- <span>Selected file: {{form.file && form.file.name}}</span> -->
@@ -110,8 +106,6 @@ import { modalToggleable } from '@/components/mixins/modalToggleable'
 import { modalMap } from '@/components/mixins/modalMap'
 import { fillAddress } from '@/components/mixins/fillAddress'
 import { CREATE_PARENT, UPDATE_PARENT } from '@/vuex/action-types'
-import { GET_SCHOOL_SELECT } from '@/vuex/getter-types'
-import { mapGetters } from 'vuex'
 import { Typeahead } from 'vue-thailand-address-typeahead'
 
 export default {
@@ -119,9 +113,6 @@ export default {
   props: ['form', 'isCreate'],
   mixins: [modalToggleable, modalMap, fillAddress],
   computed: {
-    ...mapGetters({
-      schools: [GET_SCHOOL_SELECT]
-    }),
     title () {
       return this.isCreate ? 'Create Parent' : 'Edit Parent'
     }

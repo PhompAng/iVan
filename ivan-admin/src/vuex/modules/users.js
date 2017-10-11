@@ -54,8 +54,10 @@ const actions = {
 const mutations = {
   [mutation.SET_USER] (state, user) {
     if (user) {
+      console.log(user)
       state.user = JSON.parse(JSON.stringify(user))
       state.user.role = user.role
+      state.user.school = user.school
     } else {
       state.user = {}
     }
