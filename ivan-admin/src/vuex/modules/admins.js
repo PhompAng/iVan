@@ -31,7 +31,8 @@ const actions = {
           displayName: form.name.en_first + ' ' + form.name.en_last
         })
         firebase.database().ref().child('users/' + user.uid).set({
-          role: 75
+          role: 75,
+          school: form.school
         })
         delete form.password
         firebase.database().ref().child('admins/' + user.uid).set(form)

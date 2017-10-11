@@ -21,6 +21,10 @@ const actions = {
         .then((snapshot) => {
           let role = (snapshot.val() && snapshot.val().role) || 0
           user.role = role
+          if (role < 99) {
+            let school = (snapshot.val() && snapshot.val().school) || ''
+            user.school = school
+          }
           commit(mutation.SET_USER, user)
           resolve(user)
         })

@@ -10,6 +10,7 @@
              :ok-disabled="okDisabled"
              v-bind:ok-only="true"
              @ok="update"
+             @shown="shown"
              v-on:hidden="hide">
       <form @submit.stop.prevent="handleSubmit">
         <div class="row">
@@ -72,17 +73,15 @@
 </template>
 
 <script>
+import { modalToggleable } from '@/components/mixins/modalToggleable'
 import { CREATE_TEACHER, UPDATE_TEACHER } from '@/vuex/action-types'
 import { GET_SCHOOL_SELECT } from '@/vuex/getter-types'
 import { mapGetters } from 'vuex'
+
 export default {
   name: 'TeacherModal',
-  props: ['showModal', 'form', 'isCreate'],
-  data () {
-    return {
-      okDisabled: false
-    }
-  },
+  props: ['form', 'isCreate'],
+  mixins: [modalToggleable],
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT]
@@ -91,19 +90,9 @@ export default {
       return this.isCreate ? 'Create Teacher' : 'Edit Teacher'
     }
   },
-  watch: {
-    showModal: function (val) {
-      if (val) {
-        this.$refs.modal.show()
-      } else {
-        this.$refs.modal.hide()
-      }
-    }
-  },
   methods: {
-    hide () {
-      this.okDisabled = false
-      this.$emit('hide')
+    shown () {
+      this.onShow()
     },
     update (e) {
       e.cancel()
@@ -120,8 +109,6 @@ export default {
         })
       }
     }
-  },
-  components: {
   }
 }
 </script>

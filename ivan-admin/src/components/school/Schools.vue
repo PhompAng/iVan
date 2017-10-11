@@ -1,5 +1,6 @@
 <template>
   <div>
+    <loading :isShow="this.loading"></loading>
     <h2>Schools</h2>
     <b-table striped hover bordered
              :items="schools"
@@ -29,7 +30,7 @@
       </template>
     </b-table>
     <b-btn variant="primary" @click="createSchool">Create</b-btn>
-    <school-modal :showModal="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
+    <school-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
 
   </div>
 </template>
@@ -39,12 +40,14 @@ import { mapGetters } from 'vuex'
 import { GET_SCHOOLS } from '@/vuex/getter-types'
 import { DELETE_SCHOOL, FETCH_SCHOOL } from '@/vuex/action-types'
 import SchoolModal from '@/components/school/SchoolModal'
+import Loading from '@/components/Loading'
 import swal from 'sweetalert'
 
 export default {
   name: 'Schools',
   data () {
     return {
+      loading: true,
       fields: {
         id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
@@ -83,7 +86,20 @@ export default {
       schools: [GET_SCHOOLS]
     })
   },
+  watch: {
+    '$route': 'fetch',
+    schools: function (params) {
+      this.loading = false
+    }
+  },
+  created () {
+    this.fetch()
+  },
   methods: {
+    fetch () {
+      this.loading = true
+      this.$store.dispatch(FETCH_SCHOOL)
+    },
     createSchool () {
       this.showModal = true
     },
@@ -141,12 +157,7 @@ export default {
     }
   },
   components: {
-    SchoolModal
-  },
-  beforeRouteEnter (to, form, next) {
-    next(vm => {
-      vm.$store.dispatch(FETCH_SCHOOL)
-    })
+    SchoolModal, Loading
   }
 }
 </script>
