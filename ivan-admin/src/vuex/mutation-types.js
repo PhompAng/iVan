@@ -7,3 +7,5 @@ export const FETCH_ADMIN = 'fetchAdmin'
 export const FETCH_TEACHER = 'fetchTeacher'
 
 export const FETCH_PARENT = 'fetchParent'
+
+export const FETCH_STUDENT = 'fetchStudent'

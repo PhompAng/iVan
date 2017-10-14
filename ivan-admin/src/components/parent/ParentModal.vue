@@ -44,57 +44,52 @@
         </div>
 
         <div v-if="isCreate">
-          <div class="row">
-            <div class="form-group col-6">
-              <label for="email">Email</label>
-              <input type='email' v-model="form.email" class="form-control" placeholder="">
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="email">Email</label>
+                    <input type='email' v-model="form.email" class="form-control" placeholder="">
+                </div>
             </div>
-          </div>
-
-          <div class="row">
+            <div class="row">
+                <div class="form-group col">
+                    <label for="password">Password</label>
+                    <input v-model="form.password" type='password' class="form-control" ref="password" placeholder="">
+                </div>
+                <div class="form-group col">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input v-model="form.password" type='password' class="form-control" ref="confirmPassword" placeholder="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="form-group col">
-              <label for="password">Password</label>
-              <input v-model="form.password" type='password' class="form-control" ref="password" placeholder="">
+                <label for="line1">Line1</label>
+                <input v-model="form.address.line1" class="form-control" id="line1" placeholder="">
             </div>
             <div class="form-group col">
-              <label for="confirmPassword">Confirm Password</label>
-              <input v-model="form.password" type='password' class="form-control" ref="confirmPassword" placeholder="">
+                <label for="line2">Line2</label>
+                <input v-model="form.address.line2" class="form-control" id="line2" placeholder="">
             </div>
-          </div>
         </div>
-
         <div class="row">
-          <div class="form-group col">
-            <label for="line1">Line1</label>
-            <input v-model="form.address.line1" class="form-control" id="line1" placeholder="">
-          </div>
-          <div class="form-group col">
-            <label for="line2">Line2</label>
-            <input v-model="form.address.line2" class="form-control" id="line2" placeholder="">
-          </div>
+            <typeahead class="form-group col" :label="this.addressField.district.name" :type="this.addressField.district.type" :query="this.form.address.district" v-on:fillAddress="fillAddress" />
+            <typeahead class="form-group col" :label="this.addressField.city.name" :type="this.addressField.city.type" :query="this.form.address.city" v-on:fillAddress="fillAddress" />
+            <typeahead class="form-group col" :label="this.addressField.province.name" :type="this.addressField.province.type" :query="this.form.address.province" v-on:fillAddress="fillAddress" />
         </div>
-
         <div class="row">
-          <typeahead class="form-group col" :label="this.addressField.district.name" :type="this.addressField.district.type" :query="this.form.address.district" v-on:fillAddress="fillAddress" />
-          <typeahead class="form-group col" :label="this.addressField.city.name" :type="this.addressField.city.type" :query="this.form.address.city" v-on:fillAddress="fillAddress" />
-          <typeahead class="form-group col" :label="this.addressField.province.name" :type="this.addressField.province.type" :query="this.form.address.province" v-on:fillAddress="fillAddress" />
+            <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.address.postcode" v-on:fillAddress="fillAddress" />
+            <div class="form-group col">
+                <label for="tel">Telephone</label>
+                <input v-model="form.tel" type="tel" class="form-control" id="tel" placeholder="">
+            </div>
         </div>
-
         <div class="row">
-          <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.address.postcode" v-on:fillAddress="fillAddress" />
-          <div class="form-group col">
-            <label for="tel">Telephone</label>
-            <input v-model="form.tel" type="tel" class="form-control" id="tel" placeholder="">
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="form-group col">
-            <label>Location</label>
-            <gmap-map ref="gmap" class="map" :center="this.form.location" :zoom="12" @click="mapClick">
-              <gmap-marker :position="this.marker"></gmap-marker>
-            </gmap-map>
-          </div>
+            <div class="form-group col">
+                <label>Location</label>
+                <gmap-map ref="gmap" class="map" :center="this.form.location" :zoom="12" @click="mapClick">
+                    <gmap-marker :position="this.marker"></gmap-marker>
+                </gmap-map>
+            </div>
         </div>
       </form>
     </b-modal>
