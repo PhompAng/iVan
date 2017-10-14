@@ -10,6 +10,7 @@ import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
 import Teachers from '@/components/teacher/Teachers'
 import Parents from '@/components/parent/Parents'
+import Students from '@/components/student/Students'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -71,6 +72,14 @@ var router = new Router({
     path: '/parents',
     name: 'Parents',
     component: Parents,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/students',
+    name: 'Students',
+    component: Students,
     meta: {
       role: [99, 75, 60]
     }

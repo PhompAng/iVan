@@ -9,3 +9,5 @@ export const GET_ADMINS = 'getAdmins'
 export const GET_TEACHERS = 'getTeachers'
 
 export const GET_PARENTS = 'getParents'
+
+export const GET_STUDENTS = 'getStudents'

@@ -17,6 +17,7 @@ const getters = {
     Object.entries(state.parents).forEach(([key, val]) => {
       let parent = JSON.parse(JSON.stringify(val))
       parent['id'] = key
+      parent['text'] = parent.name.th_first + ' ' + parent.name.th_last
       arr.push(parent)
     })
     return arr

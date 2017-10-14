@@ -20,3 +20,8 @@ export const FETCH_PARENT = 'fetchParent'
 export const CREATE_PARENT = 'createParent'
 export const UPDATE_PARENT = 'updateParent'
 export const DELETE_PARENT = 'deleteParent'
+
+export const FETCH_STUDENT = 'fetchStudent'
+export const CREATE_STUDENT = 'createStudent'
+export const UPDATE_STUDENT = 'updateStudent'
+export const DELETE_STUDENT = 'deleteStudent'
