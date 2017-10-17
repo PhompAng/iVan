@@ -4,6 +4,7 @@ import users from './modules/users'
 import schools from './modules/schools'
 import admins from './modules/admins'
 import teachers from './modules/teachers'
+import drivers from './modules/drivers'
 import parents from './modules/parents'
 import students from './modules/students'
 import createPersistedState from 'vuex-persistedstate'
@@ -34,6 +35,7 @@ export default new Vuex.Store({
     schools,
     admins,
     teachers,
+    drivers,
     parents,
     students
   },

@@ -75,7 +75,7 @@ const actions = {
     .orderByChild('school')
     .equalTo(schoolId)
     .on('value', function (snapshot) {
-      commit(mutation.FETCH_ADMIN, snapshot.val())
+      commit(mutation.SET_ADMIN, snapshot.val())
     })
   },
   [action.DELETE_ADMIN] ({commit}, form) {
@@ -84,7 +84,7 @@ const actions = {
 }
 
 const mutations = {
-  [mutation.FETCH_ADMIN] (state, snapshot) {
+  [mutation.SET_ADMIN] (state, snapshot) {
     state.admins = JSON.parse(JSON.stringify(snapshot))
   }
 }

@@ -90,13 +90,13 @@ const actions = {
   },
   [action.FETCH_SCHOOL] ({commit}) {
     firebase.database().ref('/schools').on('value', function (snapshot) {
-      commit(mutation.FETCH_SCHOOL, snapshot.val())
+      commit(mutation.SET_SCHOOL, snapshot.val())
     })
   }
 }
 
 const mutations = {
-  [mutation.FETCH_SCHOOL] (state, snapshot) {
+  [mutation.SET_SCHOOL] (state, snapshot) {
     state.schools = JSON.parse(JSON.stringify(snapshot))
   }
 }

@@ -11,3 +11,5 @@ export const GET_TEACHERS = 'getTeachers'
 export const GET_PARENTS = 'getParents'
 
 export const GET_STUDENTS = 'getStudents'
+
+export const GET_DRIVERS = 'getDrivers'
