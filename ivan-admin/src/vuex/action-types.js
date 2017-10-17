@@ -25,3 +25,8 @@ export const FETCH_STUDENT = 'fetchStudent'
 export const CREATE_STUDENT = 'createStudent'
 export const UPDATE_STUDENT = 'updateStudent'
 export const DELETE_STUDENT = 'deleteStudent'
+
+export const FETCH_DRIVER = 'fetchDriver'
+export const CREATE_DRIVER = 'createDriver'
+export const UPDATE_DRIVER = 'updateDriver'
+export const DELETE_DRIVER = 'deleteDriver'

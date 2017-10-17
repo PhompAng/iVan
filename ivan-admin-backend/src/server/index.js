@@ -2,6 +2,7 @@ import root from '~/server/root'
 import admins from '~/server/admins'
 import teachers from '~/server/teachers'
 import parents from '~/server/parents'
+import drivers from '~/server/drivers'
 import express from 'express'
 import * as bodyParser from 'body-parser'
 import cors from 'cors'
@@ -15,5 +16,6 @@ root(app)
 admins(app)
 teachers(app)
 parents(app)
+drivers(app)
 
 export default app

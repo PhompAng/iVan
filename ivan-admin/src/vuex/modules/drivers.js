@@ -5,40 +5,40 @@ import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
 const state = {
-  parents: {}
+  drivers: {}
 }
 
 const getters = {
-  [getter.GET_PARENTS]: state => {
-    if (!state.parents) {
+  [getter.GET_DRIVERS]: state => {
+    if (!state.drivers) {
       return []
     }
     let arr = []
-    Object.entries(state.parents).forEach(([key, val]) => {
-      let parent = JSON.parse(JSON.stringify(val))
-      parent['id'] = key
-      parent['text'] = parent.name.th_first + ' ' + parent.name.th_last
-      arr.push(parent)
+    Object.entries(state.drivers).forEach(([key, val]) => {
+      let driver = JSON.parse(JSON.stringify(val))
+      driver['id'] = key
+      driver['text'] = driver.name.th_first + ' ' + driver.name.th_last
+      arr.push(driver)
     })
     return arr
   }
 }
 
 const actions = {
-  [action.CREATE_PARENT] ({commit}, form) {
+  [action.CREATE_DRIVER] ({commit}, form) {
     return new Promise((resolve, reject) => {
       firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
         user.updateProfile({
           displayName: form.name.en_first + ' ' + form.name.en_last
         })
         firebase.database().ref().child('users/' + user.uid).set({
-          role: 40,
+          role: 50,
           school: form.school
         })
         delete form.password
-        firebase.database().ref().child('parents/' + user.uid).set(form)
+        firebase.database().ref().child('drivers/' + user.uid).set(form)
         if (form.file != null) {
-          firebase.storage().ref().child('parents/' + user.uid).put(form.file)
+          firebase.storage().ref().child('drivers/' + user.uid).put(form.file)
           .then(() => {
             resolve()
           })
@@ -52,12 +52,12 @@ const actions = {
       })
     })
   },
-  [action.UPDATE_PARENT] ({commit}, form) {
+  [action.UPDATE_DRIVER] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref().child('parents/' + form.id).set(form)
+      firebase.database().ref().child('drivers/' + form.id).set(form)
       .then(() => {
         if (form.file != null) {
-          firebase.storage().ref().child('parents/' + form.id).put(form.file)
+          firebase.storage().ref().child('drivers/' + form.id).put(form.file)
           .then(() => {
             resolve()
           })
@@ -71,22 +71,22 @@ const actions = {
       })
     })
   },
-  [action.FETCH_PARENT] ({commit}, schoolId) {
-    firebase.database().ref().child('parents')
+  [action.FETCH_DRIVER] ({commit}, schoolId) {
+    firebase.database().ref().child('drivers')
     .orderByChild('school')
     .equalTo(schoolId)
     .on('value', function (snapshot) {
-      commit(mutation.SET_PARENT, snapshot.val())
+      commit(mutation.SET_DRIVER, snapshot.val())
     })
   },
-  [action.DELETE_PARENT] ({commit}, form) {
-    Vue.http.delete('parents', {body: {uid: form.id}})
+  [action.DELETE_DRIVER] ({commit}, form) {
+    Vue.http.delete('drivers', {body: {uid: form.id}})
   }
 }
 
 const mutations = {
-  [mutation.SET_PARENT] (state, snapshot) {
-    state.parents = JSON.parse(JSON.stringify(snapshot))
+  [mutation.SET_DRIVER] (state, snapshot) {
+    state.drivers = JSON.parse(JSON.stringify(snapshot))
   }
 }
 

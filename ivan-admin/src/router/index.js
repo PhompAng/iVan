@@ -9,6 +9,7 @@ import store from '../vuex/store'
 import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
 import Teachers from '@/components/teacher/Teachers'
+import Drivers from '@/components/driver/Drivers'
 import Parents from '@/components/parent/Parents'
 import Students from '@/components/student/Students'
 
@@ -28,7 +29,7 @@ var router = new Router({
     name: 'Dashboard',
     component: Hello,
     meta: {
-      role: [99, 75, 60]
+      role: [99, 75, 60, 50, 40]
     }
   },
   {
@@ -69,11 +70,19 @@ var router = new Router({
     }
   },
   {
+    path: '/drivers',
+    name: 'Drivers',
+    component: Drivers,
+    meta: {
+      role: [99, 75, 60, 50, 40]
+    }
+  },
+  {
     path: '/parents',
     name: 'Parents',
     component: Parents,
     meta: {
-      role: [99, 75, 60]
+      role: [99, 75, 60, 50, 40]
     }
   },
   {
@@ -81,7 +90,7 @@ var router = new Router({
     name: 'Students',
     component: Students,
     meta: {
-      role: [99, 75, 60]
+      role: [99, 75, 60, 50, 40]
     }
   }
   ]

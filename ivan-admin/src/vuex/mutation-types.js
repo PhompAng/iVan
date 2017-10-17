@@ -1,11 +1,13 @@
 export const SET_USER = 'setUser'
 
-export const FETCH_SCHOOL = 'fetchSchool'
+export const SET_SCHOOL = 'setSchool'
 
-export const FETCH_ADMIN = 'fetchAdmin'
+export const SET_ADMIN = 'setAdmin'
 
-export const FETCH_TEACHER = 'fetchTeacher'
+export const SET_TEACHER = 'setTeacher'
 
-export const FETCH_PARENT = 'fetchParent'
+export const SET_PARENT = 'setParent'
 
-export const FETCH_STUDENT = 'fetchStudent'
+export const SET_STUDENT = 'setStudent'
+
+export const SET_DRIVER = 'setDriver'
