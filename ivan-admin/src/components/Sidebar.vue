@@ -38,17 +38,17 @@
             <span>Teachers</span>
           </router-link>
         </li>
-        <li v-if="user.role >= 40">
+        <li v-if="user.role >= 60">
           <router-link :to="{name: 'Drivers'}">
             <span>Drivers</span>
           </router-link>
         </li>
-        <li v-if="user.role >= 40">
+        <li v-if="user.role >= 60">
           <router-link :to="{name: 'Parents'}">
             <span>Parents</span>
           </router-link>
         </li>
-        <li v-if="user.role >= 40">
+        <li v-if="user.role >= 60">
           <router-link :to="{name: 'Students'}">
             <span>Students</span>
           </router-link>
@@ -154,6 +154,8 @@ li > a.router-link-exact-active {
 
 .sub {
   padding-left: 30px;
+  background-color: #272727;
+  box-shadow: inset 0 0 10px #212121;
 }
 .sub > li > a {
   padding: 5px 0;

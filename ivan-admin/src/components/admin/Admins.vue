@@ -2,12 +2,10 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Admins</h2>
-    <div class="row" v-if="this.user.role == 99">
-      <div class="form-group col-5">
-        <label for="school">School</label>
-        <b-form-select v-model="school" :options="schools" class="mb-3"></b-form-select>
-      </div>
-    </div>
+    <choose-schools
+      :user="user"
+      :school.sync="school"
+      :schools="schools"></choose-schools>
 
     <b-table striped hover bordered
              :items="admins"
@@ -27,7 +25,9 @@
         </b-button>
       </template>
     </b-table>
-    <b-btn variant="primary" @click="createAdmin">Create</b-btn>
+    <create-user-button
+      :user="this.user"
+      v-on:create="createAdmin"></create-user-button>
     <admin-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></admin-modal>
 
   </div>
@@ -39,6 +39,8 @@ import { GET_SCHOOL_SELECT, GET_ADMINS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_ADMIN, FETCH_ADMIN, FETCH_SCHOOL } from '@/vuex/action-types'
 import AdminModal from '@/components/admin/AdminModal'
 import Loading from '@/components/Loading'
+import ChooseSchools from '@/components/ChooseSchools'
+import CreateUserButton from '@/components/CreateUserButton'
 import swal from 'sweetalert'
 
 export default {
@@ -81,7 +83,6 @@ export default {
   watch: {
     '$route': 'fetch',
     school: function (params) {
-      // this.admins = this.$store.getters.getSchoolAdmins(params)
       this.$store.dispatch(FETCH_ADMIN, params)
       this.form.school = params
     },
@@ -160,7 +161,7 @@ export default {
     }
   },
   components: {
-    AdminModal, Loading
+    AdminModal, Loading, CreateUserButton, ChooseSchools
   }
 }
 </script>

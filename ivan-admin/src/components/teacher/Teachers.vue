@@ -2,12 +2,10 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Teachers</h2>
-    <div class="row" v-if="this.user.role == 99">
-      <div class="form-group col-5">
-        <label for="school">School</label>
-        <b-form-select v-model="school" :options="schools" class="mb-3"></b-form-select>
-      </div>
-    </div>
+    <choose-schools
+      :user="user"
+      :school.sync="school"
+      :schools="schools"></choose-schools>
 
     <b-table striped hover bordered
              :items="teachers"
@@ -27,7 +25,9 @@
         </b-button>
       </template>
     </b-table>
-    <b-btn variant="primary" @click="create">Create</b-btn>
+    <create-user-button
+      :user="this.user"
+      v-on:create="create"></create-user-button>
     <teacher-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></teacher-modal>
 
   </div>
@@ -39,6 +39,8 @@ import { GET_SCHOOL_SELECT, GET_TEACHERS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_TEACHER, FETCH_TEACHER, FETCH_SCHOOL } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import TeacherModal from '@/components/teacher/TeacherModal'
+import ChooseSchools from '@/components/ChooseSchools'
+import CreateUserButton from '@/components/CreateUserButton'
 import swal from 'sweetalert'
 
 export default {
@@ -159,7 +161,7 @@ export default {
     }
   },
   components: {
-    TeacherModal, Loading
+    TeacherModal, Loading, CreateUserButton, ChooseSchools
   }
 }
 </script>
