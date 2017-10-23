@@ -29,7 +29,7 @@ var router = new Router({
     name: 'Dashboard',
     component: Hello,
     meta: {
-      role: [99, 75, 60, 50, 40]
+      role: [99, 75, 60]
     }
   },
   {
@@ -74,7 +74,7 @@ var router = new Router({
     name: 'Drivers',
     component: Drivers,
     meta: {
-      role: [99, 75, 60, 50, 40]
+      role: [99, 75, 60]
     }
   },
   {
@@ -82,7 +82,7 @@ var router = new Router({
     name: 'Parents',
     component: Parents,
     meta: {
-      role: [99, 75, 60, 50, 40]
+      role: [99, 75, 60]
     }
   },
   {
@@ -90,7 +90,7 @@ var router = new Router({
     name: 'Students',
     component: Students,
     meta: {
-      role: [99, 75, 60, 50, 40]
+      role: [99, 75, 60]
     }
   }
   ]
@@ -104,7 +104,7 @@ router.beforeEach((to, from, next) => {
   if (!currentUser && requireRole != null) {
     next('login')
   } else {
-    if (requireRole != null && requireRole.meta.role.indexOf(userRole) === -1) {
+    if (requireRole != null && requireRole.meta.role.indexOf(userRole) === -1 || userRole < 60) {
       next('/')
     } else {
       next()
