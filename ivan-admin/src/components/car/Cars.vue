@@ -1,19 +1,34 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Driver</h2>
+    <h2>Cars</h2>
     <choose-schools
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
 
     <b-table striped hover bordered
-             :items="drivers"
+             :items="cars"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
-      <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
-      <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
-      <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
+      <template slot="plate_number" slot-scope="data">
+          {{data.item.plate_number}}
+      </template>
+      <template slot="model" slot-scope="data">
+          {{data.item.model}}
+      </template>
+      <template slot="driver" slot-scope="data">
+        <div v-if="data.item.drivers">
+          <span v-for="d in data.item.drivers" :key="d.id">
+            {{d.name.en_first}} {{d.name.en_last}}
+          </span>
+        </div>
+        <div v-else>
+          <span>
+            No assigned
+          </span>
+        </div>
+      </template>
       <template slot="action" slot-scope="data">
         <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
           <i class="ti-eye"></i>
@@ -27,9 +42,8 @@
           <i class="ti-trash"></i>
           Delete
         </b-button>
-
         <br>
-        <router-link v-if="data.item.car" :to="{name: 'Assign', params: {id: data.item.car}}">
+        <router-link :to="{name: 'Assign', params: {id: data.item.id}}">
           <b-button
           size="sm"
           variant="primary">
@@ -41,62 +55,43 @@
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
-    <driver-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></driver-modal>
-
+    <car-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></car-modal>
   </div>
 </template>
 
 <script>
-import mockName from '@/mocker/mockName'
-import mockEmail from '@/mocker/mockEmail'
-import mockTel from '@/mocker/mockTel'
+import mockChassis from '@/mocker/mockChassis'
+import mockPlate from '@/mocker/mockPlate'
+import mockCar from '@/mocker/mockCar'
 import { mapGetters } from 'vuex'
-import { GET_SCHOOL_SELECT, GET_DRIVERS, GET_USER } from '@/vuex/getter-types'
-import { DELETE_DRIVER, FETCH_DRIVER, FETCH_SCHOOL } from '@/vuex/action-types'
-import DriverModal from '@/components/driver/DriverModal'
+import { GET_SCHOOL_SELECT, GET_CARS, GET_USER } from '@/vuex/getter-types'
+import { DELETE_CAR, FETCH_CAR, FETCH_SCHOOL } from '@/vuex/action-types'
+import CarModal from '@/components/car/CarModal'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
 import CreateButton from '@/components/CreateButton'
 import swal from 'sweetalert'
 
 export default {
-  name: 'Drivers',
+  name: 'Car',
   data () {
     return {
       loading: true,
       fields: {
         id: { label: 'No.', sortable: true },
-        enName: { label: 'English name', sortable: true },
-        thName: { label: 'Thai name', sortable: true },
-        tel: { label: 'Telephone' },
+        plate_number: { label: 'Plate Number', sortable: true },
+        model: { label: 'Model', sortable: true },
+        driver: { label: 'Driver' },
         action: { label: 'Action' }
       },
       showModal: false,
       isCreate: true,
       school: '',
       form: {
-        name: {
-          th_first: '',
-          th_last: '',
-          en_first: '',
-          en_last: ''
-        },
-        address: {
-          line1: '',
-          line2: '',
-          district: '',
-          city: '',
-          province: '',
-          postcode: ''
-        },
-        location: {
-          lat: 13.7308051,
-          lng: 100.7806353
-        },
-        email: '',
-        password: '',
+        chassis: '',
+        plate_number: '',
+        model: '',
         school: '',
-        telephone: '',
         file: null
       }
     }
@@ -104,21 +99,21 @@ export default {
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT],
-      drivers: [GET_DRIVERS],
+      cars: [GET_CARS],
       user: [GET_USER]
     })
   },
   watch: {
     '$route': 'fetch',
     school: function (params) {
-      this.$store.dispatch(FETCH_DRIVER, params)
+      this.$store.dispatch(FETCH_CAR, params)
       this.form.school = params
     },
     schools: function (params) {
       if (params.length > 0 && this.school === '') {
         this.school = params[0].value
         this.form.school = params[0].value
-        this.$store.dispatch(FETCH_DRIVER, params[0].value)
+        this.$store.dispatch(FETCH_CAR, params[0].value)
         this.loading = false
       }
     }
@@ -140,7 +135,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      this.$router.push({name: 'ViewDriver', params: {id: item.id}})
+      this.$router.push({name: 'ViewCar', params: {id: item.id}})
     },
     update (item, index, e) {
       let form = JSON.parse(JSON.stringify(item))
@@ -159,7 +154,7 @@ export default {
       .then((value) => {
         if (value) {
           let form = JSON.parse(JSON.stringify(item))
-          this.$store.dispatch(DELETE_DRIVER, form)
+          this.$store.dispatch(DELETE_CAR, form)
           .then(() => {
             swal('Delete Success!', {
               icon: 'success'
@@ -178,29 +173,14 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.name = mockName()
-      this.form.email = mockEmail('driver', this.drivers.length)
-      this.form.telephone = mockTel()
-      // this.form.name.th_first = ''
-      // this.form.name.th_last = ''
-      // this.form.name.en_first = ''
-      // this.form.name.en_last = ''
-      this.form.address.line1 = ''
-      this.form.address.line2 = ''
-      this.form.address.district = ''
-      this.form.address.city = ''
-      this.form.address.province = ''
-      this.form.address.postcode = ''
-      this.form.location.lat = 13.7308051
-      this.form.location.lng = 100.7806353
-      // this.form.email = ''
-      this.form.password = '123456'
-      // this.form.telephone = ''
+      this.form.chassis = mockChassis()
+      this.form.plate_number = mockPlate()
+      this.form.model = mockCar()
       this.form.file = null
     }
   },
   components: {
-    DriverModal, Loading, CreateButton, ChooseSchools
+    CarModal, Loading, CreateButton, ChooseSchools
   }
 }
 </script>

@@ -4,7 +4,11 @@ export default (app) => {
   app.post('/status', async function (req, res) {
     try {
       var carId = req.body.car_id
-      var result = await admin.database().ref().child('cars/' + carId).child('mobility_status').push(req.body.mobility_status)
+
+      var status = req.body.mobility_status
+      delete status.timestamp
+      status.timestamp = admin.database.ServerValue.TIMESTAMP
+      var result = await admin.database().ref().child('cars/' + carId).child('mobility_status').push(status)
 
       res.send(result)
     } catch (err) {

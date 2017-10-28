@@ -5,6 +5,8 @@ import Hello from '@/components/Hello'
 import Login from '@/components/auth/Login'
 import Schools from '@/components/school/Schools'
 import ViewSchool from '@/components/school/ViewSchool'
+import ViewDriver from '@/components/driver/ViewDriver'
+import ViewCar from '@/components/car/ViewCar'
 import store from '../vuex/store'
 import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
@@ -12,6 +14,8 @@ import Teachers from '@/components/teacher/Teachers'
 import Drivers from '@/components/driver/Drivers'
 import Parents from '@/components/parent/Parents'
 import Students from '@/components/student/Students'
+import Assign from '@/components/car/assign/Assign'
+import Cars from '@/components/car/Cars'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -78,6 +82,14 @@ var router = new Router({
     }
   },
   {
+    path: '/drivers/:id',
+    name: 'ViewDriver',
+    component: ViewDriver,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
     path: '/parents',
     name: 'Parents',
     component: Parents,
@@ -92,6 +104,30 @@ var router = new Router({
     meta: {
       role: [99, 75, 60]
     }
+  },
+  {
+    path: '/cars',
+    name: 'Cars',
+    component: Cars,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/cars/:id',
+    name: 'ViewCar',
+    component: ViewCar,
+    meta: {
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/cars/:id/assign',
+    name: 'Assign',
+    component: Assign,
+    meta: {
+      role: [99, 75]
+    }
   }
   ]
 })
@@ -102,7 +138,7 @@ router.beforeEach((to, from, next) => {
   let userRole = store.state.users.user.role
 
   if (!currentUser && requireRole != null) {
-    next('login')
+    next('/login')
   } else {
     if (requireRole != null && requireRole.meta.role.indexOf(userRole) === -1 || userRole < 60) {
       next('/')

@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-card-group deck class="mb-3">
-      <b-card header="Information">
+      <b-card header="Information" header-class="--no-bg">
         <div class="row">
           <div class="col">
             <b-img :src="this.logo" fluid alt="Responsive image" />
@@ -14,7 +14,7 @@
           </div>
         </div>
       </b-card>
-      <b-card header="Teachers">
+      <b-card header="Teachers" header-class="--no-bg">
         <div class="row">
           <div class="col">
             <p class="card-text"
@@ -25,7 +25,7 @@
           </div>
         </div>
       </b-card>
-      <b-card header="Drivers">
+      <b-card header="Drivers" header-class="--no-bg">
         <div class="row">
           <div class="col">
             <p class="card-text"
@@ -39,7 +39,7 @@
     </b-card-group>
 
     <b-card-group deck class="mb-3">
-      <b-card header="Location">
+      <b-card header="Location" class="--no-bg">
         <gmap-map ref="gmap" class="map" :center="this.school.location" :zoom="12">
           <gmap-marker :position="this.school.location"></gmap-marker>
         </gmap-map>

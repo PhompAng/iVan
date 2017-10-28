@@ -10,11 +10,11 @@
     <b-table striped hover bordered
              :items="admins"
              :fields="fields">
-      <template slot="id" scope="data">{{data.index + 1}}</template>
-      <template slot="enName" scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
-      <template slot="thName" scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
-      <template slot="tel" scope="data">{{data.item.telephone}}</template>
-      <template slot="action" scope="data">
+      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
+      <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
+      <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
+      <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
+      <template slot="action" slot-scope="data">
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -25,22 +25,25 @@
         </b-button>
       </template>
     </b-table>
-    <create-user-button
+    <create-button
       :user="this.user"
-      v-on:create="createAdmin"></create-user-button>
+      v-on:create="createAdmin"></create-button>
     <admin-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></admin-modal>
 
   </div>
 </template>
 
 <script>
+import mockName from '@/mocker/mockName'
+import mockEmail from '@/mocker/mockEmail'
+import mockTel from '@/mocker/mockTel'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_ADMINS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_ADMIN, FETCH_ADMIN, FETCH_SCHOOL } from '@/vuex/action-types'
 import AdminModal from '@/components/admin/AdminModal'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
-import CreateUserButton from '@/components/CreateUserButton'
+import CreateButton from '@/components/CreateButton'
 import swal from 'sweetalert'
 
 export default {
@@ -60,15 +63,15 @@ export default {
       school: '',
       form: {
         name: {
-          th_first: 'ฟ้าค',
-          th_last: 'เรื่องกุ',
-          en_first: 'what the',
-          en_last: 'fuck'
+          th_first: '',
+          th_last: '',
+          en_first: '',
+          en_last: ''
         },
-        email: 'aaaaaa@fuck.co.th',
-        password: '123465',
+        email: '',
+        password: '123456',
         school: '',
-        telephone: '0896728777',
+        telephone: '',
         file: null
       }
     }
@@ -100,6 +103,7 @@ export default {
   },
   methods: {
     fetch () {
+      this.clear()
       if (this.user.role === 99) {
         this.$store.dispatch(FETCH_SCHOOL)
       } else {
@@ -149,19 +153,21 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.name.th_first = ''
-      this.form.name.th_last = ''
-      this.form.name.en_first = ''
-      this.form.name.en_last = ''
-      this.form.email = ''
-      this.form.password = ''
-      this.form.school = ''
-      this.form.telephone = ''
+      this.form.name = mockName()
+      this.form.email = mockEmail('admin', this.admins.length)
+      this.form.telephone = mockTel()
+      // this.form.name.th_first = ''
+      // this.form.name.th_last = ''
+      // this.form.name.en_first = ''
+      // this.form.name.en_last = ''
+      // this.form.email = ''
+      this.form.password = '123456'
+      // this.form.telephone = ''
       this.form.file = null
     }
   },
   components: {
-    AdminModal, Loading, CreateUserButton, ChooseSchools
+    AdminModal, Loading, CreateButton, ChooseSchools
   }
 }
 </script>

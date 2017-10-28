@@ -54,6 +54,12 @@
           </router-link>
         </li>
       </ul>
+      <li v-if="user.role >= 60">
+        <router-link :to="{name: 'Cars'}">
+          <i class="ti-car"></i>
+          <span>Cars</span>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

@@ -1,4 +1,7 @@
-.card-header {
+body {
+  background-color: #f4f3ef;
+}
+.card-header.--no-bg {
   font-weight: 300;
   border-bottom-style: none;
   background-color: white;
@@ -8,6 +11,21 @@
   color: #9A9A9A;
   font-size: 15px;
   margin-bottom: 5px;
+}
+
+td > button.btn {
+  margin-bottom: 5px;
+}
+
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+select::-ms-expand {
+  display: none;
 }
 
 .select2-container {

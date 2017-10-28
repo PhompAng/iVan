@@ -6,13 +6,18 @@
              :title="this.title"
              ok-title="Done"
              :no-close-on-backdrop="true"
-             :no-close-on-esc="true"
              :ok-disabled="okDisabled"
              v-bind:ok-only="true"
              @ok="update"
              @shown="shown"
              v-on:hidden="hide">
       <form @submit.stop.prevent="handleSubmit">
+        <div class="row">
+          <div class="form-group col-6">
+            <label>Student's ID</label>
+            <b-form-input type="number" v-model="form.no" class="form-control" placeholder=""></b-form-input>
+          </div>
+        </div>
         <div class="row">
           <div class="form-group col">
             <label>Firstname (Thai)</label>
@@ -56,18 +61,15 @@
 </template>
 
 <script>
+import { modalToggleable } from '@/components/mixins/modalToggleable'
 import { CREATE_STUDENT, UPDATE_STUDENT } from '@/vuex/action-types'
 import { GET_PARENTS } from '@/vuex/getter-types'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'StudentModal',
-  props: ['showModal', 'form', 'isCreate'],
-  data () {
-    return {
-      okDisabled: false
-    }
-  },
+  props: ['form', 'isCreate'],
+  mixins: [modalToggleable],
   computed: {
     ...mapGetters({
       parents: [GET_PARENTS]
@@ -76,21 +78,9 @@ export default {
       return this.isCreate ? 'Create Student' : 'Edit Student'
     }
   },
-  watch: {
-    showModal: function (val) {
-      if (val) {
-        this.$refs.modal.show()
-      } else {
-        this.$refs.modal.hide()
-      }
-    }
-  },
   methods: {
     shown () {
-    },
-    hide () {
-      this.okDisabled = false
-      this.$emit('hide')
+      this.onShow()
     },
     update (e) {
       e.cancel()

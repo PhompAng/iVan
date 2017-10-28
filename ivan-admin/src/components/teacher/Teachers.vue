@@ -10,11 +10,11 @@
     <b-table striped hover bordered
              :items="teachers"
              :fields="fields">
-      <template slot="id" scope="data">{{data.index + 1}}</template>
-      <template slot="enName" scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
-      <template slot="thName" scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
-      <template slot="tel" scope="data">{{data.item.telephone}}</template>
-      <template slot="action" scope="data">
+      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
+      <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
+      <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
+      <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
+      <template slot="action" slot-scope="data">
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -23,24 +23,36 @@
           <i class="ti-trash"></i>
           Delete
         </b-button>
+
+        <br>
+        <router-link v-if="data.item.car" :to="{name: 'Assign', params: {id: data.item.car}}">
+          <b-button
+          size="sm"
+          variant="primary">
+            Assign
+          </b-button>
+        </router-link>
       </template>
     </b-table>
-    <create-user-button
+    <create-button
       :user="this.user"
-      v-on:create="create"></create-user-button>
+      v-on:create="create"></create-button>
     <teacher-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></teacher-modal>
 
   </div>
 </template>
 
 <script>
+import mockName from '@/mocker/mockName'
+import mockEmail from '@/mocker/mockEmail'
+import mockTel from '@/mocker/mockTel'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_TEACHERS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_TEACHER, FETCH_TEACHER, FETCH_SCHOOL } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import TeacherModal from '@/components/teacher/TeacherModal'
 import ChooseSchools from '@/components/ChooseSchools'
-import CreateUserButton from '@/components/CreateUserButton'
+import CreateButton from '@/components/CreateButton'
 import swal from 'sweetalert'
 
 export default {
@@ -60,15 +72,15 @@ export default {
       school: '',
       form: {
         name: {
-          th_first: 'ศุภณัฐ',
-          th_last: 'สวนทวี',
-          en_first: 'Supanut',
-          en_last: 'Suantawee'
+          th_first: '',
+          th_last: '',
+          en_first: '',
+          en_last: ''
         },
-        email: 'aaaaaa@fuck.co.th',
-        password: '123465',
+        email: '',
+        password: '',
         school: '',
-        telephone: '0896728777',
+        telephone: '',
         file: null
       }
     }
@@ -100,6 +112,7 @@ export default {
   },
   methods: {
     fetch () {
+      this.clear()
       if (this.user.role === 99) {
         this.$store.dispatch(FETCH_SCHOOL)
       } else {
@@ -149,19 +162,21 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.name.th_first = ''
-      this.form.name.th_last = ''
-      this.form.name.en_first = ''
-      this.form.name.en_last = ''
-      this.form.email = ''
-      this.form.password = ''
-      this.form.school = ''
-      this.form.telephone = ''
+      this.form.name = mockName()
+      this.form.email = mockEmail('teacher', this.teachers.length)
+      this.form.telephone = mockTel()
+      // this.form.name.th_first = ''
+      // this.form.name.th_last = ''
+      // this.form.name.en_first = ''
+      // this.form.name.en_last = ''
+      // this.form.email = ''
+      this.form.password = '123456'
+      // this.form.telephone = ''
       this.form.file = null
     }
   },
   components: {
-    TeacherModal, Loading, CreateUserButton, ChooseSchools
+    TeacherModal, Loading, CreateButton, ChooseSchools
   }
 }
 </script>

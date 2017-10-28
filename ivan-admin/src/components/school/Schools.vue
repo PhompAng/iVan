@@ -5,16 +5,16 @@
     <b-table striped hover bordered
              :items="schools"
              :fields="fields">
-      <template slot="id" scope="data">{{data.index + 1}}</template>
-      <template slot="enName" scope="data">{{data.item.name.en}}</template>
-      <template slot="thName" scope="data">{{data.item.name.th}}</template>
-      <template slot="address" scope="data">
+      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
+      <template slot="enName" slot-scope="data">{{data.item.name.en}}</template>
+      <template slot="thName" slot-scope="data">{{data.item.name.th}}</template>
+      <template slot="address" slot-scope="data">
         <p>{{data.item.address.line1}}</p>
         <p>{{data.item.address.line2}}</p>
         <p>{{data.item.address.district}} {{data.item.address.city}} {{data.item.address.province}}</p>
         <p>{{data.item.address.postcode}}</p>
       </template>
-      <template slot="action" scope="data">
+      <template slot="action" slot-scope="data">
         <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
           <i class="ti-eye"></i>
           View

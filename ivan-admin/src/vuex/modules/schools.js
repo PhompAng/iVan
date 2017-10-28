@@ -29,7 +29,7 @@ const getters = {
     }
     let arr = []
     Object.entries(state.schools).forEach(([key, val]) => {
-      let school = []
+      let school = {}
       school['text'] = val.name.th
       school['value'] = key
       arr.push(school)
