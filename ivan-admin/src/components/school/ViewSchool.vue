@@ -14,21 +14,25 @@
           </div>
         </div>
       </b-card>
-      <b-card header="Staff">
+      <b-card header="Teachers">
         <div class="row">
           <div class="col">
-            <p class="card-text">Kris Srichure</p>
-            <p class="card-text">Nanthit Atitarn</p>
-            <p class="card-text">Tosanakorn Poolvaraluck</p>
-            <p class="card-text">Naruesorn Saenamuang</p>
-            <p class="card-text">Tadthon Singharattanapan</p>
+            <p class="card-text"
+            v-for="teacher in teachers"
+            :key="teacher.id">
+              {{teacher.name.en_first}} {{teacher.name.en_last}}
+            </p>
           </div>
+        </div>
+      </b-card>
+      <b-card header="Drivers">
+        <div class="row">
           <div class="col">
-            <p class="card-text">Choi Punyawong</p>
-            <p class="card-text">Phayao Pongsanam</p>
-            <p class="card-text">Neung Kurusarttra</p>
-            <p class="card-text">Yupin Suchinda</p>
-            <p class="card-text">On Choi Sirishumsaeng</p>
+            <p class="card-text"
+            v-for="driver in drivers"
+            :key="driver.id">
+              {{driver.name.en_first}} {{driver.name.en_last}}
+            </p>
           </div>
         </div>
       </b-card>
@@ -46,6 +50,9 @@
 
 <script>
 import * as firebase from 'firebase'
+import { mapGetters } from 'vuex'
+import { GET_TEACHERS, GET_DRIVERS } from '@/vuex/getter-types'
+import { FETCH_TEACHER, FETCH_DRIVER } from '@/vuex/action-types'
 
 export default {
   name: 'ViewSchool',
@@ -54,21 +61,30 @@ export default {
       logo: ''
     }
   },
+  computed: {
+    ...mapGetters({
+      teachers: [GET_TEACHERS],
+      drives: [GET_DRIVERS]
+    }),
+    school () {
+      return this.$store.getters.getSchool(this.$route.params.id)
+    }
+  },
   methods: {
     getLogo () {
       firebase.storage().ref().child('schools/' + this.$route.params.id).getDownloadURL()
       .then((url) => {
         this.logo = url
       })
-    }
-  },
-  computed: {
-    school () {
-      return this.$store.getters.getSchool(this.$route.params.id)
+    },
+    fetch () {
+      this.$store.dispatch(FETCH_TEACHER, this.$route.params.id)
+      this.$store.dispatch(FETCH_DRIVER, this.$route.params.id)
     }
   },
   created () {
     this.getLogo()
+    this.fetch()
   }
 }
 </script>
