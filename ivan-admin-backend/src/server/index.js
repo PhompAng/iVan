@@ -3,6 +3,8 @@ import admins from '~/server/admins'
 import teachers from '~/server/teachers'
 import parents from '~/server/parents'
 import drivers from '~/server/drivers'
+import detect from '~/server/iot/detect'
+import status from '~/server/iot/status'
 import express from 'express'
 import * as bodyParser from 'body-parser'
 import cors from 'cors'
@@ -17,5 +19,7 @@ admins(app)
 teachers(app)
 parents(app)
 drivers(app)
+detect(app)
+status(app)
 
 export default app

@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: ivan-backend
-        image: phompang/ivan-backend:0.0.1
+        image: phompang/ivan-backend:0.0.3
         resources:
           requests:
             memory: "64Mi"
