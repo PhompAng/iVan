@@ -2,7 +2,7 @@
   <div class="login row justify-content-md-center">
     <div class="col-md-8">
       <div class="card">
-        <h3 class="card-header">Login</h3>
+        <h3 class="card-header --no-bg">Login</h3>
         <div class="card-body">
           <form v-on:submit.prevent="login">
             <div class="form-group row">

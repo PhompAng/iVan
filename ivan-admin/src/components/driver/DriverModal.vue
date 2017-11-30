@@ -80,7 +80,7 @@
             <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.address.postcode" v-on:fillAddress="fillAddress" />
             <div class="form-group col">
                 <label for="tel">Telephone</label>
-                <input v-model="form.tel" type="tel" class="form-control" id="tel" placeholder="">
+                <input v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
             </div>
         </div>
         <div class="row">

@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import * as getter from '@/vuex/getter-types'
 import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
@@ -71,7 +70,8 @@ const actions = {
     })
   },
   [action.DELETE_STUDENT] ({commit}, form) {
-    Vue.http.delete('students', {body: {uid: form.id}})
+    firebase.database().ref().child('students/' + form.id).remove()
+    firebase.storage().ref().child('students/' + form.id).delete()
   }
 }
 

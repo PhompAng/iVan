@@ -30,3 +30,12 @@ export const FETCH_DRIVER = 'fetchDriver'
 export const CREATE_DRIVER = 'createDriver'
 export const UPDATE_DRIVER = 'updateDriver'
 export const DELETE_DRIVER = 'deleteDriver'
+
+export const FETCH_CAR = 'fetchCar'
+export const CREATE_CAR = 'createCar'
+export const UPDATE_CAR = 'updateCar'
+export const DELETE_CAR = 'deleteCar'
+
+export const ASSIGN_DRIVER = 'assignDriver'
+export const ASSIGN_TEACHER = 'assignTeacher'
+export const ASSIGN_STUDENT = 'assignStudent'

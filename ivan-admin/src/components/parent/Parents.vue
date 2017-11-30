@@ -10,11 +10,11 @@
     <b-table striped hover bordered
              :items="parents"
              :fields="fields">
-      <template slot="id" scope="data">{{data.index + 1}}</template>
-      <template slot="enName" scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
-      <template slot="thName" scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
-      <template slot="tel" scope="data">{{data.item.telephone}}</template>
-      <template slot="action" scope="data">
+      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
+      <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
+      <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
+      <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
+      <template slot="action" slot-scope="data">
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -25,22 +25,25 @@
         </b-button>
       </template>
     </b-table>
-    <create-user-button
+    <create-button
       :user="this.user"
-      v-on:create="create"></create-user-button>
+      v-on:create="create"></create-button>
     <parent-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></parent-modal>
 
   </div>
 </template>
 
 <script>
+import mockName from '@/mocker/mockName'
+import mockEmail from '@/mocker/mockEmail'
+import mockTel from '@/mocker/mockTel'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_PARENTS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_PARENT, FETCH_PARENT, FETCH_SCHOOL } from '@/vuex/action-types'
 import ParentModal from '@/components/parent/ParentModal'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
-import CreateUserButton from '@/components/CreateUserButton'
+import CreateButton from '@/components/CreateButton'
 import swal from 'sweetalert'
 
 export default {
@@ -60,10 +63,10 @@ export default {
       school: '',
       form: {
         name: {
-          th_first: 'ศุภณัฐ',
-          th_last: 'สวนทวี',
-          en_first: 'Supanut',
-          en_last: 'Suantawee'
+          th_first: '',
+          th_last: '',
+          en_first: '',
+          en_last: ''
         },
         address: {
           line1: '',
@@ -77,10 +80,10 @@ export default {
           lat: 13.7308051,
           lng: 100.7806353
         },
-        email: 'aaaaaa@fuck.co.th',
-        password: '123465',
+        email: '',
+        password: '',
         school: '',
-        telephone: '0896728777',
+        telephone: '',
         file: null
       }
     }
@@ -112,6 +115,7 @@ export default {
   },
   methods: {
     fetch () {
+      this.clear()
       if (this.user.role === 99) {
         this.$store.dispatch(FETCH_SCHOOL)
       } else {
@@ -161,10 +165,13 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.name.th_first = ''
-      this.form.name.th_last = ''
-      this.form.name.en_first = ''
-      this.form.name.en_last = ''
+      this.form.name = mockName()
+      this.form.email = mockEmail('parent', this.parents.length)
+      this.form.telephone = mockTel()
+      // this.form.name.th_first = ''
+      // this.form.name.th_last = ''
+      // this.form.name.en_first = ''
+      // this.form.name.en_last = ''
       this.form.address.line1 = ''
       this.form.address.line2 = ''
       this.form.address.district = ''
@@ -173,15 +180,14 @@ export default {
       this.form.address.postcode = ''
       this.form.location.lat = 13.7308051
       this.form.location.lng = 100.7806353
-      this.form.email = ''
-      this.form.password = ''
-      this.form.school = ''
-      this.form.telephone = ''
+      // this.form.email = ''
+      this.form.password = '123456'
+      // this.form.telephone = ''
       this.form.file = null
     }
   },
   components: {
-    ParentModal, Loading, CreateUserButton, ChooseSchools
+    ParentModal, Loading, CreateButton, ChooseSchools
   }
 }
 </script>

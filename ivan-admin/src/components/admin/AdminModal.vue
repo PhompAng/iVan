@@ -41,6 +41,11 @@
             <b-form-file id="file_input" v-model="form.file"></b-form-file>
             <!-- <span>Selected file: {{form.file && form.file.name}}</span> -->
           </div>
+
+          <div class="form-group col">
+              <label for="tel">Telephone</label>
+              <input v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
+          </div>
         </div>
 
         <div v-if="isCreate">

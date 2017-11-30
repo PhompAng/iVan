@@ -11,3 +11,5 @@ export const SET_PARENT = 'setParent'
 export const SET_STUDENT = 'setStudent'
 
 export const SET_DRIVER = 'setDriver'
+
+export const SET_CAR = 'setCar'

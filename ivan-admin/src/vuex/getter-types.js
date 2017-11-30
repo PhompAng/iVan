@@ -13,3 +13,7 @@ export const GET_PARENTS = 'getParents'
 export const GET_STUDENTS = 'getStudents'
 
 export const GET_DRIVERS = 'getDrivers'
+export const GET_DRIVER = 'getDriver'
+
+export const GET_CARS = 'getCars'
+export const GET_CAR = 'getCar'

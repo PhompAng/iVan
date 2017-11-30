@@ -21,6 +21,9 @@ const getters = {
       arr.push(driver)
     })
     return arr
+  },
+  [getter.GET_DRIVER]: state => arg => {
+    return state.drivers[arg]
   }
 }
 

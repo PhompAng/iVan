@@ -45,8 +45,11 @@ export default {
   font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
-
+#page-wrapper {
+  background-color: #f4f3ef;
+}
 .main {
   padding: 15px;
 }
