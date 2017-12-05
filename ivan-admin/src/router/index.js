@@ -14,8 +14,11 @@ import Teachers from '@/components/teacher/Teachers'
 import Drivers from '@/components/driver/Drivers'
 import Parents from '@/components/parent/Parents'
 import Students from '@/components/student/Students'
-import Assign from '@/components/car/assign/Assign'
+import CarAssign from '@/components/car/assign/CarAssign'
 import Cars from '@/components/car/Cars'
+import Sensors from '@/components/sensor/Sensors'
+import Devices from '@/components/device/Devices'
+import DeviceAssign from '@/components/device/assign/DeviceAssign'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -123,8 +126,32 @@ var router = new Router({
   },
   {
     path: '/cars/:id/assign',
-    name: 'Assign',
-    component: Assign,
+    name: 'CarAssign',
+    component: CarAssign,
+    meta: {
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/sensors',
+    name: 'Sensors',
+    component: Sensors,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/devices',
+    name: 'Devices',
+    component: Devices,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/devices/:id/assign',
+    name: 'DeviceAssign',
+    component: DeviceAssign,
     meta: {
       role: [99, 75]
     }

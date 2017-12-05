@@ -8,32 +8,23 @@
       :schools="schools"></choose-schools>
 
     <b-table striped hover bordered
-             :items="cars"
+             :items="sensors"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
-      <template slot="plate_number" slot-scope="data">
-          {{data.item.plate_number}}
+      <template slot="serial_number" slot-scope="data">
+          {{data.item.serial_number}}
       </template>
-      <template slot="model" slot-scope="data">
-          {{data.item.model}}
+      <template slot="make_date" slot-scope="data">
+          {{data.item.make_date}}
       </template>
-      <template slot="driver" slot-scope="data">
-        <div v-if="data.item.drivers">
-          <span v-for="d in data.item.drivers" :key="d.id">
-            {{d.name.en_first}} {{d.name.en_last}}
-          </span>
-        </div>
-        <div v-else>
-          <span>
-            No assigned
-          </span>
-        </div>
+      <template slot="status" slot-scope="data">
+        {{data.item.status}}
       </template>
       <template slot="action" slot-scope="data">
-        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
+        <!-- <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
           <i class="ti-eye"></i>
           View
-        </b-button>
+        </b-button> -->
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -43,7 +34,7 @@
           Delete
         </b-button>
         <br>
-        <router-link :to="{name: 'CarAssign', params: {id: data.item.id}}">
+        <router-link v-if="data.item.device" :to="{name: 'DeviceAssign', params: {id: data.item.device}}">
           <b-button
           size="sm"
           variant="primary">
@@ -55,65 +46,62 @@
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
-    <car-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></car-modal>
+    <sensor-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></sensor-modal>
   </div>
 </template>
 
 <script>
 import mockChassis from '@/mocker/mockChassis'
-import mockPlate from '@/mocker/mockPlate'
-import mockCar from '@/mocker/mockCar'
 import { mapGetters } from 'vuex'
-import { GET_SCHOOL_SELECT, GET_CARS, GET_USER } from '@/vuex/getter-types'
-import { DELETE_CAR, FETCH_CAR, FETCH_SCHOOL } from '@/vuex/action-types'
-import CarModal from '@/components/car/CarModal'
+import { GET_SCHOOL_SELECT, GET_SENSORS, GET_USER } from '@/vuex/getter-types'
+import { DELETE_SENSOR, FETCH_SENSOR, FETCH_SCHOOL } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
 import CreateButton from '@/components/CreateButton'
+import SensorModal from '@/components/sensor/SensorModal'
 import swal from 'sweetalert'
 
 export default {
-  name: 'Car',
+  name: 'Sensor',
   data () {
     return {
       loading: true,
       fields: {
         id: { label: 'No.', sortable: true },
-        plate_number: { label: 'Plate Number', sortable: true },
-        model: { label: 'Model', sortable: true },
-        driver: { label: 'Driver' },
+        serial_number: { label: 'Serial Number', sortable: true },
+        make_date: { label: 'Make Date', sortable: true },
+        status: { label: 'Status' },
         action: { label: 'Action' }
       },
       showModal: false,
       isCreate: true,
       school: '',
       form: {
-        chassis: '',
-        plate_number: '',
-        model: '',
-        school: '',
-        file: null
+        serial_number: '',
+        make_date: '',
+        status: '',
+        school: ''
       }
     }
   },
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT],
-      cars: [GET_CARS],
+      sensors: [GET_SENSORS],
       user: [GET_USER]
     })
   },
   watch: {
     '$route': 'fetch',
     school: function (params) {
-      this.$store.dispatch(FETCH_CAR, params)
+      this.$store.dispatch(FETCH_SENSOR, params)
       this.form.school = params
     },
     schools: function (params) {
       if (params.length > 0 && this.school === '') {
         this.school = params[0].value
         this.form.school = params[0].value
-        this.$store.dispatch(FETCH_CAR, params[0].value)
+        this.$store.dispatch(FETCH_SENSOR, params[0].value)
         this.loading = false
       }
     }
@@ -135,7 +123,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      this.$router.push({name: 'ViewCar', params: {id: item.id}})
+      // this.$router.push({name: 'ViewSensor', params: {id: item.id}})
     },
     update (item, index, e) {
       let form = JSON.parse(JSON.stringify(item))
@@ -154,7 +142,7 @@ export default {
       .then((value) => {
         if (value) {
           let form = JSON.parse(JSON.stringify(item))
-          this.$store.dispatch(DELETE_CAR, form)
+          this.$store.dispatch(DELETE_SENSOR, form)
           .then(() => {
             swal('Delete Success!', {
               icon: 'success'
@@ -173,14 +161,13 @@ export default {
     clear () {
       this.showModal = false
       this.isCreate = true
-      this.form.chassis = mockChassis()
-      this.form.plate_number = mockPlate()
-      this.form.model = mockCar()
-      this.form.file = null
+      this.form.serial_number = mockChassis()
+      this.form.make_date = '2017-12-12'
+      this.form.status = 'normal'
     }
   },
   components: {
-    CarModal, Loading, CreateButton, ChooseSchools
+    Loading, CreateButton, ChooseSchools, SensorModal
   }
 }
 </script>

@@ -17,3 +17,7 @@ export const GET_DRIVER = 'getDriver'
 
 export const GET_CARS = 'getCars'
 export const GET_CAR = 'getCar'
+
+export const GET_SENSORS = 'getSensors'
+
+export const GET_DEVICES = 'getDevices'

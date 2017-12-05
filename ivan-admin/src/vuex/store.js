@@ -8,6 +8,8 @@ import drivers from './modules/drivers'
 import parents from './modules/parents'
 import students from './modules/students'
 import cars from './modules/cars'
+import sensors from './modules/sensors'
+import devices from './modules/devices'
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -39,7 +41,9 @@ export default new Vuex.Store({
     drivers,
     parents,
     students,
-    cars
+    cars,
+    sensors,
+    devices
   },
   plugins: [createPersistedState()],
   strict: process.env.NODE_ENV !== 'production'
