@@ -47,7 +47,8 @@
             class="mb-3"
             v-model="form.parent"
             :options="parents"
-            value-field="id"></b-form-select>
+            value-field="id"
+            required></b-form-select>
           </div>
           <div class="form-group col">
             <label for="file_input">File</label>

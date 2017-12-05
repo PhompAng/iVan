@@ -20,23 +20,16 @@
 
 <script>
 import * as firebase from 'firebase'
-import { GET_DRIVERS } from '@/vuex/getter-types'
-import { mapGetters } from 'vuex'
 import AssignDriver from '@/components/car/assign/AssignDriver'
 import AssignTeacher from '@/components/car/assign/AssignTeacher'
 import AssignStudent from '@/components/car/assign/AssignStudent'
 
 export default {
-  name: 'Assign',
+  name: 'CarAssign',
   data () {
     return {
       car: ''
     }
-  },
-  computed: {
-    ...mapGetters({
-      drivers: [GET_DRIVERS]
-    })
   },
   created () {
     this.fetch()
@@ -58,8 +51,4 @@ export default {
 </script>
 
 <style scoped>
-.card-header {
-  border-bottom-style: solid;
-  background-color: #000;
-}
 </style>

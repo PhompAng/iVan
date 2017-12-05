@@ -60,6 +60,18 @@
           <span>Cars</span>
         </router-link>
       </li>
+      <li v-if="user.role >= 60">
+        <router-link :to="{name: 'Sensors'}">
+          <i class="ti-rss-alt"></i>
+          <span>Sensors</span>
+        </router-link>
+      </li>
+      <li v-if="user.role >= 60">
+        <router-link :to="{name: 'Devices'}">
+          <i class="ti-harddrive"></i>
+          <span>Devices</span>
+        </router-link>
+      </li>
     </ul>
   </div>
 </template>

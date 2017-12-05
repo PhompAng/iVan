@@ -29,7 +29,7 @@
         </b-button>
 
         <br>
-        <router-link v-if="data.item.car" :to="{name: 'Assign', params: {id: data.item.car}}">
+        <router-link v-if="data.item.car" :to="{name: 'CarAssign', params: {id: data.item.car}}">
           <b-button
           size="sm"
           variant="primary">

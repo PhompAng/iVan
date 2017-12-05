@@ -39,3 +39,15 @@ export const DELETE_CAR = 'deleteCar'
 export const ASSIGN_DRIVER = 'assignDriver'
 export const ASSIGN_TEACHER = 'assignTeacher'
 export const ASSIGN_STUDENT = 'assignStudent'
+
+export const FETCH_SENSOR = 'fetchSensor'
+export const CREATE_SENSOR = 'createSensor'
+export const UPDATE_SENSOR = 'updateSensor'
+export const DELETE_SENSOR = 'deleteSensor'
+
+export const FETCH_DEVICE = 'fetchDevice'
+export const CREATE_DEVICE = 'createDevice'
+export const UPDATE_DEVICE = 'updateDevice'
+export const DELETE_DEVICE = 'deleteDevice'
+
+export const ASSIGN_SENSOR = 'assignSensor'

@@ -47,42 +47,42 @@
           <b-card
           title="Driver">
             <div v-if="this.car.drivers">
-              <span v-for="d in this.car.drivers" :key="d.id">
+              <p v-for="d in this.car.drivers" :key="d.id">
                 {{d.name.en_first}} {{d.name.en_last}}
-              </span>
+              </p>
             </div>
             <div v-else>
-              <span class="text-muted">
+              <p class="text-muted">
                 Not assigned
-              </span>
+              </p>
             </div>
           </b-card>
 
           <b-card
           title="Teachers">
             <div v-if="this.car.teachers">
-              <span v-for="t in this.car.teachers" :key="t.id">
+              <p v-for="t in this.car.teachers" :key="t.id">
                 {{t.name.en_first}} {{t.name.en_last}}
-              </span>
+              </p>
             </div>
             <div v-else>
-              <span class="text-muted">
+              <p class="text-muted">
                 Not assigned
-              </span>
+              </p>
             </div>
           </b-card>
 
           <b-card
           title="Students">
             <div v-if="this.car.students">
-              <span v-for="s in this.car.students" :key="s.id">
+              <p v-for="s in this.car.students" :key="s.id">
                 {{s.name.en_first}} {{s.name.en_last}}
-              </span>
+              </p>
             </div>
             <div v-else>
-              <span class="text-muted">
+              <p class="text-muted">
                 Not assigned
-              </span>
+              </p>
             </div>
           </b-card>
         </b-card-group>

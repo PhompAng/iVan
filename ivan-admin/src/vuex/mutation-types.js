@@ -13,3 +13,7 @@ export const SET_STUDENT = 'setStudent'
 export const SET_DRIVER = 'setDriver'
 
 export const SET_CAR = 'setCar'
+
+export const SET_SENSOR = 'setSensor'
+
+export const SET_DEVICE = 'setDevice'
