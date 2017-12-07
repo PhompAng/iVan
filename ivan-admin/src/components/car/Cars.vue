@@ -92,6 +92,28 @@ export default {
         plate_number: '',
         model: '',
         school: '',
+        time: {
+          morning: {
+            start: {
+              HH: '',
+              mm: ''
+            },
+            end: {
+              HH: '',
+              mm: ''
+            }
+          },
+          evening: {
+            start: {
+              HH: '',
+              mm: ''
+            },
+            end: {
+              HH: '',
+              mm: ''
+            }
+          }
+        },
         file: null
       }
     }
@@ -177,6 +199,14 @@ export default {
       this.form.plate_number = mockPlate()
       this.form.model = mockCar()
       this.form.file = null
+      this.form.time.morning.start.HH = ''
+      this.form.time.morning.start.mm = ''
+      this.form.time.morning.end.HH = ''
+      this.form.time.morning.end.mm = ''
+      this.form.time.evening.start.HH = ''
+      this.form.time.evening.start.mm = ''
+      this.form.time.evening.end.HH = ''
+      this.form.time.evening.end.mm = ''
     }
   },
   components: {

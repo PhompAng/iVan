@@ -6,7 +6,6 @@
              :title="this.title"
              ok-title="Done"
              :no-close-on-backdrop="true"
-             :no-close-on-esc="true"
              :ok-disabled="okDisabled"
              v-bind:ok-only="true"
              @ok="update"
@@ -35,6 +34,35 @@
             <!-- <span>Selected file: {{form.file && form.file.name}}</span> -->
           </div>
         </div>
+
+        <div class="row">
+          <div class="col-6">
+            <p>Morning</p>
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Start</label>
+                <vue-timepicker v-model="form.time.morning.start" format="HH:mm" :minute-interval="10" hide-clear-button></vue-timepicker>
+              </div>
+              <div class="form-group col-6">
+                <label>End</label>
+                <vue-timepicker v-model="form.time.morning.end" format="HH:mm" :minute-interval="10" hide-clear-button></vue-timepicker>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <p>Evening</p>
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Start</label>
+                <vue-timepicker v-model="form.time.evening.start" format="HH:mm" :minute-interval="10" hide-clear-button></vue-timepicker>
+              </div>
+              <div class="form-group col-6">
+                <label>End</label>
+                <vue-timepicker v-model="form.time.evening.end" format="HH:mm" :minute-interval="10" hide-clear-button></vue-timepicker>
+              </div>
+            </div>
+          </div>
+        </div>
       </form>
     </b-modal>
   </div>
@@ -43,6 +71,7 @@
 <script>
 import { modalToggleable } from '@/components/mixins/modalToggleable'
 import { CREATE_CAR, UPDATE_CAR } from '@/vuex/action-types'
+import VueTimepicker from 'vue2-timepicker'
 
 export default {
   name: 'CarModal',
@@ -72,7 +101,11 @@ export default {
         })
       }
     }
+  },
+  components: {
+    VueTimepicker
   }
+
 }
 </script>
 <style scoped>

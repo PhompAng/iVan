@@ -6,7 +6,6 @@
              :title="this.title"
              ok-title="Done"
              :no-close-on-backdrop="true"
-             :no-close-on-esc="true"
              :ok-disabled="okDisabled"
              v-bind:ok-only="true"
              @ok="update"

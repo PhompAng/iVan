@@ -17,6 +17,30 @@ const getters = {
       let car = JSON.parse(JSON.stringify(val))
       car['id'] = key
       car['text'] = car.plate_number
+      if (car.time == null) {
+        car['time'] = {
+          morning: {
+            start: {
+              HH: '',
+              mm: ''
+            },
+            end: {
+              HH: '',
+              mm: ''
+            }
+          },
+          evening: {
+            start: {
+              HH: '',
+              mm: ''
+            },
+            end: {
+              HH: '',
+              mm: ''
+            }
+          }
+        }
+      }
       arr.push(car)
     })
     return arr
