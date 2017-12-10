@@ -17,3 +17,5 @@ export const SET_CAR = 'setCar'
 export const SET_SENSOR = 'setSensor'
 
 export const SET_DEVICE = 'setDevice'
+
+export const SET_NOTIFICATION = 'setNotification'

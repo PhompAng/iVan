@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import * as getter from '@/vuex/getter-types'
+import * as mutation from '@/vuex/mutation-types'
+import * as action from '@/vuex/action-types'
+import * as firebase from 'firebase'
 import users from './modules/users'
 import schools from './modules/schools'
 import admins from './modules/admins'
@@ -15,16 +19,37 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const state = {
-
+  notifications: {}
 }
-const actions = {
 
-}
 const getters = {
-
+  [getter.GET_NOTIFICATIONS]: state => {
+    if (!state.notifications) {
+      return []
+    }
+    let arr = []
+    Object.entries(state.notifications).forEach(([key, val]) => {
+      let notification = JSON.parse(JSON.stringify(val))
+      notification['id'] = key
+      arr.push(notification)
+    })
+    return arr
+  }
 }
-const mutations = {
 
+const actions = {
+  [action.FETCH_NOTIFICATION] ({commit}, schoolId) {
+    firebase.database().ref().child('notifications/' + schoolId)
+    .on('value', function (snapshot) {
+      commit(mutation.SET_NOTIFICATION, snapshot.val())
+    })
+  }
+}
+
+const mutations = {
+  [mutation.SET_NOTIFICATION] (state, snapshot) {
+    state.notifications = JSON.parse(JSON.stringify(snapshot))
+  }
 }
 
 /* eslint-disable no-undef */

@@ -51,3 +51,5 @@ export const UPDATE_DEVICE = 'updateDevice'
 export const DELETE_DEVICE = 'deleteDevice'
 
 export const ASSIGN_SENSOR = 'assignSensor'
+
+export const FETCH_NOTIFICATION = 'fetchNotification'

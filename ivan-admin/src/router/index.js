@@ -19,6 +19,7 @@ import Cars from '@/components/car/Cars'
 import Sensors from '@/components/sensor/Sensors'
 import Devices from '@/components/device/Devices'
 import DeviceAssign from '@/components/device/assign/DeviceAssign'
+import Notifications from '@/components/Notifications'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -152,6 +153,14 @@ var router = new Router({
     path: '/devices/:id/assign',
     name: 'DeviceAssign',
     component: DeviceAssign,
+    meta: {
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: Notifications,
     meta: {
       role: [99, 75]
     }
