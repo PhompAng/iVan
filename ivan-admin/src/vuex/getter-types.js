@@ -21,3 +21,5 @@ export const GET_CAR = 'getCar'
 export const GET_SENSORS = 'getSensors'
 
 export const GET_DEVICES = 'getDevices'
+
+export const GET_NOTIFICATIONS = 'getNotifications'

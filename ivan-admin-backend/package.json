@@ -18,7 +18,8 @@
         "body-parser": "^1.17.2",
         "cors": "^2.8.4",
         "express": "^4.15.4",
-        "firebase-admin": "^5.2.1"
+        "firebase-admin": "^5.2.1",
+        "luxon": "^0.2.7"
     },
     "devDependencies": {
         "babel-cli": "^6.24.1",

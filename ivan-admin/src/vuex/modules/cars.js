@@ -41,6 +41,15 @@ const getters = {
           }
         }
       }
+      if (car.mobility_status != null) {
+        let mArr = []
+        Object.entries(car.mobility_status).forEach(([key, val]) => {
+          let m = val
+          m['id'] = key
+          mArr.push(m)
+        })
+        car['mobility_status'] = mArr
+      }
       arr.push(car)
     })
     return arr

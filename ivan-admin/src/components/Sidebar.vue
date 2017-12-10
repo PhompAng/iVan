@@ -1,12 +1,12 @@
 <template>
   <div class="sidebar-nav">
     <div class="logo">
-      <a href="#" class="simple-text">
+      <router-link :to="{name: 'Dashboard'}" class="simple-text">
         <div class="logo-img">
           <img src="../assets/logo.png" alt="">
         </div>
         iVan Admin
-      </a>
+      </router-link>
     </div>
     <ul class="nav-item">
       <li>
