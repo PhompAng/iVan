@@ -18,6 +18,11 @@ const getters = {
       let parent = JSON.parse(JSON.stringify(val))
       parent['id'] = key
       parent['text'] = parent.name.th_first + ' ' + parent.name.th_last
+      parent['value'] = {
+        parent: key,
+        address: parent.address,
+        location: parent.location
+      }
       arr.push(parent)
     })
     return arr

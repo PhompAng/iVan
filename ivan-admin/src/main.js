@@ -28,7 +28,7 @@ Vue.use(VueTimepicker)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',
-    libraries: 'places'
+    libraries: 'places, drawing'
   }
 })
 

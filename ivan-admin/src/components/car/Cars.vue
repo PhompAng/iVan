@@ -50,6 +50,12 @@
             Assign
           </b-button>
         </router-link>
+        <router-link
+          :to="{name: 'Route', params: {id: data.item.id}}">
+          <b-button size="sm" variant="info">
+            Route
+          </b-button>
+        </router-link>
       </template>
     </b-table>
     <create-button
@@ -199,14 +205,14 @@ export default {
       this.form.plate_number = mockPlate()
       this.form.model = mockCar()
       this.form.file = null
-      this.form.time.morning.start.HH = ''
-      this.form.time.morning.start.mm = ''
-      this.form.time.morning.end.HH = ''
-      this.form.time.morning.end.mm = ''
-      this.form.time.evening.start.HH = ''
-      this.form.time.evening.start.mm = ''
-      this.form.time.evening.end.HH = ''
-      this.form.time.evening.end.mm = ''
+      this.form.time.morning.start.HH = '70'
+      this.form.time.morning.start.mm = '00'
+      this.form.time.morning.end.HH = '11'
+      this.form.time.morning.end.mm = '00'
+      this.form.time.evening.start.HH = '12'
+      this.form.time.evening.start.mm = '00'
+      this.form.time.evening.end.HH = '23'
+      this.form.time.evening.end.mm = '00'
     }
   },
   components: {
