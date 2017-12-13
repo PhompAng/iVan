@@ -44,6 +44,7 @@
         </b-list-group>
       </div>
     </div>
+    <br>
     <create-button
         :user="this.user"
         text="Assign"

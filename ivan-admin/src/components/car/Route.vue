@@ -1,74 +1,77 @@
 <template>
-  <div class="row">
-    <div class="col-8">
-      <b-card header="Route">
-        <gmap-map
-              ref="map"
-              :center="latLng"
-              :zoom="12"
-              style="width: 100%; height: 700px">
-          <div
-            v-if="this.showWaypoint">
-            <gmap-marker
-              v-for="waypoint in waypoints"
-              :key="waypoint.id"
-              :position="waypoint.location"
-              :label="waypoint.label">
-            </gmap-marker>
-          </div>
-        </gmap-map>
-      </b-card>
-    </div>
-
-    <div class="col">
-      <b-card header="Waypoint" body-class="waypoint-body">
-        <ul class="list-unstyled">
-          <b-card class="disabled bg-light mb-2">
-            <div class="index">
-              <h3>A: School</h3>
+  <div>
+    <h2>Manage Route</h2>
+    <div class="row">
+      <div class="col-8">
+        <b-card header="Route">
+          <gmap-map
+                ref="map"
+                :center="latLng"
+                :zoom="12"
+                style="width: 100%; height: 700px">
+            <div
+              v-if="this.showWaypoint">
+              <gmap-marker
+                v-for="waypoint in waypoints"
+                :key="waypoint.id"
+                :position="waypoint.location"
+                :label="waypoint.label">
+              </gmap-marker>
             </div>
-            <div class="address" v-if="this.school">
-              <p>
-                <span>{{ this.school.address.line1 }}</span>
-                <span>{{ this.school.address.line2 }}</span>
-              </p>
-              <p>
-                <span>{{ this.school.address.district }}</span>
-                <span>{{ this.school.address.city }}</span>
-                <span>{{ this.school.address.province }}</span>
-              </p>
+          </gmap-map>
+        </b-card>
+      </div>
+
+      <div class="col">
+        <b-card header="Waypoint" body-class="waypoint-body">
+          <ul class="list-unstyled">
+            <b-card class="disabled bg-light mb-2">
+              <div class="index">
+                <h3>A: School</h3>
+              </div>
+              <div class="address" v-if="this.school">
+                <p>
+                  <span>{{ this.school.address.line1 }}</span>
+                  <span>{{ this.school.address.line2 }}</span>
+                </p>
+                <p>
+                  <span>{{ this.school.address.district }}</span>
+                  <span>{{ this.school.address.city }}</span>
+                  <span>{{ this.school.address.province }}</span>
+                </p>
+              </div>
+            </b-card>
+
+            <div v-if="this.car && this.car.students">
+              <draggable v-model="car.students" @end="refresh">
+                <b-card
+                  class="waypoint"
+                  v-for="(student, index) in this.car.students"
+                  :key="student.id">
+                  <div class="index">
+                    <h3>{{ index + 1 | toChar}}: {{ student.text }}</h3>
+                  </div>
+                  <div class="address">
+                    <p>
+                      <span>{{ student.address.line1 }}</span>
+                      <span>{{ student.address.line2 }}</span>
+                    </p>
+                    <p>
+                      <span>{{ student.address.district }}</span>
+                      <span>{{ student.address.city }}</span>
+                      <span>{{ student.address.province }}</span>
+                    </p>
+                  </div>
+                </b-card>
+              </draggable>
             </div>
-          </b-card>
+          </ul>
 
-          <div v-if="this.car && this.car.students">
-            <draggable v-model="car.students" @end="refresh">
-              <b-card
-                class="waypoint"
-                v-for="(student, index) in this.car.students"
-                :key="student.id">
-                <div class="index">
-                  <h3>{{ index + 1 | toChar}}: {{ student.text }}</h3>
-                </div>
-                <div class="address">
-                  <p>
-                    <span>{{ student.address.line1 }}</span>
-                    <span>{{ student.address.line2 }}</span>
-                  </p>
-                  <p>
-                    <span>{{ student.address.district }}</span>
-                    <span>{{ student.address.city }}</span>
-                    <span>{{ student.address.province }}</span>
-                  </p>
-                </div>
-              </b-card>
-            </draggable>
-          </div>
-        </ul>
-
-        <b-btn variant="primary" @click="route">
-          Set Route
-        </b-btn>
-      </b-card>
+          <b-btn variant="primary" @click="route">
+            Set Route
+          </b-btn>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>
