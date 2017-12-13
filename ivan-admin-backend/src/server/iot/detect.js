@@ -40,6 +40,21 @@ function addNotification (carId, alarmStatus) {
         alarm_status: alarmStatus
       }
     )
+    let payload = {
+      notification: {
+        title: 'ALERT!!',
+        body: 'We detect sonething leftovered in car ' + car.plate_number
+      }
+    }
+    admin.messaging().sendToTopic(carId, payload)
+    .then(function (response) {
+      // See the MessagingTopicResponse reference documentation for the
+      // contents of response.
+      console.log('Successfully sent message:', response)
+    })
+    .catch(function (error) {
+      console.log('Error sending message:', error)
+    })
   })
 }
 

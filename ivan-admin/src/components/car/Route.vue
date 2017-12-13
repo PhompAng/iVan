@@ -67,7 +67,7 @@
             </div>
           </ul>
 
-          <b-btn variant="primary" @click="route">
+          <b-btn variant="primary" @click="setRoute">
             Set Route
           </b-btn>
         </b-card>
@@ -81,6 +81,7 @@ import {loaded} from 'vue2-google-maps'
 import draggable from 'vuedraggable'
 import * as firebase from 'firebase'
 import { SET_ROUTE } from '@/vuex/action-types'
+import swal from 'sweetalert'
 
 export default {
   name: 'Route',
@@ -177,6 +178,13 @@ export default {
       this.waypoints = []
       this.setWaypoint()
       this.setWaypointVisibility(true)
+    },
+    setRoute () {
+      swal({
+        title: 'Complete',
+        icon: 'success'
+      })
+      this.route()
     },
     route () {
       this.setWaypointVisibility(false)

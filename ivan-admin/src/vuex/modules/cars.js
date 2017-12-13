@@ -113,61 +113,80 @@ const actions = {
   [action.ASSIGN_DRIVER] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
-    firebase.database().ref().child('drivers')
-    .orderByChild('car')
-    .equalTo(carId)
-    .once('value')
-    .then((snapshot) => {
-      snapshot.forEach((child) => {
-        child.ref.child('car').set(null)
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().child('drivers')
+      .orderByChild('car')
+      .equalTo(carId)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          child.ref.child('car').set(null)
+        })
+        firebase.database().ref().child('cars/' + carId).child('drivers')
+        .set(selected)
+        let update = {}
+        selected.forEach((driver) => {
+          update['drivers/' + driver.id + '/car'] = carId
+        })
+        firebase.database().ref().update(update)
+        resolve()
       })
-      firebase.database().ref().child('cars/' + carId).child('drivers')
-      .set(selected)
-      let update = {}
-      selected.forEach((driver) => {
-        update['drivers/' + driver.id + '/car'] = carId
+      .catch((error) => {
+        reject(error)
       })
-      firebase.database().ref().update(update)
     })
   },
   [action.ASSIGN_TEACHER] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
-    firebase.database().ref().child('teachers')
-    .orderByChild('car')
-    .equalTo(carId)
-    .once('value')
-    .then((snapshot) => {
-      snapshot.forEach((child) => {
-        child.ref.child('car').set(null)
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().child('teachers')
+      .orderByChild('car')
+      .equalTo(carId)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          child.ref.child('car').set(null)
+        })
+        firebase.database().ref().child('cars/' + carId).child('teachers')
+        .set(selected)
+        let update = {}
+        selected.forEach((teacher) => {
+          update['teachers/' + teacher.id + '/car'] = carId
+        })
+        firebase.database().ref().update(update)
+        resolve()
       })
-      firebase.database().ref().child('cars/' + carId).child('teachers')
-      .set(selected)
-      let update = {}
-      selected.forEach((teacher) => {
-        update['teachers/' + teacher.id + '/car'] = carId
+      .catch((error) => {
+        reject(error)
       })
-      firebase.database().ref().update(update)
     })
   },
   [action.ASSIGN_STUDENT] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
-    firebase.database().ref().child('students')
-    .orderByChild('car')
-    .equalTo(carId)
-    .once('value')
-    .then((snapshot) => {
-      snapshot.forEach((child) => {
-        child.ref.child('car').set(null)
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().child('students')
+      .orderByChild('car')
+      .equalTo(carId)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          child.ref.child('car').set(null)
+        })
+        firebase.database().ref().child('cars/' + carId).child('students')
+        .set(selected)
+        let update = {}
+        selected.forEach((student) => {
+          update['students/' + student.id + '/car'] = carId
+        })
+        update['route/' + carId] = null
+        firebase.database().ref().update(update)
+        resolve()
       })
-      firebase.database().ref().child('cars/' + carId).child('students')
-      .set(selected)
-      let update = {}
-      selected.forEach((student) => {
-        update['students/' + student.id + '/car'] = carId
+      .catch((error) => {
+        reject(error)
       })
-      firebase.database().ref().update(update)
     })
   },
   [action.SET_ROUTE] ({commit}, form) {
