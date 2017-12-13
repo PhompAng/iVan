@@ -53,3 +53,5 @@ export const DELETE_DEVICE = 'deleteDevice'
 export const ASSIGN_SENSOR = 'assignSensor'
 
 export const FETCH_NOTIFICATION = 'fetchNotification'
+
+export const SET_ROUTE = 'setRoute'

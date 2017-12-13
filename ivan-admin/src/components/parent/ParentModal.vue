@@ -118,6 +118,8 @@ export default {
     },
     update (e) {
       e.cancel()
+      this.form.location.lat = this.marker.lat
+      this.form.location.lng = this.marker.lng
       this.okDisabled = true
       if (this.isCreate) {
         this.$store.dispatch(CREATE_PARENT, this.form)

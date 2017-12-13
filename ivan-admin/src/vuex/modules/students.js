@@ -24,6 +24,9 @@ const getters = {
 
 const actions = {
   [action.CREATE_STUDENT] ({commit}, form) {
+    form.location = form.parent.location
+    form.address = form.parent.address
+    form.parent = form.parent.parent
     return new Promise((resolve, reject) => {
       let ref = firebase.database().ref().child('students/').push(form)
       ref.then(() => {
@@ -43,6 +46,9 @@ const actions = {
     })
   },
   [action.UPDATE_STUDENT] ({commit}, form) {
+    form.location = form.parent.location
+    form.address = form.parent.address
+    form.parent = form.parent.parent
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('students/' + form.id).set(form)
       .then(() => {

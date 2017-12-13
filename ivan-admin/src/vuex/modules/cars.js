@@ -169,6 +169,15 @@ const actions = {
       })
       firebase.database().ref().update(update)
     })
+  },
+  [action.SET_ROUTE] ({commit}, form) {
+    let carId = form.carId
+    let routes = form.routes
+    let waypoints = form.waypoints
+    firebase.database().ref().child('route/' + carId).set({
+      routes: routes,
+      waypoints: waypoints
+    })
   }
 }
 
