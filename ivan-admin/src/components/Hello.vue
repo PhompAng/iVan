@@ -24,6 +24,23 @@
       </div>
     </div>
 
+    <div class="row mb-3">
+      <div class="col-5">
+        <b-form inline>
+          <label class="mr-sm-2" for="cars">Car</label>
+          <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
+            v-model="currentCar"
+            :options="getHasMobilityCar()"
+            value-field="id"
+            @input="this.changeCar"></b-form-select>
+
+          <b-btn variant="primary" @click="resetZoom">
+            Reset Zoom
+          </b-btn>
+        </b-form>
+      </div>
+    </div>
+
     <div class="row">
       <gmap-map
            ref="map"
@@ -35,6 +52,7 @@
             v-for="car in getHasMobilityCar()"
             :key="car.id"
             :position="getMarkerPosition(car)"
+            :label="car.plate_number"
             icon="/static/van_top.png"
             :clickable="false"
             :draggable="false">
@@ -59,7 +77,8 @@ export default {
         lat: 13.7308051,
         lng: 100.7806353
       },
-      school: ''
+      school: '',
+      currentCar: ''
     }
   },
   computed: {
@@ -107,6 +126,16 @@ export default {
         lat: car.mobility_status[last].lat,
         lng: car.mobility_status[last].lng
       }
+    },
+    changeCar (e) {
+      let car = this.cars.filter(c => c.id === e)[0]
+      let latLng = this.getMarkerPosition(car)
+      this.$refs.map.panTo(latLng)
+      this.$refs.map.$mapObject.setZoom(17)
+    },
+    resetZoom () {
+      this.$refs.map.panTo(this.center)
+      this.$refs.map.$mapObject.setZoom(15)
     }
   },
   components: {
