@@ -19,8 +19,7 @@
         <b-button
           class="d-block"
           variant="outline-primary"
-          @click="moveRight()"
-          :disabled="selected.length >= limit">
+          @click="moveRight()">
           >>>
         </b-button>
         <b-button
@@ -109,7 +108,7 @@ export default {
       })
     },
     updateLeft (student) {
-      if (this.selected.length >= this.limit || student.car != null && student.car !== this.car) {
+      if (student.car != null && student.car !== this.car) {
         return
       }
       this.currentLeft = student
@@ -122,6 +121,13 @@ export default {
     moveRight () {
       if (this.currentLeft == null) {
         return
+      }
+      if (this.currentLeft.length >= this.limit) {
+        swal({
+          title: 'WARNING!!',
+          text: 'Passenger Limit Exceed!',
+          icon: 'warning'
+        })
       }
       this.selected.push(this.currentLeft)
       this.students.splice(
