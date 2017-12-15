@@ -33,6 +33,7 @@ const getters = {
       notification['id'] = key
       arr.push(notification)
     })
+    arr.reverse()
     return arr
   }
 }
