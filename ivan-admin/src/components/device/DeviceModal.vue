@@ -32,6 +32,14 @@
             :options="options"
             required></b-form-select>
           </div>
+          <div class="form-group col">
+            <label for="Car">Car</label>
+            <b-form-select
+            class="mb-3"
+            v-model="form.car"
+            :options="cars"
+            required></b-form-select>
+          </div>
         </div>
       </form>
     </b-modal>
@@ -41,6 +49,8 @@
 <script>
 import { modalToggleable } from '@/components/mixins/modalToggleable'
 import { CREATE_DEVICE, UPDATE_DEVICE } from '@/vuex/action-types'
+import { GET_CARS } from '@/vuex/getter-types'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'DeviceModal',
@@ -56,6 +66,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      cars: [GET_CARS]
+    }),
     title () {
       return this.isCreate ? 'Create Device' : 'Edit Device'
     }
@@ -66,6 +79,9 @@ export default {
     },
     update (e) {
       e.cancel()
+      if (this.form.car == null || this.form.car === '') {
+        return
+      }
       this.okDisabled = true
       if (this.isCreate) {
         this.$store.dispatch(CREATE_DEVICE, this.form)

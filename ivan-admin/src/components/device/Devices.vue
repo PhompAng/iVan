@@ -66,7 +66,7 @@
 import mockChassis from '@/mocker/mockChassis'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_DEVICES, GET_USER } from '@/vuex/getter-types'
-import { DELETE_DEVICE, FETCH_DEVICE, FETCH_SCHOOL } from '@/vuex/action-types'
+import { DELETE_DEVICE, FETCH_DEVICE, FETCH_SCHOOL, FETCH_CAR } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
 import CreateButton from '@/components/CreateButton'
@@ -93,7 +93,8 @@ export default {
         serial_number: '',
         make_date: '',
         status: '',
-        school: ''
+        school: '',
+        car: ''
       }
     }
   },
@@ -133,12 +134,14 @@ export default {
       }
     },
     create () {
+      this.$store.dispatch(FETCH_CAR, this.form.school)
       this.showModal = true
     },
     view (item, index, e) {
       // this.$router.push({name: 'Viewdevice', params: {id: item.id}})
     },
     update (item, index, e) {
+      this.$store.dispatch(FETCH_CAR, this.form.school)
       let form = JSON.parse(JSON.stringify(item))
       this.form = form
       this.isCreate = false
@@ -177,6 +180,7 @@ export default {
       this.form.serial_number = mockChassis()
       this.form.make_date = '2017-12-12'
       this.form.status = 'normal'
+      this.form.car = null
     }
   },
   components: {
