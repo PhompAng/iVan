@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Assign ({{this.device.serial_number}})</h2>
+    <h2>Assign to Device ({{this.device.serial_number}})</h2>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Sensor">

@@ -122,18 +122,18 @@ export default {
       if (this.currentLeft == null) {
         return
       }
-      if (this.currentLeft.length >= this.limit) {
+      this.selected.push(this.currentLeft)
+      this.students.splice(
+        this.students.findIndex(el => el.id === this.currentLeft.id),
+        1)
+      this.currentLeft = null
+      if (this.selected.length >= this.limit) {
         swal({
           title: 'WARNING!!',
           text: 'Passenger Limit Exceed!',
           icon: 'warning'
         })
       }
-      this.selected.push(this.currentLeft)
-      this.students.splice(
-        this.students.findIndex(el => el.id === this.currentLeft.id),
-        1)
-      this.currentLeft = null
     },
     moveLeft () {
       if (this.currentRight == null) {

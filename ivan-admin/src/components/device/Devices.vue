@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Cars</h2>
+    <h2>Devices</h2>
     <choose-schools
       :user="user"
       :school.sync="school"

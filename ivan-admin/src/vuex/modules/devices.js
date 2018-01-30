@@ -62,21 +62,27 @@ const actions = {
   [action.ASSIGN_SENSOR] ({commit}, form) {
     let deviceId = form.deviceId
     let selected = form.selected
-    firebase.database().ref().child('sensors')
-    .orderByChild('device')
-    .equalTo(deviceId)
-    .once('value')
-    .then((snapshot) => {
-      snapshot.forEach((child) => {
-        child.ref.child('device').set(null)
+    return new Promise((resolve, reject) => {
+      firebase.database().ref().child('sensors')
+      .orderByChild('device')
+      .equalTo(deviceId)
+      .once('value')
+      .then((snapshot) => {
+        snapshot.forEach((child) => {
+          child.ref.child('device').set(null)
+        })
+        firebase.database().ref().child('devices/' + deviceId).child('sensors')
+        .set(selected)
+        let update = {}
+        selected.forEach((sensor) => {
+          update['sensors/' + sensor.id + '/device'] = deviceId
+        })
+        firebase.database().ref().update(update)
+        resolve()
       })
-      firebase.database().ref().child('devices/' + deviceId).child('sensors')
-      .set(selected)
-      let update = {}
-      selected.forEach((sensor) => {
-        update['sensors/' + sensor.id + '/device'] = deviceId
+      .catch((error) => {
+        reject(error)
       })
-      firebase.database().ref().update(update)
     })
   }
 }

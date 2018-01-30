@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Cars</h2>
+    <h2>Sensors</h2>
     <choose-schools
       :user="user"
       :school.sync="school"
@@ -34,13 +34,13 @@
           Delete
         </b-button>
         <br>
-        <router-link v-if="data.item.device" :to="{name: 'DeviceAssign', params: {id: data.item.device}}">
+        <!-- <router-link v-if="data.item.device" :to="{name: 'DeviceAssign', params: {id: data.item.device}}">
           <b-button
           size="sm"
           variant="primary">
             Assign
           </b-button>
-        </router-link>
+        </router-link> -->
       </template>
     </b-table>
     <create-button
