@@ -50,7 +50,7 @@
 
         <div class="row">
           <div class="form-group col">
-            <label for="file_input">File</label>
+            <label for="file_input">Upload Photo</label>
             <b-form-file id="file_input" v-model="form.file"></b-form-file>
             <span>Selected file: {{form.file && form.file.name}}</span>
           </div>
