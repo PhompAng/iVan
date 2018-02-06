@@ -2,8 +2,13 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Schools</h2>
+    <div class="row justify-content-end">
+      <b-form-group horizontal label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder="" /></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="schools"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en}}</template>
@@ -56,6 +61,7 @@ export default {
         tel: { label: 'Telephone' },
         action: { label: 'Action' }
       },
+      filter: null,
       showModal: false,
       isCreate: true,
       form: {
