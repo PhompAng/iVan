@@ -29,6 +29,13 @@
             <input v-model="form.chassis" class="form-control" placeholder="">
           </div>
           <div class="form-group col">
+            <label>Province.</label>
+            <input v-model="form.province" class="form-control" placeholder="">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col">
             <label for="file_input">File</label>
             <b-form-file id="file_input" v-model="form.file"></b-form-file>
             <!-- <span>Selected file: {{form.file && form.file.name}}</span> -->

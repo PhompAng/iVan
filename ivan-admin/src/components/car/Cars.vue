@@ -97,6 +97,7 @@ export default {
         chassis: '',
         plate_number: '',
         model: '',
+        province: '',
         school: '',
         time: {
           morning: {
@@ -204,6 +205,7 @@ export default {
       this.form.chassis = mockChassis()
       this.form.plate_number = mockPlate()
       this.form.model = mockCar()
+      this.form.province = ''
       this.form.file = null
       this.form.time.morning.start.HH = '70'
       this.form.time.morning.start.mm = '00'
