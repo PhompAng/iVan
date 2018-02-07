@@ -6,9 +6,13 @@
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-
+    <div class="row justify-content-end">
+      <b-form-group horizontal label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder="" /></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="cars"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="plate_number" slot-scope="data">
@@ -90,6 +94,7 @@ export default {
         driver: { label: 'Driver' },
         action: { label: 'Action' }
       },
+      filter: null,
       showModal: false,
       isCreate: true,
       school: '',

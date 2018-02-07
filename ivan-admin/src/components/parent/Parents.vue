@@ -6,9 +6,13 @@
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-
+    <div class="row justify-content-end">
+      <b-form-group horizontal label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder="" /></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="parents"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
@@ -58,6 +62,7 @@ export default {
         tel: { label: 'Telephone' },
         action: { label: 'Action' }
       },
+      filter: null,
       showModal: false,
       isCreate: true,
       school: '',
