@@ -2,16 +2,18 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Students</h2>
-    <choose-schools
+    <div class="row">
+      <choose-schools class="col"
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-    <div class="row justify-content-end">
-      <b-form-group horizontal label="Search" class="col-3">
-      <b-form-input v-model="filter" placeholder="" /></b-form-group>
+      <b-form-group label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder=""/></b-form-group>
     </div>
     <b-table striped hover bordered
              :items="students"
+             :current-page="currentPage"
+             :per-page="perPage"
              :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>      <template slot="no" slot-scope="data">{{data.item.no}}</template>
@@ -37,6 +39,9 @@
         </router-link> -->
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
@@ -68,6 +73,8 @@ export default {
         no: { label: 'Student ID' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 5,
       filter: null,
       showModal: false,
       isCreate: true,
@@ -90,7 +97,10 @@ export default {
       schools: [GET_SCHOOL_SELECT],
       students: [GET_STUDENTS],
       user: [GET_USER]
-    })
+    }),
+    totalRows: function () {
+      return this.students.length
+    }
   },
   watch: {
     '$route': 'fetch',

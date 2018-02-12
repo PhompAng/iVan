@@ -8,6 +8,8 @@
     </div>
     <b-table striped hover bordered
              :items="schools"
+             :current-page="currentPage"
+             :per-page="perPage"
              :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
@@ -34,6 +36,9 @@
         </b-button>
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <b-btn variant="primary" @click="createSchool">Create</b-btn>
     <school-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
 
@@ -61,6 +66,8 @@ export default {
         tel: { label: 'Telephone' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 3,
       filter: null,
       showModal: false,
       isCreate: true,
@@ -90,7 +97,10 @@ export default {
   computed: {
     ...mapGetters({
       schools: [GET_SCHOOLS]
-    })
+    }),
+    totalRows: function () {
+      return this.schools.length
+    }
   },
   watch: {
     '$route': 'fetch',

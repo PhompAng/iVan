@@ -2,16 +2,18 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Devices</h2>
-    <choose-schools
+    <div class="row">
+      <choose-schools class="col"
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-    <div class="row justify-content-end">
-      <b-form-group horizontal label="Search" class="col-3">
-      <b-form-input v-model="filter" placeholder="" /></b-form-group>
+      <b-form-group label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder=""/></b-form-group>
     </div>
     <b-table striped hover bordered
              :items="devices"
+             :current-page="currentPage"
+             :per-page="perPage"
              :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
@@ -59,6 +61,9 @@
         </router-link>
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
@@ -90,6 +95,8 @@ export default {
         sensors: { label: 'Sensors' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 5,
       filter: null,
       showModal: false,
       isCreate: true,
@@ -108,7 +115,10 @@ export default {
       schools: [GET_SCHOOL_SELECT],
       devices: [GET_DEVICES],
       user: [GET_USER]
-    })
+    }),
+    totalRows: function () {
+      return this.devices.length
+    }
   },
   watch: {
     '$route': 'fetch',
