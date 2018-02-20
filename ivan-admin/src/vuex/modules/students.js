@@ -61,6 +61,18 @@ const actions = {
           } else {
             resolve()
           }
+          if (student.hasOwnProperty('car')) {
+            firebase.database().ref('/cars/' + student.car + '/students').once('value').then(function (snapshot2) {
+              const students = snapshot2.val()
+              for (const i in students) {
+                if (students[i].id === student.id) {
+                  student.text = student.name.th_first + ' ' + student.name.th_last
+                  firebase.database().ref().child('/cars/' + student.car + '/students/' + i).set(student)
+                  break
+                }
+              }
+            })
+          }
         })
         .catch((error) => {
           console.log(error)
