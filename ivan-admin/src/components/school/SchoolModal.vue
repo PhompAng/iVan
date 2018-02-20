@@ -14,19 +14,22 @@
       <form @submit.stop.prevent="handleSubmit">
         <div class="row">
           <div class="form-group col">
-            <label for="nameTh">Name (Thai)</label>
-            <input v-model="form.name.th" class="form-control" id="nameTh" placeholder="">
+            <label for="name_thai">Name (Thai)</label>
+            <input name="name_thai" v-validate="'required|alpha'" :class="{'input': true, 'is-invalid': errors.has('name_thai') }"  v-model="form.name.th" class="form-control" id="nameTh" placeholder="">
+            <span v-show="errors.has('name_thai')" class="text-danger">{{ errors.first('name_thai') }}</span>
           </div>
           <div class="form-group col">
-            <label for="nameEn">Name (English)</label>
-            <input v-model="form.name.en" class="form-control" id="nameEn" placeholder="">
+            <label for="name_eng">Name (English)</label>
+            <input v-model="form.name.en" class="form-control" id="nameEn" placeholder="" name="name_eng" v-validate="'required|alpha'" :class="{'input': true, 'is-invalid': errors.has('name_eng') }">
+            <span v-show="errors.has('name_eng')" class="text-danger">{{ errors.first('name_eng') }}</span>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col">
             <label for="line1">Line1</label>
-            <input v-model="form.address.line1" class="form-control" id="line1" placeholder="">
+            <input v-model="form.address.line1" class="form-control" id="line1" placeholder="" name="line1" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('line1') }">
+            <span v-show="errors.has('line1')" class="text-danger">{{ errors.first('line1') }}</span>
           </div>
           <div class="form-group col">
             <label for="line2">Line2</label>
@@ -44,7 +47,8 @@
           <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.address.postcode" v-on:fillAddress="fillAddress" />
           <div class="form-group col">
             <label for="tel">Telephone</label>
-            <input v-model="form.tel" type="tel" class="form-control" id="tel" placeholder="">
+            <input v-model="form.tel" type="tel" class="form-control" id="tel" placeholder="" name="tel" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('tel') }">
+            <span v-show="errors.has('tel')" class="text-danger">{{ errors.first('tel') }}</span>
           </div>
         </div>
 
@@ -92,20 +96,24 @@ export default {
     },
     update (e) {
       e.cancel()
-      this.okDisabled = true
-      this.form.location.lat = this.marker.lat
-      this.form.location.lng = this.marker.lng
-      if (this.isCreate) {
-        this.$store.dispatch(CREATE_SCHOOL, this.form)
-        .then(() => {
-          this.hide()
-        })
-      } else {
-        this.$store.dispatch(UPDATE_SCHOOL, this.form)
-        .then(() => {
-          this.hide()
-        })
-      }
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.okDisabled = true
+          this.form.location.lat = this.marker.lat
+          this.form.location.lng = this.marker.lng
+          if (this.isCreate) {
+            this.$store.dispatch(CREATE_SCHOOL, this.form)
+            .then(() => {
+              this.hide()
+            })
+          } else {
+            this.$store.dispatch(UPDATE_SCHOOL, this.form)
+            .then(() => {
+              this.hide()
+            })
+          }
+        }
+      })
     }
   },
   components: {
