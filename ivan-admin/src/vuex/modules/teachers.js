@@ -68,6 +68,18 @@ const actions = {
         console.log(error)
         reject(error)
       })
+      if (form.hasOwnProperty('car')) {
+        firebase.database().ref('/cars/' + form.car + '/teachers').once('value').then(function (snapshot2) {
+          const teachers = snapshot2.val()
+          for (const i in teachers) {
+            if (teachers[i].id === form.id) {
+              form.text = form.name.th_first + ' ' + form.name.th_last
+              firebase.database().ref().child('/cars/' + form.car + '/teachers/' + i).set(form)
+              break
+            }
+          }
+        })
+      }
     })
   },
   [action.FETCH_TEACHER] ({commit}, schoolId) {

@@ -120,14 +120,15 @@ export default {
       e.cancel()
       this.form.location.lat = this.marker.lat
       this.form.location.lng = this.marker.lng
+      const driver = JSON.parse(JSON.stringify(this.form))
       this.okDisabled = true
       if (this.isCreate) {
-        this.$store.dispatch(CREATE_DRIVER, this.form)
+        this.$store.dispatch(CREATE_DRIVER, driver)
         .then(() => {
           this.hide()
         })
       } else {
-        this.$store.dispatch(UPDATE_DRIVER, this.form)
+        this.$store.dispatch(UPDATE_DRIVER, driver)
         .then(() => {
           this.hide()
         })

@@ -91,14 +91,15 @@ export default {
     },
     update (e) {
       e.cancel()
+      const teacher = JSON.parse(JSON.stringify(this.form))
       this.okDisabled = true
       if (this.isCreate) {
-        this.$store.dispatch(CREATE_TEACHER, this.form)
+        this.$store.dispatch(CREATE_TEACHER, teacher)
         .then(() => {
           this.hide()
         })
       } else {
-        this.$store.dispatch(UPDATE_TEACHER, this.form)
+        this.$store.dispatch(UPDATE_TEACHER, teacher)
         .then(() => {
           this.hide()
         })
