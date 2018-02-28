@@ -14,23 +14,27 @@
       <form @submit.stop.prevent="handleSubmit">
         <div class="row">
           <div class="form-group col">
-            <label>Firstname (Thai)</label>
-            <input v-model="form.name.th_first" class="form-control" placeholder="">
+            <label for="firstname_thai">Firstname (Thai)</label>
+            <input name="firstname_thai" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('firstname_thai') }" v-model="form.name.th_first" class="form-control" placeholder="">
+            <span v-show="errors.has('firstname_thai')" class="text-danger">{{ errors.first('firstname_thai') }}</span>
           </div>
           <div class="form-group col">
-            <label>Lastname (Thai)</label>
-            <input v-model="form.name.th_last" class="form-control" placeholder="">
+            <label for="lastname_thai">Lastname (Thai)</label>
+            <input name="lastname_thai" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('lastname_thai') }"  v-model="form.name.th_last" class="form-control" placeholder="">
+            <span v-show="errors.has('lastname_thai')" class="text-danger">{{ errors.first('lastname_thai') }}</span>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col">
-            <label>Firstname (English)</label>
-            <input v-model="form.name.en_first" class="form-control" placeholder="">
+            <label for="firstname_eng">Firstname (English)</label>
+            <input name="firstname_eng" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('firstname_eng') }"  v-model="form.name.en_first" class="form-control" placeholder="">
+            <span v-show="errors.has('firstname_eng')" class="text-danger">{{ errors.first('firstname_eng') }}</span>
           </div>
           <div class="form-group col">
-            <label>Lastname (English)</label>
-            <input v-model="form.name.en_last" class="form-control" placeholder="">
+            <label for="lastname_eng">Lastname (English)</label>
+            <input name="lastname_eng" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('lastname_eng') }" v-model="form.name.en_last" class="form-control" placeholder="">
+            <span v-show="errors.has('lastname_eng')" class="text-danger">{{ errors.first('lastname_eng') }}</span>
           </div>
         </div>
 
@@ -42,8 +46,9 @@
           </div>
 
           <div class="form-group col">
-              <label for="tel">Telephone</label>
-              <input v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
+            <label for="telephone">Telephone</label>
+            <input name="telephone" v-validate="'required|decimal'" :class="{'input': true, 'is-invalid': errors.has('telephone') }" v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
+            <span v-show="errors.has('telephone')" class="text-danger">{{ errors.first('telephone') }}</span>
           </div>
         </div>
 
@@ -91,18 +96,22 @@ export default {
     },
     update (e) {
       e.cancel()
-      this.okDisabled = true
-      if (this.isCreate) {
-        this.$store.dispatch(CREATE_ADMIN, this.form)
-        .then(() => {
-          this.hide()
-        })
-      } else {
-        this.$store.dispatch(UPDATE_ADMIN, this.form)
-        .then(() => {
-          this.hide()
-        })
-      }
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.okDisabled = true
+          if (this.isCreate) {
+            this.$store.dispatch(CREATE_ADMIN, this.form)
+            .then(() => {
+              this.hide()
+            })
+          } else {
+            this.$store.dispatch(UPDATE_ADMIN, this.form)
+            .then(() => {
+              this.hide()
+            })
+          }
+        }
+      })
     }
   }
 }

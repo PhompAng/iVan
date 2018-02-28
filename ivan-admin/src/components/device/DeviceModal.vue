@@ -14,31 +14,37 @@
       <form @submit.stop.prevent="handleSubmit">
         <div class="row">
           <div class="form-group col">
-            <label>Serial Number</label>
-            <input v-model="form.serial_number" class="form-control" placeholder="">
+            <label for="serial_number">Serial Number</label>
+            <input name="serial_number" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('serial_number') }" v-model="form.serial_number" class="form-control" placeholder="">
+            <span v-show="errors.has('serial_number')" class="text-danger">{{ errors.first('serial_number') }}</span>
           </div>
           <div class="form-group col">
-            <label>Make Date</label>
-            <input type="date" v-model="form.make_date" class="form-control" placeholder="">
+            <label for="make_date">Make Date</label>
+            <input name="make_date" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('make_date') }" type="date" v-model="form.make_date" class="form-control" placeholder="">
+            <span v-show="errors.has('make_date')" class="text-danger">{{ errors.first('make_date') }}</span>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col">
-            <label>Status</label>
+            <label for="status">Status</label>
             <b-form-select
             class="mb-3"
+            name="status" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('status') }"
             v-model="form.status"
             :options="options"
             required></b-form-select>
+            <span v-show="errors.has('status')" class="text-danger">{{ errors.first('status') }}</span>
           </div>
           <div class="form-group col">
-            <label for="Car">Car</label>
+            <label for="car">Car</label>
             <b-form-select
             class="mb-3"
+            name="car" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('car') }"
             v-model="form.car"
             :options="cars"
             required></b-form-select>
+            <span v-show="errors.has('car')" class="text-danger">{{ errors.first('car') }}</span>
           </div>
         </div>
       </form>

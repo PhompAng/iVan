@@ -14,23 +14,27 @@
       <form @submit.stop.prevent="handleSubmit">
         <div class="row">
           <div class="form-group col">
-            <label>Plate Number</label>
-            <input v-model="form.plate_number" class="form-control" placeholder="">
+            <label for="plate_number">Plate Number</label>
+            <input name="plate_number" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('plate_number') }" v-model="form.plate_number" class="form-control" placeholder="">
+            <span v-show="errors.has('plate_number')" class="text-danger">{{ errors.first('plate_number') }}</span>
           </div>
           <div class="form-group col">
-            <label>Model</label>
-            <input v-model="form.model" class="form-control" placeholder="">
+            <label for="model">Model</label>
+            <input name="model" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('model') }" v-model="form.model" class="form-control" placeholder="">
+            <span v-show="errors.has('model')" class="text-danger">{{ errors.first('model') }}</span>
           </div>
         </div>
 
         <div class="row">
           <div class="form-group col">
-            <label>Chassis No.</label>
-            <input v-model="form.chassis" class="form-control" placeholder="">
+            <label for="chassis">Chassis No.</label>
+            <input name="chassis" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('chassis') }" v-model="form.chassis" class="form-control" placeholder="">
+            <span v-show="errors.has('chassis')" class="text-danger">{{ errors.first('chassis') }}</span>
           </div>
           <div class="form-group col">
-            <label>Province.</label>
-            <input v-model="form.province" class="form-control" placeholder="">
+            <label for="province">Province.</label>
+            <input name="province" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('province') }" v-model="form.province" class="form-control" placeholder="">
+            <span v-show="errors.has('province')" class="text-danger">{{ errors.first('province') }}</span>
           </div>
         </div>
 
@@ -95,18 +99,22 @@ export default {
     },
     update (e) {
       e.cancel()
-      this.okDisabled = true
-      if (this.isCreate) {
-        this.$store.dispatch(CREATE_CAR, this.form)
-        .then(() => {
-          this.hide()
-        })
-      } else {
-        this.$store.dispatch(UPDATE_CAR, this.form)
-        .then(() => {
-          this.hide()
-        })
-      }
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.okDisabled = true
+          if (this.isCreate) {
+            this.$store.dispatch(CREATE_CAR, this.form)
+            .then(() => {
+              this.hide()
+            })
+          } else {
+            this.$store.dispatch(UPDATE_CAR, this.form)
+            .then(() => {
+              this.hide()
+            })
+          }
+        }
+      })
     }
   },
   components: {
