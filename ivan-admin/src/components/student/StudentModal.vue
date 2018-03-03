@@ -92,7 +92,7 @@ export default {
       e.cancel()
       this.$validator.validateAll().then((result) => {
         if (result) {
-          const student = JSON.parse(JSON.stringify(this.form))
+          let student = Object.assign({}, this.form)
           if (this.form.parent == null || this.form.parent === '') {
             return
           }
