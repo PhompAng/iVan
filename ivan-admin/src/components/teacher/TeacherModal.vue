@@ -98,7 +98,7 @@ export default {
       e.cancel()
       this.$validator.validateAll().then((result) => {
         if (result) {
-          const teacher = JSON.parse(JSON.stringify(this.form))
+          let teacher = Object.assign({}, this.form)
           this.okDisabled = true
           if (this.isCreate) {
             this.$store.dispatch(CREATE_TEACHER, teacher)
