@@ -46,7 +46,7 @@
 
         <div class="row">
           <div class="form-group col">
-            <label for="Parent">Parent</label>
+            <label for="parent">Parent</label>
             <b-form-select
             class="mb-3"
             name="parent" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('parent') }"
@@ -92,18 +92,17 @@ export default {
       e.cancel()
       this.$validator.validateAll().then((result) => {
         if (result) {
-          let student = Object.assign({}, this.form)
           if (this.form.parent == null || this.form.parent === '') {
             return
           }
           this.okDisabled = true
           if (this.isCreate) {
-            this.$store.dispatch(CREATE_STUDENT, student)
+            this.$store.dispatch(CREATE_STUDENT, this.form)
             .then(() => {
               this.hide()
             })
           } else {
-            this.$store.dispatch(UPDATE_STUDENT, student)
+            this.$store.dispatch(UPDATE_STUDENT, this.form)
             .then(() => {
               this.hide()
             })

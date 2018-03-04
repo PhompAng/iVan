@@ -55,25 +55,31 @@ const actions = {
         form.address = snapshot.val().address
         firebase.database().ref().child('students/' + form.id).set(form)
         .then(() => {
-          if (form.file != null) {
-            firebase.storage().ref().child('students/' + form.id).put(form.file)
-            .then(() => {
-              resolve()
-            })
-          } else {
-            resolve()
-          }
-          if (form.hasOwnProperty('car')) {
-            firebase.database().ref('/cars/' + form.car + '/students').once('value').then(function (snapshot2) {
-              const students = snapshot2.val()
-              for (const i in students) {
-                if (students[i].id === form.id) {
-                  firebase.database().ref().child('/cars/' + form.car + '/students/' + i).set(form)
-                  break
+          new Promise((resolve, reject) => {
+            if (form.hasOwnProperty('car')) {
+              firebase.database().ref('/cars/' + form.car + '/students').once('value')
+              .then(function (snapshot2) {
+                const students = snapshot2.val()
+                for (const i in students) {
+                  if (students[i].id === form.id) {
+                    firebase.database().ref().child('/cars/' + form.car + '/students/' + i).set(form)
+                    break
+                  }
                 }
-              }
-            })
-          }
+              })
+            }
+            resolve()
+          })
+          .then(() => {
+            if (form.file != null) {
+              firebase.storage().ref().child('students/' + form.id).put(form.file)
+              .then(() => {
+                resolve()
+              })
+            } else {
+              resolve()
+            }
+          })
         })
         .catch((error) => {
           console.log(error)

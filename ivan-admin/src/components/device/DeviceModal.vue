@@ -88,18 +88,22 @@ export default {
       if (this.form.car == null || this.form.car === '') {
         return
       }
-      this.okDisabled = true
-      if (this.isCreate) {
-        this.$store.dispatch(CREATE_DEVICE, this.form)
-        .then(() => {
-          this.hide()
-        })
-      } else {
-        this.$store.dispatch(UPDATE_DEVICE, this.form)
-        .then(() => {
-          this.hide()
-        })
-      }
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.okDisabled = true
+          if (this.isCreate) {
+            this.$store.dispatch(CREATE_DEVICE, this.form)
+            .then(() => {
+              this.hide()
+            })
+          } else {
+            this.$store.dispatch(UPDATE_DEVICE, this.form)
+            .then(() => {
+              this.hide()
+            })
+          }
+        }
+      })
     }
   }
 }
