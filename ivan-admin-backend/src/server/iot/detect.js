@@ -32,14 +32,29 @@ function addNotification (carId, alarmStatus) {
   .then((snapshot) => {
     let car = snapshot.val()
     let schoolId = car.school
-    admin.database().ref().child('notifications/' + schoolId).push(
-      {
-        text: 'We detect sonething leftovered in car ' + car.plate_number,
-        car: carId,
-        timestamp: admin.database.ServerValue.TIMESTAMP,
-        alarm_status: alarmStatus
-      }
-    )
+    let userIds = new Set()
+    userIds.add(schoolId)
+    for (let driver of car.drivers) {
+      userIds.add(driver.id)
+    }
+    for (let teacher of car.teachers) {
+      userIds.add(teacher.id)
+    }
+    for (let student of car.students) {
+      userIds.add(student.parent)
+    }
+    for (let userId of userIds) {
+      console.log(userId)
+      admin.database().ref().child('notifications/' + userId).push(
+        {
+          text: 'We detect sonething leftovered in car ' + car.plate_number,
+          car: carId,
+          timestamp: admin.database.ServerValue.TIMESTAMP,
+          alarm_status: alarmStatus,
+          school: schoolId
+        }
+      )
+    }
     let payload = {
       notification: {
         title: 'ALERT!!',
@@ -95,8 +110,7 @@ export default (app) => {
 
       let isWorkingHour = await isInWorkingHour(carId)
       console.log(isWorkingHour)
-      if (isWorkingHour && isDetected(alarmStatus)) {
-        // TODO push noti
+      if (true || isWorkingHour && isDetected(alarmStatus)) {
         var notification = addNotification(carId, alarmStatus)
         var drivers = addStatusToDriver(carId, alarmStatus)
         var teachers = addStatusToTeacher(carId, alarmStatus)

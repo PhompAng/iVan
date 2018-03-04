@@ -13,6 +13,7 @@ import '@/assets/bootstrap.scss'
 import '@/assets/simple-sidebar.css'
 import '@/assets/style.css'
 import VueTimepicker from 'vue2-timepicker'
+import VeeValidate from 'vee-validate'
 
 var config = {
   apiKey: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(VueTimepicker)
+Vue.use(VeeValidate)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',

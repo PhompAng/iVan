@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Assign ({{this.car.plate_number}})</h2>
+    <h2>Assign to Car ({{this.car.plate_number}})</h2>
     <b-card no-body>
       <b-tabs card>
         <b-tab title="Driver">

@@ -55,14 +55,31 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('teachers/' + form.id).set(form)
       .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('teachers/' + form.id).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
+        return new Promise((resolve, reject) => {
+          if (form.hasOwnProperty('car')) {
+            firebase.database().ref('/cars/' + form.car + '/teachers').once('value').then(function (snapshot2) {
+              const teachers = snapshot2.val()
+              for (const i in teachers) {
+                if (teachers[i].id === form.id) {
+                  form.text = form.name.th_first + ' ' + form.name.th_last
+                  firebase.database().ref().child('/cars/' + form.car + '/teachers/' + i).set(form)
+                  break
+                }
+              }
+            })
+          }
           resolve()
-        }
+        })
+        .then(() => {
+          if (form.file != null) {
+            firebase.storage().ref().child('teachers/' + form.id).put(form.file)
+            .then(() => {
+              resolve()
+            })
+          } else {
+            resolve()
+          }
+        })
       })
       .catch((error) => {
         console.log(error)

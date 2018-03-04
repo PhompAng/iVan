@@ -1,14 +1,20 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Cars</h2>
-    <choose-schools
+    <h2>Sensors</h2>
+    <div class="row">
+      <choose-schools class="col"
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-
+      <b-form-group label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder=""/></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="sensors"
+             :current-page="currentPage"
+             :per-page="perPage"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="serial_number" slot-scope="data">
@@ -34,15 +40,18 @@
           Delete
         </b-button>
         <br>
-        <router-link v-if="data.item.device" :to="{name: 'DeviceAssign', params: {id: data.item.device}}">
+        <!-- <router-link v-if="data.item.device" :to="{name: 'DeviceAssign', params: {id: data.item.device}}">
           <b-button
           size="sm"
           variant="primary">
             Assign
           </b-button>
-        </router-link>
+        </router-link> -->
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
@@ -73,6 +82,9 @@ export default {
         status: { label: 'Status' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 5,
+      filter: null,
       showModal: false,
       isCreate: true,
       school: '',
@@ -89,7 +101,10 @@ export default {
       schools: [GET_SCHOOL_SELECT],
       sensors: [GET_SENSORS],
       user: [GET_USER]
-    })
+    }),
+    totalRows: function () {
+      return this.sensors.length
+    }
   },
   watch: {
     '$route': 'fetch',
