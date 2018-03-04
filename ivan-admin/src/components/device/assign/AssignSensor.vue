@@ -57,6 +57,7 @@ import { mapGetters } from 'vuex'
 import { GET_USER } from '@/vuex/getter-types'
 import { ASSIGN_SENSOR } from '@/vuex/action-types'
 import CreateButton from '@/components/CreateButton'
+import swal from 'sweetalert'
 
 export default {
   name: 'Assignsensor',
@@ -142,6 +143,11 @@ export default {
       this.$store.dispatch(ASSIGN_SENSOR, {
         deviceId: this.$route.params.id,
         selected: this.selected
+      })
+      .then(() => {
+        swal('Success!', {
+          icon: 'success'
+        })
       })
     }
   },

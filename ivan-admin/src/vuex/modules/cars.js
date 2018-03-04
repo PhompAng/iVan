@@ -17,6 +17,7 @@ const getters = {
       let car = JSON.parse(JSON.stringify(val))
       car['id'] = key
       car['text'] = car.plate_number
+      car['value'] = key
       if (car.time == null) {
         car['time'] = {
           morning: {

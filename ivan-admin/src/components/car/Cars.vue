@@ -2,13 +2,19 @@
   <div>
     <loading :isShow="this.loading"></loading>
     <h2>Cars</h2>
-    <choose-schools
+    <div class="row">
+      <choose-schools class="col"
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-
+      <b-form-group label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder=""/></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="cars"
+             :current-page="currentPage"
+             :per-page="perPage"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="plate_number" slot-scope="data">
@@ -58,6 +64,9 @@
         </router-link>
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
@@ -90,6 +99,9 @@ export default {
         driver: { label: 'Driver' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 5,
+      filter: null,
       showModal: false,
       isCreate: true,
       school: '',
@@ -97,6 +109,7 @@ export default {
         chassis: '',
         plate_number: '',
         model: '',
+        province: '',
         school: '',
         time: {
           morning: {
@@ -129,7 +142,10 @@ export default {
       schools: [GET_SCHOOL_SELECT],
       cars: [GET_CARS],
       user: [GET_USER]
-    })
+    }),
+    totalRows: function () {
+      return this.cars.length
+    }
   },
   watch: {
     '$route': 'fetch',
@@ -204,6 +220,7 @@ export default {
       this.form.chassis = mockChassis()
       this.form.plate_number = mockPlate()
       this.form.model = mockCar()
+      this.form.province = ''
       this.form.file = null
       this.form.time.morning.start.HH = '70'
       this.form.time.morning.start.mm = '00'

@@ -57,6 +57,7 @@ const actions = {
   },
   [action.UPDATE_DRIVER] ({commit}, form) {
     return new Promise((resolve, reject) => {
+      form.text = form.name.th_first + ' ' + form.name.th_last
       firebase.database().ref().child('drivers/' + form.id).set(form)
       .then(() => {
         if (form.file != null) {
@@ -72,6 +73,17 @@ const actions = {
         console.log(error)
         reject(error)
       })
+      if (form.hasOwnProperty('car')) {
+        firebase.database().ref('/cars/' + form.car + '/drivers').once('value').then(function (snapshot2) {
+          const drivers = snapshot2.val()
+          for (const i in drivers) {
+            if (drivers[i].id === form.id) {
+              firebase.database().ref().child('/cars/' + form.car + '/drivers/' + i).set(form)
+              break
+            }
+          }
+        })
+      }
     })
   },
   [action.FETCH_DRIVER] ({commit}, schoolId) {
