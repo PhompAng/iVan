@@ -24,46 +24,67 @@ const getters = {
 
 const actions = {
   [action.CREATE_STUDENT] ({commit}, form) {
-    form.location = form.parent.location
-    form.address = form.parent.address
-    form.parent = form.parent.parent
     return new Promise((resolve, reject) => {
-      let ref = firebase.database().ref().child('students/').push(form)
-      ref.then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('students/' + ref.key).put(form.file)
-          .then(() => {
+      firebase.database().ref('/parents/' + form.parent).once('value').then(function (snapshot) {
+        form.text = form.name.th_first + ' ' + form.name.th_last
+        form.location = snapshot.val().location
+        form.address = snapshot.val().address
+        let ref = firebase.database().ref().child('students/').push(form)
+        ref.then(() => {
+          if (form.file != null) {
+            firebase.storage().ref().child('students/' + ref.key).put(form.file)
+            .then(() => {
+              resolve()
+            })
+          } else {
             resolve()
-          })
-        } else {
-          resolve()
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        reject(error)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
       })
     })
   },
   [action.UPDATE_STUDENT] ({commit}, form) {
-    form.location = form.parent.location
-    form.address = form.parent.address
-    form.parent = form.parent.parent
     return new Promise((resolve, reject) => {
-      firebase.database().ref().child('students/' + form.id).set(form)
-      .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('students/' + form.id).put(form.file)
-          .then(() => {
+      firebase.database().ref('/parents/' + form.parent).once('value').then(function (snapshot) {
+        form.text = form.name.th_first + ' ' + form.name.th_last
+        form.location = snapshot.val().location
+        form.address = snapshot.val().address
+        firebase.database().ref().child('students/' + form.id).set(form)
+        .then(() => {
+          new Promise((resolve, reject) => {
+            if (form.hasOwnProperty('car')) {
+              firebase.database().ref('/cars/' + form.car + '/students').once('value')
+              .then(function (snapshot2) {
+                const students = snapshot2.val()
+                for (const i in students) {
+                  if (students[i].id === form.id) {
+                    firebase.database().ref().child('/cars/' + form.car + '/students/' + i).set(form)
+                    break
+                  }
+                }
+              })
+            }
             resolve()
           })
-        } else {
-          resolve()
-        }
-      })
-      .catch((error) => {
-        console.log(error)
-        reject(error)
+          .then(() => {
+            if (form.file != null) {
+              firebase.storage().ref().child('students/' + form.id).put(form.file)
+              .then(() => {
+                resolve()
+              })
+            } else {
+              resolve()
+            }
+          })
+        })
+        .catch((error) => {
+          console.log(error)
+          reject(error)
+        })
       })
     })
   },

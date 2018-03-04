@@ -1,14 +1,20 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Cars</h2>
-    <choose-schools
+    <h2>Devices</h2>
+    <div class="row">
+      <choose-schools class="col"
       :user="user"
       :school.sync="school"
       :schools="schools"></choose-schools>
-
+      <b-form-group label="Search" class="col-3">
+      <b-form-input v-model="filter" placeholder=""/></b-form-group>
+    </div>
     <b-table striped hover bordered
              :items="devices"
+             :current-page="currentPage"
+             :per-page="perPage"
+             :filter="filter"
              :fields="fields">
       <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="serial_number" slot-scope="data">
@@ -55,6 +61,9 @@
         </router-link>
       </template>
     </b-table>
+    <b-col class="row justify-content-center">
+      <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+    </b-col>
     <create-button
       :user="this.user"
       v-on:create="create"></create-button>
@@ -66,7 +75,7 @@
 import mockChassis from '@/mocker/mockChassis'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_DEVICES, GET_USER } from '@/vuex/getter-types'
-import { DELETE_DEVICE, FETCH_DEVICE, FETCH_SCHOOL } from '@/vuex/action-types'
+import { DELETE_DEVICE, FETCH_DEVICE, FETCH_SCHOOL, FETCH_CAR } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
 import CreateButton from '@/components/CreateButton'
@@ -86,6 +95,9 @@ export default {
         sensors: { label: 'Sensors' },
         action: { label: 'Action' }
       },
+      currentPage: 1,
+      perPage: 5,
+      filter: null,
       showModal: false,
       isCreate: true,
       school: '',
@@ -93,7 +105,8 @@ export default {
         serial_number: '',
         make_date: '',
         status: '',
-        school: ''
+        school: '',
+        car: ''
       }
     }
   },
@@ -102,7 +115,10 @@ export default {
       schools: [GET_SCHOOL_SELECT],
       devices: [GET_DEVICES],
       user: [GET_USER]
-    })
+    }),
+    totalRows: function () {
+      return this.devices.length
+    }
   },
   watch: {
     '$route': 'fetch',
@@ -133,12 +149,14 @@ export default {
       }
     },
     create () {
+      this.$store.dispatch(FETCH_CAR, this.form.school)
       this.showModal = true
     },
     view (item, index, e) {
       // this.$router.push({name: 'Viewdevice', params: {id: item.id}})
     },
     update (item, index, e) {
+      this.$store.dispatch(FETCH_CAR, this.form.school)
       let form = JSON.parse(JSON.stringify(item))
       this.form = form
       this.isCreate = false
@@ -177,6 +195,7 @@ export default {
       this.form.serial_number = mockChassis()
       this.form.make_date = '2017-12-12'
       this.form.status = 'normal'
+      this.form.car = null
     }
   },
   components: {
