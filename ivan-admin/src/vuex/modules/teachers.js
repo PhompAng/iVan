@@ -4,6 +4,45 @@ import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
+const updateTeacherInCar = (form) => {
+  return new Promise((resolve, reject) => {
+    if (form.hasOwnProperty('car')) {
+      firebase.database().ref('/cars/' + form.car + '/teachers').once('value').then(function (snapshot) {
+        const teachers = snapshot.val()
+        for (const i in teachers) {
+          if (teachers[i].id === form.id) {
+            form.text = form.name.th_first + ' ' + form.name.th_last
+            firebase.database().ref().child('/cars/' + form.car + '/teachers/' + i).set(form)
+            resolve()
+            return
+          }
+        }
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
+const updatePhoto = (key, form) => {
+  return new Promise((resolve, reject) => {
+    if (form.file != null) {
+      firebase.storage().ref().child('teachers/' + key).put(form.file)
+      .then(() => {
+        resolve()
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
 const state = {
   teachers: {}
 }
@@ -26,7 +65,8 @@ const getters = {
 const actions = {
   [action.CREATE_TEACHER] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
+      firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+      .then((user) => {
         user.updateProfile({
           displayName: form.name.en_first + ' ' + form.name.en_last
         })
@@ -35,15 +75,14 @@ const actions = {
           school: form.school
         })
         delete form.password
-        firebase.database().ref().child('teachers/' + user.uid).set(form)
-        if (form.file != null) {
-          firebase.storage().ref().child('teachers/' + user.uid).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        form.id = user.uid
+        return firebase.database().ref().child('teachers/' + user.uid).set(form)
+      })
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -55,31 +94,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('teachers/' + form.id).set(form)
       .then(() => {
-        return new Promise((resolve, reject) => {
-          if (form.hasOwnProperty('car')) {
-            firebase.database().ref('/cars/' + form.car + '/teachers').once('value').then(function (snapshot2) {
-              const teachers = snapshot2.val()
-              for (const i in teachers) {
-                if (teachers[i].id === form.id) {
-                  form.text = form.name.th_first + ' ' + form.name.th_last
-                  firebase.database().ref().child('/cars/' + form.car + '/teachers/' + i).set(form)
-                  break
-                }
-              }
-            })
-          }
-          resolve()
-        })
-        .then(() => {
-          if (form.file != null) {
-            firebase.storage().ref().child('teachers/' + form.id).put(form.file)
-            .then(() => {
-              resolve()
-            })
-          } else {
-            resolve()
-          }
-        })
+        return updateTeacherInCar(form)
+      })
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -96,7 +117,12 @@ const actions = {
     })
   },
   [action.DELETE_TEACHER] ({commit}, form) {
-    Vue.http.delete('teachers', {body: {uid: form.id}})
+    Vue.http.delete('teachers', {
+      body: {
+        uid: form.id,
+        carId: form.car
+      }
+    })
   }
 }
 

@@ -3,6 +3,37 @@ import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
+const emptyTime = {
+  HH: '',
+  mm: ''
+}
+
+const emptyStartEnd = {
+  start: emptyTime,
+  end: emptyTime
+}
+
+const emptyWorkingHour = {
+  morning: emptyStartEnd,
+  evening: emptyStartEnd
+}
+
+const updatePhoto = (key, form) => {
+  return new Promise((resolve, reject) => {
+    if (form.file != null) {
+      firebase.storage().ref().child('cars/' + form.id).put(form.file)
+      .then(() => {
+        resolve()
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
 const state = {
   cars: {}
 }
@@ -19,28 +50,7 @@ const getters = {
       car['text'] = car.plate_number
       car['value'] = key
       if (car.time == null) {
-        car['time'] = {
-          morning: {
-            start: {
-              HH: '',
-              mm: ''
-            },
-            end: {
-              HH: '',
-              mm: ''
-            }
-          },
-          evening: {
-            start: {
-              HH: '',
-              mm: ''
-            },
-            end: {
-              HH: '',
-              mm: ''
-            }
-          }
-        }
+        car['time'] = emptyWorkingHour
       }
       if (car.mobility_status != null) {
         let mArr = []
@@ -63,16 +73,14 @@ const getters = {
 const actions = {
   [action.CREATE_CAR] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      let ref = firebase.database().ref().child('cars/').push(form)
-      ref.then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('cars/' + ref.key).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+      let key = firebase.database().ref().child('cars/').push().key
+      form.id = key
+      firebase.database().ref().child('cars/' + key).set(form)
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -84,14 +92,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('cars/' + form.id).set(form)
       .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('cars/' + form.id).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -114,6 +118,9 @@ const actions = {
   [action.ASSIGN_DRIVER] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
+    selected.forEach((driver) => {
+      driver.car = carId
+    })
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('drivers')
       .orderByChild('car')
@@ -140,6 +147,9 @@ const actions = {
   [action.ASSIGN_TEACHER] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
+    selected.forEach((teacher) => {
+      teacher.car = carId
+    })
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('teachers')
       .orderByChild('car')
@@ -166,6 +176,9 @@ const actions = {
   [action.ASSIGN_STUDENT] ({commit}, form) {
     let carId = form.carId
     let selected = form.selected
+    selected.forEach((student) => {
+      student.car = carId
+    })
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('students')
       .orderByChild('car')

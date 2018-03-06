@@ -4,6 +4,22 @@ import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
+const updatePhoto = (key, form) => {
+  return new Promise((resolve, reject) => {
+    if (form.file != null) {
+      firebase.storage().ref().child('parents/' + form.id).put(form.file)
+      .then(() => {
+        resolve()
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
 const state = {
   parents: {}
 }
@@ -28,7 +44,8 @@ const getters = {
 const actions = {
   [action.CREATE_PARENT] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.auth().createUserWithEmailAndPassword(form.email, form.password).then((user) => {
+      firebase.auth().createUserWithEmailAndPassword(form.email, form.password)
+      .then((user) => {
         user.updateProfile({
           displayName: form.name.en_first + ' ' + form.name.en_last
         })
@@ -37,15 +54,14 @@ const actions = {
           school: form.school
         })
         delete form.password
-        firebase.database().ref().child('parents/' + user.uid).set(form)
-        if (form.file != null) {
-          firebase.storage().ref().child('parents/' + user.uid).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        form.id = user.uid
+        return firebase.database().ref().child('parents/' + user.uid).set(form)
+      })
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -57,14 +73,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('parents/' + form.id).set(form)
       .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('parents/' + form.id).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)

@@ -26,7 +26,9 @@ const getters = {
 const actions = {
   [action.CREATE_DEVICE] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref().child('devices/').push(form)
+      let key = firebase.database().ref().child('devices/').push().key
+      form.id = key
+      firebase.database().ref().child('devices/' + key).set(form)
       .then(() => {
         resolve()
       })
@@ -62,6 +64,9 @@ const actions = {
   [action.ASSIGN_SENSOR] ({commit}, form) {
     let deviceId = form.deviceId
     let selected = form.selected
+    selected.forEach((sensor) => {
+      sensor.car = deviceId
+    })
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('sensors')
       .orderByChild('device')
