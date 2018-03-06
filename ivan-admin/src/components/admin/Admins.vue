@@ -68,7 +68,7 @@ export default {
         action: { label: 'Action' }
       },
       currentPage: 1,
-      perPage: 5,
+      perPage: 20,
       showModal: false,
       isCreate: true,
       school: '',

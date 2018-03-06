@@ -3,6 +3,22 @@ import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
+const updatePhoto = (key, form) => {
+  return new Promise((resolve, reject) => {
+    if (form.file != null) {
+      firebase.storage().ref().child('schools/' + key).put(form.file)
+      .then((snapshot) => {
+        resolve(snapshot)
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
 const state = {
   schools: {}
 }
@@ -41,16 +57,14 @@ const getters = {
 const actions = {
   [action.CREATE_SCHOOL] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      let ref = firebase.database().ref().child('schools/').push(form)
-      ref.then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('schools/' + ref.key).put(form.file)
-          .then((snapshot) => {
-            resolve(snapshot)
-          })
-        } else {
-          resolve()
-        }
+      let key = firebase.database().ref().child('schools/').push().key
+      form.id = key
+      firebase.database().ref().child('schools/' + form.id).set(form)
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error.message)
@@ -62,14 +76,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('schools/' + form.id).set(form)
       .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('schools/' + form.id).put(form.file)
-          .then((snapshot) => {
-            resolve(snapshot)
-          })
-        } else {
-          resolve()
-        }
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)

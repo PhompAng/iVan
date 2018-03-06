@@ -26,7 +26,9 @@ const getters = {
 const actions = {
   [action.CREATE_SENSOR] ({commit}, form) {
     return new Promise((resolve, reject) => {
-      firebase.database().ref().child('sensors/').push(form)
+      let key = firebase.database().ref().child('sensors/').push().key
+      form.id = key
+      firebase.database().ref().child('sensors/' + form.id).set(form)
       .then(() => {
         resolve()
       })

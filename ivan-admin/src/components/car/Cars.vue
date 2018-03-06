@@ -100,7 +100,7 @@ export default {
         action: { label: 'Action' }
       },
       currentPage: 1,
-      perPage: 5,
+      perPage: 20,
       filter: null,
       showModal: false,
       isCreate: true,

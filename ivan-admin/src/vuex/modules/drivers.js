@@ -4,6 +4,44 @@ import * as mutation from '@/vuex/mutation-types'
 import * as action from '@/vuex/action-types'
 import * as firebase from 'firebase'
 
+const updateDriverInCar = (form) => {
+  return new Promise((resolve, reject) => {
+    if (form.hasOwnProperty('car')) {
+      firebase.database().ref('/cars/' + form.car + '/drivers').once('value').then(function (snapshot) {
+        const drivers = snapshot.val()
+        for (const i in drivers) {
+          if (drivers[i].id === form.id) {
+            firebase.database().ref().child('/cars/' + form.car + '/drivers/' + i).set(form)
+            resolve()
+            return
+          }
+        }
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
+const updatePhoto = (key, form) => {
+  return new Promise((resolve, reject) => {
+    if (form.file != null) {
+      firebase.storage().ref().child('drivers/' + form.id).put(form.file)
+      .then(() => {
+        resolve()
+      })
+      .catch((error) => {
+        reject(error)
+      })
+    } else {
+      resolve()
+    }
+  })
+}
+
 const state = {
   drivers: {}
 }
@@ -39,15 +77,14 @@ const actions = {
           school: form.school
         })
         delete form.password
-        firebase.database().ref().child('drivers/' + user.uid).set(form)
-        if (form.file != null) {
-          firebase.storage().ref().child('drivers/' + user.uid).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        form.id = user.uid
+        return firebase.database().ref().child('drivers/' + user.uid).set(form)
+      })
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
@@ -60,30 +97,18 @@ const actions = {
       form.text = form.name.th_first + ' ' + form.name.th_last
       firebase.database().ref().child('drivers/' + form.id).set(form)
       .then(() => {
-        if (form.file != null) {
-          firebase.storage().ref().child('drivers/' + form.id).put(form.file)
-          .then(() => {
-            resolve()
-          })
-        } else {
-          resolve()
-        }
+        return updateDriverInCar(form)
+      })
+      .then(() => {
+        return updatePhoto(form.id, form)
+      })
+      .then(() => {
+        resolve()
       })
       .catch((error) => {
         console.log(error)
         reject(error)
       })
-      if (form.hasOwnProperty('car')) {
-        firebase.database().ref('/cars/' + form.car + '/drivers').once('value').then(function (snapshot2) {
-          const drivers = snapshot2.val()
-          for (const i in drivers) {
-            if (drivers[i].id === form.id) {
-              firebase.database().ref().child('/cars/' + form.car + '/drivers/' + i).set(form)
-              break
-            }
-          }
-        })
-      }
     })
   },
   [action.FETCH_DRIVER] ({commit}, schoolId) {
@@ -95,7 +120,12 @@ const actions = {
     })
   },
   [action.DELETE_DRIVER] ({commit}, form) {
-    Vue.http.delete('drivers', {body: {uid: form.id}})
+    Vue.http.delete('drivers', {
+      body: {
+        uid: form.id,
+        carId: form.car
+      }
+    })
   }
 }
 
