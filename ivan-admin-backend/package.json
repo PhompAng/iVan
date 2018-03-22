@@ -1,6 +1,6 @@
 {
     "name": "ivan-admin-backend",
-    "version": "0.0.4",
+    "version": "0.0.7",
     "description": "ivan-admin backend",
     "author": "PhompAng <tingtong003tomy@gmail.com>",
     "private": true,
@@ -13,10 +13,12 @@
         "lint": "eslint src"
     },
     "dependencies": {
+        "amqplib": "^0.5.2",
         "babel-polyfill": "^6.26.0",
         "bluebird": "^3.5.0",
         "body-parser": "^1.17.2",
         "cors": "^2.8.4",
+        "dotenv": "^5.0.1",
         "express": "^4.15.4",
         "firebase-admin": "^5.2.1",
         "luxon": "^0.2.7"

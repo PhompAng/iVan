@@ -9,7 +9,7 @@ function addStatusToDriver (carId, alarmStatus) {
   .once('value')
   .then((snapshot) => {
     snapshot.forEach((child) => {
-      child.ref.child('alarm_status').push(alarmStatus)
+      admin.database().ref().child('alarm_status/' + child.key).push(alarmStatus)
     })
   })
 }
@@ -21,7 +21,7 @@ function addStatusToTeacher (carId, alarmStatus) {
   .once('value')
   .then((snapshot) => {
     snapshot.forEach((child) => {
-      child.ref.child('alarm_status').push(alarmStatus)
+      admin.database().ref().child('alarm_status/' + child.key).push(alarmStatus)
     })
   })
 }
@@ -59,6 +59,10 @@ function addNotification (carId, alarmStatus) {
       notification: {
         title: 'ALERT!!',
         body: 'We detect sonething leftovered in car ' + car.plate_number
+      },
+      data: {
+        'carId': carId,
+        'schoolId': schoolId
       }
     }
     admin.messaging().sendToTopic(carId, payload)

@@ -19,3 +19,5 @@ export const SET_SENSOR = 'setSensor'
 export const SET_DEVICE = 'setDevice'
 
 export const SET_NOTIFICATION = 'setNotification'
+
+export const SET_DRIVER_ALARM_STATUS = 'setDriverAlarmStatus'

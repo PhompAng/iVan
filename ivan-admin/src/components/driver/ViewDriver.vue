@@ -124,7 +124,7 @@
 
         <b-card
         title="Alarm Status"
-        v-if="this.driver.alarm_status">
+        v-if="this.alarm_status">
           <div
           class="alarm-status"
           v-for="a in this.alarm_status"
@@ -172,7 +172,10 @@
 
 <script>
 import * as firebase from 'firebase'
+import { GET_DRIVER_ALARM_STATUS } from '@/vuex/getter-types'
+import { FETCH_DRIVER_ALARM_STATUS } from '@/vuex/action-types'
 import { DateTime } from 'luxon'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'ViewDriver',
@@ -182,21 +185,11 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      alarm_status: [GET_DRIVER_ALARM_STATUS]
+    }),
     driver () {
       return this.$store.getters.getDriver(this.$route.params.id)
-    },
-    alarm_status () {
-      if (!this.driver.alarm_status) {
-        return []
-      }
-      let arr = []
-      Object.entries(this.driver.alarm_status).forEach(([key, val]) => {
-        let a = JSON.parse(JSON.stringify(val))
-        a['id'] = key
-        arr.push(a)
-      })
-      arr.reverse()
-      return arr
     }
   },
   filters: {
@@ -210,6 +203,7 @@ export default {
   },
   methods: {
     fetch () {
+      this.$store.dispatch(FETCH_DRIVER_ALARM_STATUS, this.$route.params.id)
       firebase.storage().ref().child('drivers/' + this.$route.params.id)
       .getDownloadURL()
       .then((url) => {

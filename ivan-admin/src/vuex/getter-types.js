@@ -23,3 +23,5 @@ export const GET_SENSORS = 'getSensors'
 export const GET_DEVICES = 'getDevices'
 
 export const GET_NOTIFICATIONS = 'getNotifications'
+
+export const GET_DRIVER_ALARM_STATUS = 'getDriverAlarmStatus'

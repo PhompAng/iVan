@@ -1,3 +1,4 @@
+import _ from './env'
 import 'babel-polyfill'
 import server from '~/server'
 import * as admin from 'firebase-admin'

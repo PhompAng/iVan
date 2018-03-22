@@ -1,0 +1,25 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ivan-admin-worker
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      containers:
+      - name: ivan-admin-worker
+        image: phompang/ivan-admin-worker:0.0.3
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "10m"
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3001
+        readinessProbe:
+          httpGet:
+            path: /test
+            port: 3001
