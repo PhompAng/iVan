@@ -1,7 +1,9 @@
 import * as admin from 'firebase-admin'
 
-export default (app) => {
-  app.get('/', function (req, res) {
+export default (app, channel, queue) => {
+  app.post('/', function (req, res) {
+    console.log(req.body)
+    channel.sendToQueue(queue, Buffer.from(JSON.stringify(req.body)))
     res.send('Hello World!')
   })
   app.post('/gen', async function (req, res) {
@@ -25,7 +27,7 @@ export default (app) => {
     }
   })
   app.get('/test', (req, res) => {
-    res.send('tessssssst')
+    res.sendStatus(200)
   })
   app.post('/login', async function (req, res) {
     try {

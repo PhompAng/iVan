@@ -43,7 +43,8 @@ const updatePhoto = (key, form) => {
 }
 
 const state = {
-  drivers: {}
+  drivers: {},
+  alarm_status: {}
 }
 
 const getters = {
@@ -62,6 +63,19 @@ const getters = {
   },
   [getter.GET_DRIVER]: state => arg => {
     return state.drivers[arg]
+  },
+  [getter.GET_DRIVER_ALARM_STATUS]: state => {
+    if (!state.alarm_status) {
+      return []
+    }
+    let arr = []
+    Object.entries(state.alarm_status).forEach(([key, val]) => {
+      let alarm = JSON.parse(JSON.stringify(val))
+      alarm['id'] = key
+      arr.push(alarm)
+    })
+    arr.reverse()
+    return arr
   }
 }
 
@@ -126,12 +140,22 @@ const actions = {
         carId: form.car
       }
     })
+  },
+  [action.FETCH_DRIVER_ALARM_STATUS] ({commit}, driverId) {
+    firebase.database().ref().child('alarm_status/' + driverId)
+    .orderByKey()
+    .on('value', function (snapshot) {
+      commit(mutation.SET_DRIVER_ALARM_STATUS, snapshot.val())
+    })
   }
 }
 
 const mutations = {
   [mutation.SET_DRIVER] (state, snapshot) {
     state.drivers = JSON.parse(JSON.stringify(snapshot))
+  },
+  [mutation.SET_DRIVER_ALARM_STATUS] (state, snapshot) {
+    state.alarm_status = JSON.parse(JSON.stringify(snapshot))
   }
 }
 

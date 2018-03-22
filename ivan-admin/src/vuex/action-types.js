@@ -55,3 +55,5 @@ export const ASSIGN_SENSOR = 'assignSensor'
 export const FETCH_NOTIFICATION = 'fetchNotification'
 
 export const SET_ROUTE = 'setRoute'
+
+export const FETCH_DRIVER_ALARM_STATUS = 'fetchDriverAlarmStatus'

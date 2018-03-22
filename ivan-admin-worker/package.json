@@ -1,0 +1,37 @@
+{
+  "name": "ivan-admin-worker",
+  "version": "0.0.3",
+  "description": "",
+  "author": "PhompAng <tingtong003tomy@gmail.com>",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "nodemon -w src --exec \"babel-node src\"",
+    "build": "babel src -s -D -d dist",
+    "lint": "eslint src"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.5.2",
+    "babel-polyfill": "^6.26.0",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "firebase-admin": "^5.2.1",
+    "luxon": "^0.2.7"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-eslint": "7",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-root-import": "^5.1.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2016": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "3.x",
+    "nodemon": "^1.11.0",
+    "standard": "^10.0.3"
+  }
+}
