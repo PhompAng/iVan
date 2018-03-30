@@ -8,11 +8,12 @@
     </div>
     <b-table striped hover bordered
              :items="schools"
+             :sort-compare="compareSchool"
              :current-page="currentPage"
+             :sort-by.sync="sortBy"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en}}</template>
       <template slot="thName" slot-scope="data">{{data.item.name.th}}</template>
       <template slot="address" slot-scope="data">
@@ -48,6 +49,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { GET_SCHOOLS } from '@/vuex/getter-types'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import { DELETE_SCHOOL, FETCH_SCHOOL } from '@/vuex/action-types'
 import SchoolModal from '@/components/school/SchoolModal'
 import Loading from '@/components/Loading'
@@ -55,11 +57,12 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Schools',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
+      sortBy: null,
       fields: {
-        id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
         thName: { label: 'Thai name', sortable: true },
         address: { label: 'Address' },

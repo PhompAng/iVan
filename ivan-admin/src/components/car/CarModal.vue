@@ -74,6 +74,9 @@
             </div>
           </div>
         </div>
+        <b-form-checkbox v-model="form.work_all_day">
+          work all day
+        </b-form-checkbox>
       </form>
     </b-modal>
   </div>

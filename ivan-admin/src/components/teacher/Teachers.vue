@@ -12,11 +12,11 @@
     </div>
     <b-table striped hover bordered
              :items="teachers"
+             :sort-compare="compare"
              :current-page="currentPage"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
       <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
       <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
@@ -70,7 +70,6 @@ export default {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
         thName: { label: 'Thai name', sortable: true },
         tel: { label: 'Telephone' },
@@ -188,6 +187,17 @@ export default {
       this.form.password = '123456'
       // this.form.telephone = ''
       this.form.file = null
+    },
+    compare (a, b, key) {
+      if (key === 'enName') {
+        return (a.name.en_first + ' ' + a.name.en_last).localeCompare((b.name.en_first + ' ' + b.name.en_last), undefined, {
+          numeric: true
+        })
+      } else if (key === 'thName') {
+        return (a.name.th_first + ' ' + a.name.th_last).localeCompare((b.name.th_first + ' ' + b.name.th_last), undefined, {
+          numeric: true
+        })
+      }
     }
   },
   components: {
