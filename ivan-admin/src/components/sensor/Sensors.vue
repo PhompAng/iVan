@@ -12,11 +12,11 @@
     </div>
     <b-table striped hover bordered
              :items="sensors"
+             :sort-compare="compare"
              :current-page="currentPage"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="serial_number" slot-scope="data">
           {{data.item.serial_number}}
       </template>
@@ -62,6 +62,7 @@
 <script>
 import mockChassis from '@/mocker/mockChassis'
 import { mapGetters } from 'vuex'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import { GET_SCHOOL_SELECT, GET_SENSORS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_SENSOR, FETCH_SENSOR, FETCH_SCHOOL } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
@@ -72,11 +73,11 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Sensor',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
         serial_number: { label: 'Serial Number', sortable: true },
         make_date: { label: 'Make Date', sortable: true },
         status: { label: 'Status' },

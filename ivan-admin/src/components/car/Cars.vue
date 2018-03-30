@@ -12,11 +12,11 @@
     </div>
     <b-table striped hover bordered
              :items="cars"
+             :sort-compare="compare"
              :current-page="currentPage"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="plate_number" slot-scope="data">
           {{data.item.plate_number}}
       </template>
@@ -78,6 +78,7 @@
 import mockChassis from '@/mocker/mockChassis'
 import mockPlate from '@/mocker/mockPlate'
 import mockCar from '@/mocker/mockCar'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_CARS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_CAR, FETCH_CAR, FETCH_SCHOOL } from '@/vuex/action-types'
@@ -89,11 +90,11 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Car',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
         plate_number: { label: 'Plate Number', sortable: true },
         model: { label: 'Model', sortable: true },
         driver: { label: 'Driver' },
@@ -131,7 +132,8 @@ export default {
               HH: '',
               mm: ''
             }
-          }
+          },
+          work_all_day: false
         },
         file: null
       }
@@ -216,6 +218,7 @@ export default {
     },
     clear () {
       this.showModal = false
+      this.work_all_day = false
       this.isCreate = true
       this.form.chassis = mockChassis()
       this.form.plate_number = mockPlate()

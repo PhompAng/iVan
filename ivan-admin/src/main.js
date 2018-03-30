@@ -26,7 +26,7 @@ Vue.config.productionTip = false
 
 Vue.use(BootstrapVue)
 Vue.use(VueTimepicker)
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyCRFqESXfz8hOGnmPwKRX5KfGqTQz-zRwY',

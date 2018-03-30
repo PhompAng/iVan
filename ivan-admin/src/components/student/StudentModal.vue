@@ -49,7 +49,7 @@
             <label for="parent">Parent</label>
             <b-form-select
             class="mb-3"
-            name="parent" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('parent') }"
+            name="parent" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('parent') }" data-vv-validate-on="none"
             v-model="form.parent"
             :options="parents"
             required></b-form-select>

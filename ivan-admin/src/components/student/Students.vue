@@ -12,11 +12,11 @@
     </div>
     <b-table striped hover bordered
              :items="students"
+             :sort-compare="compare"
              :current-page="currentPage"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>      <template slot="no" slot-scope="data">{{data.item.no}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
       <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
       <template slot="action" slot-scope="data">
@@ -52,6 +52,7 @@
 <script>
 import mockName from '@/mocker/mockName'
 import mockStudentId from '@/mocker/mockStudentId'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_STUDENTS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_STUDENT, FETCH_STUDENT, FETCH_SCHOOL, FETCH_PARENT } from '@/vuex/action-types'
@@ -63,14 +64,14 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Students',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
+        no: { label: 'Student ID', sortable: true },
         enName: { label: 'English name', sortable: true },
         thName: { label: 'Thai name', sortable: true },
-        no: { label: 'Student ID' },
         action: { label: 'Action' }
       },
       currentPage: 1,

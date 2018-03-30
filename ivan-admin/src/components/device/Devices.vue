@@ -16,7 +16,6 @@
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="serial_number" slot-scope="data">
           {{data.item.serial_number}}
       </template>
@@ -76,6 +75,7 @@ import mockChassis from '@/mocker/mockChassis'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_DEVICES, GET_USER } from '@/vuex/getter-types'
 import { DELETE_DEVICE, FETCH_DEVICE, FETCH_SCHOOL, FETCH_CAR } from '@/vuex/action-types'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
 import CreateButton from '@/components/CreateButton'
@@ -84,11 +84,11 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Device',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
         serial_number: { label: 'Serial Number', sortable: true },
         make_date: { label: 'Make Date', sortable: true },
         status: { label: 'Status' },

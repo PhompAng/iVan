@@ -12,11 +12,11 @@
     </div>
     <b-table striped hover bordered
              :items="drivers"
+             :sort-compare="compare"
              :current-page="currentPage"
              :per-page="perPage"
              :filter="filter"
              :fields="fields">
-      <template slot="id" slot-scope="data">{{data.index + 1}}</template>
       <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
       <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
       <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
@@ -59,6 +59,7 @@
 import mockName from '@/mocker/mockName'
 import mockEmail from '@/mocker/mockEmail'
 import mockTel from '@/mocker/mockTel'
+import { sortCompare } from '@/components/mixins/sortCompare'
 import { mapGetters } from 'vuex'
 import { GET_SCHOOL_SELECT, GET_DRIVERS, GET_USER } from '@/vuex/getter-types'
 import { DELETE_DRIVER, FETCH_DRIVER, FETCH_SCHOOL } from '@/vuex/action-types'
@@ -70,11 +71,11 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Drivers',
+  mixins: [sortCompare],
   data () {
     return {
       loading: true,
       fields: {
-        id: { label: 'No.', sortable: true },
         enName: { label: 'English name', sortable: true },
         thName: { label: 'Thai name', sortable: true },
         tel: { label: 'Telephone' },
