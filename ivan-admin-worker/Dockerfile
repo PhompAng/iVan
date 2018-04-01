@@ -1,4 +1,4 @@
-FROM node:8.2.1
+FROM node:8.2.1-alpine
 
 ENV NODE_ENV=production \
 		BABEL_DISABLE_CACHE=1

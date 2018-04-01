@@ -35,7 +35,8 @@ const updatePhoto = (key, form) => {
 }
 
 const state = {
-  cars: {}
+  cars: {},
+  mobility_status: {}
 }
 
 const getters = {
@@ -52,21 +53,26 @@ const getters = {
       if (car.time == null) {
         car['time'] = emptyWorkingHour
       }
-      if (car.mobility_status != null) {
-        let mArr = []
-        Object.entries(car.mobility_status).forEach(([key, val]) => {
-          let m = val
-          m['id'] = key
-          mArr.push(m)
-        })
-        car['mobility_status'] = mArr
-      }
       arr.push(car)
     })
     return arr
   },
   [getter.GET_CAR]: state => arg => {
     return state.cars[arg]
+  },
+  [getter.GET_MOBILITY_STATUS]: state => {
+    if (!state.mobility_status) {
+      return []
+    }
+    let obj = {}
+    Object.entries(state.mobility_status).forEach(([key, val]) => {
+      let arr = []
+      Object.entries(val).forEach(([key, val]) => {
+        arr.push(JSON.parse(JSON.stringify(val)))
+      })
+      obj[key] = arr
+    })
+    return obj
   }
 }
 
@@ -194,7 +200,7 @@ const actions = {
         selected.forEach((student) => {
           update['students/' + student.id + '/car'] = carId
         })
-        update['route/' + carId] = null
+        update['cars/' + carId + '/route'] = null
         firebase.database().ref().update(update)
         resolve()
       })
@@ -207,9 +213,16 @@ const actions = {
     let carId = form.carId
     let routes = form.routes
     let waypoints = form.waypoints
-    firebase.database().ref().child('route/' + carId).set({
+    firebase.database().ref().child('cars/' + carId).child('route').set({
       routes: routes,
       waypoints: waypoints
+    })
+  },
+  [action.FETCH_MOBILITY_STATUS] ({commit}, schoolId) {
+    firebase.database().ref().child('mobility_status')
+    .child(schoolId)
+    .on('value', function (snapshot) {
+      commit(mutation.SET_MOBILITY_STATUS, snapshot.val())
     })
   }
 }
@@ -217,6 +230,9 @@ const actions = {
 const mutations = {
   [mutation.SET_CAR] (state, snapshot) {
     state.cars = JSON.parse(JSON.stringify(snapshot))
+  },
+  [mutation.SET_MOBILITY_STATUS] (state, snapshot) {
+    state.mobility_status = JSON.parse(JSON.stringify(snapshot))
   }
 }
 

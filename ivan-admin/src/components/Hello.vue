@@ -30,7 +30,7 @@
           <label class="mr-sm-2" for="cars">Car</label>
           <b-form-select class="mb-2 mr-sm-2 mb-sm-0"
             v-model="currentCar"
-            :options="getHasMobilityCar()"
+            :options="getCarIds()"
             value-field="id"
             @input="this.changeCar"></b-form-select>
 
@@ -49,10 +49,10 @@
            style="width: 100%; height: 700px"
            class="col">
            <gmap-marker
-            v-for="car in getHasMobilityCar()"
+            v-for="car in getCarIds()"
             :key="car.id"
-            :position="getMarkerPosition(car)"
-            :label="car.plate_number"
+            :position="getMarkerPosition(car.id)"
+            :label="getLabel(car.id)"
             icon="/static/van_top.png"
             :clickable="false"
             :draggable="false">
@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { GET_SCHOOL_SELECT, GET_USER, GET_CARS, GET_DRIVERS, GET_STUDENTS } from '@/vuex/getter-types'
-import { FETCH_SCHOOL, FETCH_CAR, FETCH_DRIVER, FETCH_STUDENT } from '@/vuex/action-types'
+import { GET_SCHOOL_SELECT, GET_USER, GET_CARS, GET_DRIVERS, GET_STUDENTS, GET_MOBILITY_STATUS } from '@/vuex/getter-types'
+import { FETCH_SCHOOL, FETCH_CAR, FETCH_DRIVER, FETCH_STUDENT, FETCH_MOBILITY_STATUS } from '@/vuex/action-types'
 import ChooseSchools from '@/components/ChooseSchools'
 
 export default {
@@ -87,7 +87,8 @@ export default {
       user: [GET_USER],
       cars: [GET_CARS],
       drivers: [GET_DRIVERS],
-      students: [GET_STUDENTS]
+      students: [GET_STUDENTS],
+      mobility_statuses: [GET_MOBILITY_STATUS]
     })
   },
   watch: {
@@ -95,6 +96,7 @@ export default {
       this.$store.dispatch(FETCH_CAR, params)
       this.$store.dispatch(FETCH_DRIVER, params)
       this.$store.dispatch(FETCH_STUDENT, params)
+      this.$store.dispatch(FETCH_MOBILITY_STATUS, params)
       this.school = params
     },
     schools: function (params) {
@@ -103,6 +105,7 @@ export default {
         this.$store.dispatch(FETCH_CAR, params[0].value)
         this.$store.dispatch(FETCH_DRIVER, params[0].value)
         this.$store.dispatch(FETCH_STUDENT, params[0].value)
+        this.$store.dispatch(FETCH_MOBILITY_STATUS, params[0].value)
       }
     }
   },
@@ -117,19 +120,32 @@ export default {
         this.school = this.user.school
       }
     },
-    getHasMobilityCar () {
-      return this.cars.filter(c => c.mobility_status != null)
-    },
-    getMarkerPosition (car) {
-      let last = car.mobility_status.length - 1
-      return {
-        lat: car.mobility_status[last].lat,
-        lng: car.mobility_status[last].lng
+    getCarIds () {
+      if (!this.mobility_statuses) {
+        return []
       }
+      let arr = []
+      Object.entries(this.mobility_statuses).forEach(([key, val]) => {
+        let car = this.cars.filter(c => c.id === key)[0]
+        car['id'] = key
+        arr.push(car)
+      })
+      return arr
+    },
+    getMarkerPosition (carId) {
+      let last = this.mobility_statuses[carId].length - 1
+      return {
+        lat: this.mobility_statuses[carId][last].lat,
+        lng: this.mobility_statuses[carId][last].lng
+      }
+    },
+    getLabel (carId) {
+      let car = this.cars.filter(c => c.id === carId)[0]
+      return car.plate_number
     },
     changeCar (e) {
       let car = this.cars.filter(c => c.id === e)[0]
-      let latLng = this.getMarkerPosition(car)
+      let latLng = this.getMarkerPosition(car.id)
       this.$refs.map.panTo(latLng)
       this.$refs.map.$mapObject.setZoom(17)
     },

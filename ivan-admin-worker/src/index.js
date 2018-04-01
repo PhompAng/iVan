@@ -2,6 +2,7 @@ import _ from './env'
 import 'babel-polyfill'
 import * as admin from 'firebase-admin'
 import createQueueChannel from './channel'
+import mobilityStatus from './mobilityStatus'
 import express from 'express'
 var serviceAccount = require('~/resources/ivan-61013-firebase-adminsdk-nnum2-db72a74267')
 
@@ -22,27 +23,7 @@ app.get('/test', (req, res) => {
 var queue = process.env.AMQP_QUEUE || 'ivan-status'
 let testQueue = 'test'
 
-createQueueChannel(queue)
-.then(channel => {
-  console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue)
-  channel.consume(queue, async (msg) => {
-    let req = JSON.parse(msg.content.toString())
-    console.log(' [x] Received %s: %s', queue, msg.content.toString())
-    try {
-      var carId = req.car_id
-
-      var status = req.mobility_status
-      delete status.timestamp
-      status.timestamp = admin.database.ServerValue.TIMESTAMP
-      var result = await admin.database().ref().child('cars/' + carId).child('mobility_status').push(status)
-
-      console.log(result)
-    } catch (err) {
-      console.error('Error: ', err)
-    }
-  }, {noAck: true})
-})
-.catch(error => console.log(error))
+mobilityStatus(queue)
 
 createQueueChannel(testQueue)
 .then(channel => {

@@ -133,7 +133,7 @@ export default {
       })
     },
     checkWaypoint () {
-      firebase.database().ref().child('route/' + this.$route.params.id)
+      firebase.database().ref().child('cars/' + this.$route.params.id).child('route/')
       .once('value')
       .then((snapshot) => {
         if (snapshot.val() && snapshot.val().waypoints) {
@@ -180,11 +180,16 @@ export default {
       this.setWaypointVisibility(true)
     },
     setRoute () {
-      swal({
-        title: 'Complete',
-        icon: 'success'
-      })
       this.route()
+      .then(() => {
+        swal({
+          title: 'Complete',
+          icon: 'success'
+        })
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
     route () {
       this.setWaypointVisibility(false)
@@ -199,26 +204,32 @@ export default {
           wp.push(waypoint)
         }
       }
-      it.directionsService.route({
-        origin: this.school.location,
-        destination: this.school.location,
-        waypoints: wp,
-        avoidTolls: true,
-        avoidHighways: false,
-        optimizeWaypoints: false,
-        travelMode: google.maps.TravelMode.DRIVING
-      }, function (response, status) {
-        if (status === google.maps.DirectionsStatus.OK) {
-          console.log(response)
-          it.$store.dispatch(SET_ROUTE, {
-            carId: it.car.id,
-            waypoints: it.car.students,
-            routes: JSON.stringify(response)
-          })
-          it.directionsDisplay.setDirections(response)
-        } else {
-          window.alert(status)
-        }
+      return new Promise((resolve, reject) => {
+        it.directionsService.route({
+          origin: this.school.location,
+          destination: this.school.location,
+          waypoints: wp,
+          avoidTolls: true,
+          avoidHighways: false,
+          optimizeWaypoints: false,
+          travelMode: google.maps.TravelMode.DRIVING
+        }, function (response, status) {
+          if (status === google.maps.DirectionsStatus.OK) {
+            response.routes[0].overview_polyline = {
+              points: response.routes[0].overview_polyline
+            }
+            it.$store.dispatch(SET_ROUTE, {
+              carId: it.car.id,
+              waypoints: it.car.students,
+              routes: JSON.stringify(response)
+            })
+            it.directionsDisplay.setDirections(response)
+            resolve()
+          } else {
+            window.alert(status)
+            reject(status)
+          }
+        })
       })
     }
   },
