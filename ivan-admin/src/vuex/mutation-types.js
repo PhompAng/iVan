@@ -21,3 +21,5 @@ export const SET_DEVICE = 'setDevice'
 export const SET_NOTIFICATION = 'setNotification'
 
 export const SET_DRIVER_ALARM_STATUS = 'setDriverAlarmStatus'
+
+export const SET_MOBILITY_STATUS = 'setMobilityStatus'

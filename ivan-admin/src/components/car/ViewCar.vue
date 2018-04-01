@@ -86,33 +86,6 @@
             </div>
           </b-card>
         </b-card-group>
-
-        <div class="row">
-          <div class="col-lg-6">
-            <b-card-group v-if="this.car.mobility_status">
-              <b-card
-                title="Mobility Status">
-                  <div class="mobility-status" v-for="m in this.mobility_status" :key="m.id">
-                    <p>
-                      <strong>Oil level: </strong>
-                      <span class="text-success">{{m.oil_level}} %</span>
-                    </p>
-                    <p>
-                      <strong>Speed: </strong>
-                      <span class="text-warning">{{m.speed}} km/h</span>
-                    </p>
-
-                    <p class="text-right text-secondary">
-                      <small>
-                        {{m.timestamp | time}}
-                      </small>
-                    </p>
-                    <hr>
-                  </div>
-              </b-card>
-            </b-card-group>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -132,19 +105,6 @@ export default {
   computed: {
     car () {
       return this.$store.getters.getCar(this.$route.params.id)
-    },
-    mobility_status () {
-      if (!this.car.mobility_status) {
-        return []
-      }
-      let arr = []
-      Object.entries(this.car.mobility_status).forEach(([key, val]) => {
-        let m = JSON.parse(JSON.stringify(val))
-        m['id'] = key
-        arr.push(m)
-      })
-      arr.reverse()
-      return arr
     }
   },
   filters: {
@@ -175,8 +135,5 @@ export default {
 <style scoped>
 .card-image {
   width: 100%;
-}
-.mobility-status {
-  font-weight: bold;
 }
 </style>

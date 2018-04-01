@@ -1,6 +1,6 @@
 {
   "name": "ivan-admin-worker",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "",
   "author": "PhompAng <tingtong003tomy@gmail.com>",
   "private": true,
@@ -18,7 +18,7 @@
     "dotenv": "^5.0.1",
     "express": "^4.16.3",
     "firebase-admin": "^5.2.1",
-    "luxon": "^0.2.7"
+    "luxon": "^0.5.8"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

@@ -47,7 +47,7 @@ function addNotification (carId, alarmStatus) {
       console.log(userId)
       admin.database().ref().child('notifications/' + userId).push(
         {
-          text: 'We detect sonething leftovered in car ' + car.plate_number,
+          text: 'We detect something left over in car ' + car.plate_number,
           car: carId,
           timestamp: admin.database.ServerValue.TIMESTAMP,
           alarm_status: alarmStatus,
@@ -62,7 +62,8 @@ function addNotification (carId, alarmStatus) {
       },
       data: {
         'carId': carId,
-        'schoolId': schoolId
+        'schoolId': schoolId,
+        'type': 'ALERT'
       }
     }
     admin.messaging().sendToTopic(carId, payload)
