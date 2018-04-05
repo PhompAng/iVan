@@ -108,6 +108,7 @@ export default (app) => {
       var carId = req.body.car_id
       var alarmStatus = req.body.alarm_status
       alarmStatus.timestamp = admin.database.ServerValue.TIMESTAMP
+      alarmStatus.carId = carId
       alarmStatus.data.forEach(d => {
         delete d.timestamp
         d.timestamp = admin.database.ServerValue.TIMESTAMP
