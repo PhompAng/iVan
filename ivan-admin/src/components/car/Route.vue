@@ -1,10 +1,8 @@
 <template>
   <div>
-    <h2>Manage Route</h2>
     <div class="row">
       <div class="col-8">
-        <b-card header="Route">
-          <gmap-map
+        <gmap-map
                 ref="map"
                 :center="latLng"
                 :zoom="12"
@@ -19,55 +17,106 @@
               </gmap-marker>
             </div>
           </gmap-map>
-        </b-card>
       </div>
 
       <div class="col">
         <b-card header="Waypoint" body-class="waypoint-body">
-          <ul class="list-unstyled">
-            <b-card class="disabled bg-light mb-2">
-              <div class="index">
-                <h3>A: School</h3>
-              </div>
-              <div class="address" v-if="this.school">
-                <p>
-                  <span>{{ this.school.address.line1 }}</span>
-                  <span>{{ this.school.address.line2 }}</span>
-                </p>
-                <p>
-                  <span>{{ this.school.address.district }}</span>
-                  <span>{{ this.school.address.city }}</span>
-                  <span>{{ this.school.address.province }}</span>
-                </p>
-              </div>
-            </b-card>
-
-            <div v-if="this.car && this.car.students">
-              <draggable v-model="car.students" @end="refresh">
-                <b-card
-                  class="waypoint"
-                  v-for="(student, index) in this.car.students"
-                  :key="student.id">
-                  <div class="index">
-                    <h3>{{ index + 1 | toChar}}: {{ student.text }}</h3>
-                  </div>
-                  <div class="address">
-                    <p>
-                      <span>{{ student.address.line1 }}</span>
-                      <span>{{ student.address.line2 }}</span>
-                    </p>
-                    <p>
-                      <span>{{ student.address.district }}</span>
-                      <span>{{ student.address.city }}</span>
-                      <span>{{ student.address.province }}</span>
-                    </p>
-                  </div>
-                </b-card>
-              </draggable>
+          <div v-if="this.time == 'morning'" class="waypoint disabled mb-2">
+            <div class="index">
+              <h4>A</h4>
             </div>
-          </ul>
+            <div class="address" v-if="this.driver">
+              <h3>Driver</h3>
+              <p>
+                <span>{{ this.driver.address.line1 }}</span>
+                <span>{{ this.driver.address.line2 }}</span>
+              </p>
+              <p>
+                <span>{{ this.driver.address.district }}</span>
+                <span>{{ this.driver.address.city }}</span>
+                <span>{{ this.driver.address.province }}</span>
+              </p>
+            </div>
+          </div>
 
-          <b-btn variant="primary" @click="setRoute">
+          <div v-if="this.time == 'evening'" class="waypoint disabled mb-2">
+            <div class="index">
+              <h4>A</h4>
+            </div>
+            <div class="address" v-if="this.school">
+              <h3>School</h3>
+              <p>
+                <span>{{ this.school.address.line1 }}</span>
+                <span>{{ this.school.address.line2 }}</span>
+              </p>
+              <p>
+                <span>{{ this.school.address.district }}</span>
+                <span>{{ this.school.address.city }}</span>
+                <span>{{ this.school.address.province }}</span>
+              </p>
+            </div>
+          </div>
+
+          <draggable v-if="this.car && this.car.students" v-model="car.students" @end="refresh">
+            <div
+              class="waypoint"
+              v-for="(student, index) in this.car.students"
+              :key="student.id">
+              <div class="index">
+                <h4>{{ index + 1 | toChar }}</h4>
+              </div>
+              <div class="address">
+                <h3>{{ student.text }}</h3>
+                <p>
+                  <span>{{ student.address.line1 }}</span>
+                  <span>{{ student.address.line2 }}</span>
+                </p>
+                <p>
+                  <span>{{ student.address.district }}</span>
+                  <span>{{ student.address.city }}</span>
+                  <span>{{ student.address.province }}</span>
+                </p>
+              </div>
+            </div>
+          </draggable>
+
+          <div v-if="this.time == 'evening'" class="waypoint disabled mb-2">
+            <div class="index">
+              <h4>{{ this.car ? this.car.students.length + 1 : 1 | toChar }}</h4>
+            </div>
+            <div class="address" v-if="this.driver">
+              <h3>Driver</h3>
+              <p>
+                <span>{{ this.driver.address.line1 }}</span>
+                <span>{{ this.driver.address.line2 }}</span>
+              </p>
+              <p>
+                <span>{{ this.driver.address.district }}</span>
+                <span>{{ this.driver.address.city }}</span>
+                <span>{{ this.driver.address.province }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div v-if="this.time == 'morning'" class="waypoint disabled mb-2">
+            <div class="index">
+              <h4>{{ this.car ? this.car.students.length + 1 : 1 | toChar }}</h4>
+            </div>
+            <div class="address" v-if="this.school">
+              <h3>School</h3>
+              <p>
+                <span>{{ this.school.address.line1 }}</span>
+                <span>{{ this.school.address.line2 }}</span>
+              </p>
+              <p>
+                <span>{{ this.school.address.district }}</span>
+                <span>{{ this.school.address.city }}</span>
+                <span>{{ this.school.address.province }}</span>
+              </p>
+            </div>
+          </div>
+
+          <b-btn variant="primary" class="btn" @click="setRoute">
             Set Route
           </b-btn>
         </b-card>
@@ -85,10 +134,17 @@ import swal from 'sweetalert'
 
 export default {
   name: 'Route',
+  props: {
+    time: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       school: null,
       car: null,
+      driver: null,
       waypoints: [],
       showWaypoint: true,
       latLng: {
@@ -114,57 +170,124 @@ export default {
       .then((snapshot) => {
         this.car = snapshot.val()
         this.car['id'] = snapshot.key
-        firebase.database().ref().child('schools/' + snapshot.val().school)
+        if (this.car.drivers[0].id) {
+          return this.loadDriver(this.car.drivers[0].id)
+        } else {
+          alert('NO DRIVER!')
+          return
+        }
+      })
+      .then(() => {
+        return this.loadSchool(this.car.school)
+      })
+      .then(() => {
+        return this.init()
+      })
+      .then(() => {
+        this.checkWaypoint()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    },
+    loadDriver (driverId) {
+      return new Promise((resolve, reject) => {
+        firebase.database().ref().child('drivers/' + driverId)
+        .once('value')
+        .then((snapshot) => {
+          this.driver = snapshot.val()
+          this.driver['id'] = snapshot.key
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
+      })
+    },
+    loadSchool (schoolId) {
+      return new Promise((resolve, reject) => {
+        firebase.database().ref().child('schools/' + schoolId)
         .once('value')
         .then((snapshot) => {
           this.school = snapshot.val()
           this.school['id'] = snapshot.key
-          this.checkWaypoint()
-          this.init()
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
         })
       })
     },
     init () {
       const google = window.google
-      loaded.then(() => {
-        this.directionsService = new google.maps.DirectionsService()
-        this.directionsDisplay = new google.maps.DirectionsRenderer()
-        this.directionsDisplay.setMap(this.$refs.map.$mapObject)
+      return new Promise((resolve, reject) => {
+        loaded.then(() => {
+          this.directionsService = new google.maps.DirectionsService()
+          this.directionsDisplay = new google.maps.DirectionsRenderer()
+          this.directionsDisplay.setMap(this.$refs.map.$mapObject)
+          resolve()
+        })
       })
     },
     checkWaypoint () {
-      firebase.database().ref().child('cars/' + this.$route.params.id).child('route/')
-      .once('value')
-      .then((snapshot) => {
-        if (snapshot.val() && snapshot.val().waypoints) {
-          this.car.students = JSON.parse(JSON.stringify(snapshot.val().waypoints))
-          this.setWaypoint()
-          this.route()
-        } else {
-          this.setWaypoint()
-        }
+      return new Promise((resolve, reject) => {
+        firebase.database().ref().child('cars/' + this.$route.params.id).child('route/').child(this.time)
+        .once('value')
+        .then((snapshot) => {
+          if (snapshot.val() && snapshot.val().waypoints) {
+            this.car.students = JSON.parse(JSON.stringify(snapshot.val().waypoints))
+            this.setWaypoint()
+            this.route()
+          } else {
+            this.setWaypoint()
+          }
+          resolve()
+        })
+        .catch((error) => {
+          reject(error)
+        })
       })
     },
     setWaypoint () {
-      this.waypoints.push({
-        id: this.school.id,
-        label: String.fromCharCode(65),
-        stopover: true,
-        location: {
-          lat: this.school.location.lat,
-          lng: this.school.location.lng
-        }
-      })
-      for (const [index, student] of this.car.students.entries()) {
+      let offset = 0
+
+      if (this.time === 'morning') {
+        offset += 1
+        this.waypoints.push({
+          id: this.driver.id,
+          label: String.fromCharCode(65),
+          stopover: true,
+          location: {
+            lat: this.driver.location.lat,
+            lng: this.driver.location.lng
+          }
+        })
+      }
+
+      if (this.time === 'evening') {
+        offset += 1
+        this.waypoints.push({
+          id: this.school.id,
+          label: String.fromCharCode(65),
+          stopover: true,
+          location: {
+            lat: this.school.location.lat,
+            lng: this.school.location.lng
+          }
+        })
+      }
+
+      for (const student of this.car.students.values()) {
         this.waypoints.push({
           id: student.id,
-          label: String.fromCharCode(65 + index + 1),
+          label: String.fromCharCode(65 + offset),
           stopover: true,
           location: {
             lat: student.location.lat,
             lng: student.location.lng
           }
         })
+        offset += 1
       }
     },
     setWaypointVisibility (visibility) {
@@ -204,10 +327,21 @@ export default {
           wp.push(waypoint)
         }
       }
+
+      let origin
+      let destination
+      if (this.time === 'morning') {
+        origin = this.driver.location
+        destination = this.school.location
+      } else {
+        origin = this.school.location
+        destination = this.driver.location
+      }
+
       return new Promise((resolve, reject) => {
         it.directionsService.route({
-          origin: this.school.location,
-          destination: this.school.location,
+          origin: origin,
+          destination: destination,
           waypoints: wp,
           avoidTolls: true,
           avoidHighways: false,
@@ -221,6 +355,7 @@ export default {
             it.$store.dispatch(SET_ROUTE, {
               carId: it.car.id,
               waypoints: it.car.students,
+              time: it.time,
               routes: JSON.stringify(response)
             })
             it.directionsDisplay.setDirections(response)
@@ -242,34 +377,50 @@ export default {
 <style scoped>
 .waypoint-body {
   display: flex;
-}
-.card-body {
   flex-direction: column;
   align-items: stretch;
-}
-.card-body > ul {
-  width: 100%;
-}
-.waypoint:first-child {
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-}
-.waypoint:not(:first-child):not(:last-child) {
-  border-radius: 0;
-}
-.waypoint:last-child {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+  background-color: #f9f9f9;
 }
 .disabled {
   cursor: not-allowed;
   color: #868e96 !important;
 }
+.disabled > .address {
+  background-color: #EEEEEE;
+}
+.waypoint {
+  display: flex;
+  padding: 0.5em 0;
+}
 .index {
+  background: #EA4335;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-top: 15px;
+  color: #fff;
 }
 .address {
+  flex: 1;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 15px;
+}
+.address > h3 {
+  padding: 10px;
+  background: #EA4335;
+  color: #fff;
+  margin: -15px -15px 0 -15px;
+  border-radius: 3px 3px 0 0;
 }
 .address > p {
   margin-bottom: 0;
+}
+.btn {
+  margin-top: 20px;
 }
 </style>

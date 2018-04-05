@@ -20,6 +20,25 @@ const updatePhoto = (key, form) => {
   })
 }
 
+const updateStudentsLocation = (parentId, form) => {
+  return new Promise((resolve, reject) => {
+    firebase.database().ref().child('students')
+    .orderByChild('parent')
+    .equalTo(parentId)
+    .once('value')
+    .then((snapshot) => {
+      snapshot.forEach((child) => {
+        firebase.database().ref().child('students/' + child.key).child('address').set(form.address)
+        firebase.database().ref().child('students/' + child.key).child('location').set(form.location)
+      })
+      resolve()
+    })
+    .catch((error) => {
+      reject(error)
+    })
+  })
+}
+
 const state = {
   parents: {}
 }
@@ -72,6 +91,9 @@ const actions = {
   [action.UPDATE_PARENT] ({commit}, form) {
     return new Promise((resolve, reject) => {
       firebase.database().ref().child('parents/' + form.id).set(form)
+      .then(() => {
+        return updateStudentsLocation(form.id, form)
+      })
       .then(() => {
         return updatePhoto(form.id, form)
       })
