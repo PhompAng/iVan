@@ -211,9 +211,10 @@ const actions = {
   },
   [action.SET_ROUTE] ({commit}, form) {
     let carId = form.carId
+    let time = form.time
     let routes = form.routes
     let waypoints = form.waypoints
-    firebase.database().ref().child('cars/' + carId).child('route').set({
+    firebase.database().ref().child('cars/' + carId).child('route').child(time).set({
       routes: routes,
       waypoints: waypoints
     })

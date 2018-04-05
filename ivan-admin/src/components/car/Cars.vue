@@ -57,7 +57,7 @@
           </b-button>
         </router-link>
         <router-link
-          :to="{name: 'Route', params: {id: data.item.id}}">
+          :to="{name: 'ManageRoute', params: {id: data.item.id}}">
           <b-button size="sm" variant="info">
             Route
           </b-button>

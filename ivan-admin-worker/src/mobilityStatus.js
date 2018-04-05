@@ -37,6 +37,17 @@ function getCarHistoryRef (car, carId) {
   return null
 }
 
+function getWaypoint (car) {
+  let inMorningTime = getMorningTime(car).contains(DateTime.local())
+  let inEveningTime = getEveningTime(car).contains(DateTime.local())
+  if (inMorningTime) {
+    return car.route.morning.waypoints
+  } else if (inEveningTime) {
+    return car.route.evening.waypoints
+  }
+  return null
+}
+
 async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId) {
   let rawCarHistory = await carHistoryRef.once('value')
   let carHistory = rawCarHistory.val()
@@ -91,7 +102,7 @@ export default (queue) => {
         let rawCar = await admin.database().ref().child('cars/' + carId).once('value')
         let car = rawCar.val()
 
-        let waypoints = car.route.waypoints
+        let waypoints = getWaypoint(car)
         if (waypoints != null) {
           await checkNearHome(waypoints, car, carLocation)
         }
