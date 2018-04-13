@@ -8,10 +8,10 @@ const minDistance = 1000
 
 function sendNotification (carId) {
   let payload = {
-    notification: {
-      title: 'WARNING',
-      body: 'รถใกล้ถึงบ้านแล้วจ้า'
-    },
+    // notification: {
+    //   title: 'WARNING',
+    //   body: 'รถใกล้ถึงบ้านแล้วจ้า'
+    // },
     data: {
       'type': 'NOTIFY'
     }
