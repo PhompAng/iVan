@@ -56,13 +56,16 @@ function addNotification (carId, alarmStatus) {
       )
     }
     let payload = {
-      notification: {
-        title: 'ALERT!!',
-        body: 'We detect sonething leftovered in car ' + car.plate_number
-      },
+      // notification: {
+      //   title: 'ALERT!!',
+      //   body: 'We detect sonething leftovered in car ' + car.plate_number
+      // },
       data: {
         'carId': carId,
+        'carPlateNumber': car.plate_number,
         'schoolId': schoolId,
+        'lat': alarmStatus.location.lat.toString(),
+        'lng': alarmStatus.location.lng.toString(),
         'type': 'ALERT'
       }
     }
