@@ -4,7 +4,9 @@ import teachers from '~/server/teachers'
 import students from '~/server/students'
 import parents from '~/server/parents'
 import drivers from '~/server/drivers'
+import reportFalse from '~/server/reportFalse'
 import detect from '~/server/iot/detect'
+import confirm from '~/server/iot/confirm'
 import status from '~/server/iot/status'
 import createQueueChannel from './channel'
 import express from 'express'
@@ -39,5 +41,7 @@ students(app)
 parents(app)
 drivers(app)
 detect(app)
+confirm(app)
+reportFalse(app)
 
 export default app

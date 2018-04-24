@@ -1,6 +1,7 @@
 import * as admin from 'firebase-admin'
 import { DateTime } from 'luxon'
 import { getMorningTime, getEveningTime } from './workingHour'
+const uuidV1 = require('uuid/v1')
 
 function addStatusToDriver (carId, alarmStatus) {
   return admin.database().ref().child('drivers')
@@ -26,7 +27,11 @@ function addStatusToTeacher (carId, alarmStatus) {
   })
 }
 
-function addNotification (carId, alarmStatus) {
+function addAlarmStatus (alarmStatus, uid) {
+  return admin.database().ref().child('alarm_status_data/' + uid).set(alarmStatus)
+}
+
+function addNotification (carId, alarmStatus, timestamp, uid) {
   return admin.database().ref().child('cars/' + carId)
   .once('value')
   .then((snapshot) => {
@@ -49,7 +54,8 @@ function addNotification (carId, alarmStatus) {
         {
           text: 'We detect something left over in car ' + car.plate_number,
           car: carId,
-          timestamp: admin.database.ServerValue.TIMESTAMP,
+          timestamp: timestamp,
+          uid: uid,
           alarm_status: alarmStatus,
           school: schoolId
         }
@@ -66,7 +72,8 @@ function addNotification (carId, alarmStatus) {
         'schoolId': schoolId,
         'lat': alarmStatus.location.lat.toString(),
         'lng': alarmStatus.location.lng.toString(),
-        'type': 'ALERT'
+        'type': 'ALERT',
+        'uid': uid
       }
     }
     admin.messaging().sendToTopic(carId, payload)
@@ -108,35 +115,41 @@ function isDetected (alarmStatus) {
 export default (app) => {
   app.post('/detect', async function (req, res) {
     try {
+      let timestamp = admin.database.ServerValue.TIMESTAMP
+      let uid = uuidV1()
       var carId = req.body.car_id
       var alarmStatus = req.body.alarm_status
-      alarmStatus.timestamp = admin.database.ServerValue.TIMESTAMP
+      alarmStatus.timestamp = timestamp
+      alarmStatus.uid = uid
       alarmStatus.carId = carId
+      alarmStatus.isReportFalse = false
       alarmStatus.data.forEach(d => {
         delete d.timestamp
-        d.timestamp = admin.database.ServerValue.TIMESTAMP
+        d.timestamp = timestamp
       })
 
       let isWorkingHour = await isInWorkingHour(carId)
       console.log(isWorkingHour)
       if (true || isWorkingHour && isDetected(alarmStatus)) {
-        var notification = addNotification(carId, alarmStatus)
+        var notification = addNotification(carId, alarmStatus, timestamp, uid)
         var drivers = addStatusToDriver(carId, alarmStatus)
         var teachers = addStatusToTeacher(carId, alarmStatus)
+        var status = addAlarmStatus(alarmStatus, uid)
 
         var result = await Promise.all([
           notification,
           drivers,
-          teachers
+          teachers,
+          status
         ])
 
-        res.send(result)
+        res.json(result)
       } else {
-        res.send()
+        res.json()
       }
     } catch (err) {
       console.log('Error:', err)
-      res.send(err)
+      res.status(400).json(err)
     }
   })
 }
