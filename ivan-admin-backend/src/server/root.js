@@ -4,7 +4,7 @@ export default (app, channel, queue) => {
   app.post('/', function (req, res) {
     console.log(req.body)
     channel.sendToQueue(queue, Buffer.from(JSON.stringify(req.body)))
-    res.send('Hello World!')
+    res.json('Hello World!')
   })
   app.post('/gen', async function (req, res) {
     try {
@@ -20,10 +20,10 @@ export default (app, channel, queue) => {
         role: 99
       })
 
-      res.send(result)
+      res.json(result)
     } catch (err) {
       console.log('Error creating new user:', err)
-      res.send(err)
+      res.status(400).json(err)
     }
   })
   app.get('/test', (req, res) => {
@@ -49,16 +49,16 @@ export default (app, channel, queue) => {
       }
 
       let result = await admin.messaging().sendToTopic(carId, payload)
-      res.send(result)
+      res.json(result)
     } catch (err) {
       console.log(err)
-      res.send(err)
+      res.status(400).json(err)
     }
   })
   app.post('/login', async function (req, res) {
     try {
       var decodedToken = await admin.auth().verifyIdToken(req.body.idToken)
-      res.send(decodedToken.uid)
+      res.json(decodedToken.uid)
     } catch (err) {
       console.log(err)
     }

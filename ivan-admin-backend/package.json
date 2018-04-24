@@ -1,6 +1,6 @@
 {
     "name": "ivan-admin-backend",
-    "version": "0.0.10",
+    "version": "0.0.19",
     "description": "ivan-admin backend",
     "author": "PhompAng <tingtong003tomy@gmail.com>",
     "private": true,
@@ -21,7 +21,8 @@
         "dotenv": "^5.0.1",
         "express": "^4.15.4",
         "firebase-admin": "^5.2.1",
-        "luxon": "^0.2.7"
+        "luxon": "^0.2.7",
+        "uuid": "^3.2.1"
     },
     "devDependencies": {
         "babel-cli": "^6.24.1",

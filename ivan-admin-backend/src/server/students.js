@@ -28,10 +28,10 @@ export default (app) => {
         admin.storage().bucket().file('students/' + req.body.uid).delete(),
         updateStudentsInCar(req.body.carId, req.body.uid)
       ])
-      res.send('Success')
+      res.json('Success')
     } catch (err) {
       console.log(err)
-      res.send(err)
+      res.status(400).json(err)
     }
   })
 }

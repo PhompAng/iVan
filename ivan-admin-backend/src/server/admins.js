@@ -9,10 +9,10 @@ export default (app) => {
         admin.database().ref().child('users/' + req.body.uid).remove(),
         admin.storage().bucket().file('admins/' + req.body.uid).delete()
       ])
-      res.send('Success')
+      res.json('Success')
     } catch (err) {
       console.log(err)
-      res.send(err)
+      res.status(400).json(err)
     }
   })
 }

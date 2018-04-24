@@ -48,20 +48,20 @@ function getWaypoint (car) {
   return null
 }
 
-async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId) {
+async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId, timestamp) {
   let rawCarHistory = await carHistoryRef.once('value')
   let carHistory = rawCarHistory.val()
   if (carHistory == null) {
     if (isInRange(waypoints[0].location, carLocation, minDistance)) {
       let w = waypoints[0]
-      w.timestamp = admin.database.ServerValue.TIMESTAMP
+      w.timestamp = timestamp
       carHistoryRef.push(w)
       saveHistoryToStudent(w, w.id)
       sendNotification(carId)
     }
   } else {
     let waypoint = waypoints[rawCarHistory.numChildren()]
-    waypoint.timestamp = admin.database.ServerValue.TIMESTAMP
+    waypoint.timestamp = timestamp
     if (waypoint != null && isInRange(waypoint.location, carLocation, minDistance)) {
       carHistoryRef.push(waypoint)
       saveHistoryToStudent(waypoint, waypoint.id)
@@ -72,12 +72,12 @@ async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId) {
   }
 }
 
-async function checkNearHome (waypoints, car, carLocation) {
+async function checkNearHome (waypoints, car, carLocation, timestamp) {
   let carId = car.id
   if (car.time != null) {
     let carHistoryRef = getCarHistoryRef(car, carId)
     if (carHistoryRef != null) {
-      await saveCarHistory(waypoints, carLocation, carHistoryRef, carId)
+      await saveCarHistory(waypoints, carLocation, carHistoryRef, carId, timestamp)
     }
   }
 }
@@ -87,13 +87,14 @@ export default (queue) => {
   .then(channel => {
     console.log(' [*] Waiting for messages in %s. To exit press CTRL+C', queue)
     channel.consume(queue, async (msg) => {
+      let timestamp = admin.database.ServerValue.TIMESTAMP
       let req = JSON.parse(msg.content.toString())
       console.log(' [x] Received %s: %s', queue, msg.content.toString())
       try {
         var carId = req.car_id
         var status = req.mobility_status
         delete status.timestamp
-        status.timestamp = admin.database.ServerValue.TIMESTAMP
+        status.timestamp = timestamp
         let carLocation = {
           lat: status.lat,
           lng: status.lng
@@ -104,7 +105,7 @@ export default (queue) => {
 
         let waypoints = getWaypoint(car)
         if (waypoints != null) {
-          await checkNearHome(waypoints, car, carLocation)
+          await checkNearHome(waypoints, car, carLocation, timestamp)
         }
 
         await admin.database().ref().child('mobility_status').child(car.school).child(carId).push(status)
