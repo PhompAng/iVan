@@ -19,7 +19,7 @@
             <span v-show="errors.has('serial_number')" class="text-danger">{{ errors.first('serial_number') }}</span>
           </div>
           <div class="form-group col">
-            <label for="make_date">Make Date</label>
+            <label for="make_date">Installation Date</label>
             <input name="make_date" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('make_date') }" type="date" v-model="form.make_date" class="form-control" placeholder="">
             <span v-show="errors.has('make_date')" class="text-danger">{{ errors.first('make_date') }}</span>
           </div>

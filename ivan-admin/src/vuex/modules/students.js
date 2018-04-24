@@ -59,6 +59,9 @@ const getters = {
       arr.push(student)
     })
     return arr
+  },
+  [getter.GET_STUDENT]: state => arg => {
+    return state.students[arg]
   }
 }
 

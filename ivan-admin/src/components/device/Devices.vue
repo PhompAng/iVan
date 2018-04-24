@@ -1,7 +1,7 @@
 <template>
   <div>
     <loading :isShow="this.loading"></loading>
-    <h2>Devices</h2>
+    <h2>Central Modules</h2>
     <div class="row">
       <choose-schools class="col"
       :user="user"
@@ -65,6 +65,7 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Central Module'"
       v-on:create="create"></create-button>
     <device-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></device-modal>
   </div>

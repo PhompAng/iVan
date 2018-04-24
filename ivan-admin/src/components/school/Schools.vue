@@ -40,7 +40,7 @@
     <b-col class="row justify-content-center">
       <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
     </b-col>
-    <b-btn variant="primary" @click="createSchool">Create</b-btn>
+    <b-btn variant="primary" @click="createSchool">Add School</b-btn>
     <school-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></school-modal>
 
   </div>

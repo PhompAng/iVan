@@ -21,6 +21,10 @@
       <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
       <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
       <template slot="action" slot-scope="data">
+        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
+          <i class="ti-eye"></i>
+          View
+        </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -36,9 +40,9 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Parent'"
       v-on:create="create"></create-button>
     <parent-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></parent-modal>
-
   </div>
 </template>
 
@@ -143,7 +147,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      this.$router.push({name: 'ViewSchool', params: {id: item.id}})
+      this.$router.push({name: 'ViewParent', params: {id: item.id}})
     },
     update (item, index, e) {
       let form = JSON.parse(JSON.stringify(item))
