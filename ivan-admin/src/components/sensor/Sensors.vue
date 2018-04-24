@@ -26,6 +26,14 @@
       <template slot="status" slot-scope="data">
         {{data.item.status}}
       </template>
+      <template slot="central_module" slot-scope="data">
+        <div v-if="data.item.device">
+          {{device(data.item.device)}}
+        </div>
+        <div v-else>
+          No assigned
+        </div>
+      </template>
       <template slot="action" slot-scope="data">
         <!-- <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
           <i class="ti-eye"></i>
@@ -54,6 +62,7 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Sensor'"
       v-on:create="create"></create-button>
     <sensor-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></sensor-modal>
   </div>
@@ -63,7 +72,7 @@
 import mockChassis from '@/mocker/mockChassis'
 import { mapGetters } from 'vuex'
 import { sortCompare } from '@/components/mixins/sortCompare'
-import { GET_SCHOOL_SELECT, GET_SENSORS, GET_USER } from '@/vuex/getter-types'
+import { GET_SCHOOL_SELECT, GET_SENSORS, GET_USER, GET_DEVICES } from '@/vuex/getter-types'
 import { DELETE_SENSOR, FETCH_SENSOR, FETCH_SCHOOL } from '@/vuex/action-types'
 import Loading from '@/components/Loading'
 import ChooseSchools from '@/components/ChooseSchools'
@@ -79,8 +88,9 @@ export default {
       loading: true,
       fields: {
         serial_number: { label: 'Serial Number', sortable: true },
-        make_date: { label: 'Make Date', sortable: true },
+        make_date: { label: 'Installation Date', sortable: true },
         status: { label: 'Status' },
+        central_module: { label: 'Central Module' },
         action: { label: 'Action' }
       },
       currentPage: 1,
@@ -101,6 +111,7 @@ export default {
     ...mapGetters({
       schools: [GET_SCHOOL_SELECT],
       sensors: [GET_SENSORS],
+      devices: [GET_DEVICES],
       user: [GET_USER]
     }),
     totalRows: function () {
@@ -180,6 +191,10 @@ export default {
       this.form.serial_number = mockChassis()
       this.form.make_date = '2017-12-12'
       this.form.status = 'normal'
+    },
+    device: function (id) {
+      const device = this.devices.filter(device => device.id === id)[0]
+      return device.serial_number
     }
   },
   components: {

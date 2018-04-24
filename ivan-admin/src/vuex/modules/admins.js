@@ -36,6 +36,9 @@ const getters = {
       arr.push(admin)
     })
     return arr
+  },
+  [getter.GET_ADMIN]: state => arg => {
+    return state.admins[arg]
   }
 }
 

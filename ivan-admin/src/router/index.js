@@ -6,14 +6,18 @@ import Login from '@/components/auth/Login'
 import Schools from '@/components/school/Schools'
 import ViewSchool from '@/components/school/ViewSchool'
 import ViewDriver from '@/components/driver/ViewDriver'
+import ViewTeacher from '@/components/teacher/ViewTeacher'
 import ViewCar from '@/components/car/ViewCar'
 import store from '../vuex/store'
 import * as firebase from 'firebase'
 import Admins from '@/components/admin/Admins'
+import ViewAdmin from '@/components/admin/ViewAdmin'
 import Teachers from '@/components/teacher/Teachers'
 import Drivers from '@/components/driver/Drivers'
 import Parents from '@/components/parent/Parents'
+import ViewParent from '@/components/parent/viewParent'
 import Students from '@/components/student/Students'
+import ViewStudent from '@/components/student/viewStudent'
 import CarAssign from '@/components/car/assign/CarAssign'
 import Cars from '@/components/car/Cars'
 import Sensors from '@/components/sensor/Sensors'
@@ -71,9 +75,25 @@ var router = new Router({
     }
   },
   {
+    path: '/admins/:id',
+    name: 'ViewAdmin',
+    component: ViewAdmin,
+    meta: {
+      role: [99]
+    }
+  },
+  {
     path: '/teachers',
     name: 'Teachers',
     component: Teachers,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/teachers/:id',
+    name: 'ViewTeacher',
+    component: ViewTeacher,
     meta: {
       role: [99, 75, 60]
     }
@@ -103,9 +123,25 @@ var router = new Router({
     }
   },
   {
+    path: '/parents/:id',
+    name: 'ViewParent',
+    component: ViewParent,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
     path: '/students',
     name: 'Students',
     component: Students,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/students/:id',
+    name: 'ViewStudent',
+    component: ViewStudent,
     meta: {
       role: [99, 75, 60]
     }

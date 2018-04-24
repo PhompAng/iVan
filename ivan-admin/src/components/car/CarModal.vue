@@ -46,7 +46,36 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-show="form.work_all_day">
+          <div class="col-6">
+            <p>Morning</p>
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Start</label>
+                <b-form-input placeholder="HH:mm" disabled></b-form-input>
+              </div>
+              <div class="form-group col-6">
+                <label>End</label>
+                <b-form-input placeholder="HH:mm" disabled></b-form-input>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <p>Evening</p>
+            <div class="row">
+              <div class="form-group col-6">
+                <label>Start</label>
+                <b-form-input placeholder="HH:mm" disabled></b-form-input>
+              </div>
+              <div class="form-group col-6">
+                <label>End</label>
+                <b-form-input placeholder="HH:mm" disabled></b-form-input>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" v-show="!form.work_all_day">
           <div class="col-6">
             <p>Morning</p>
             <div class="row">

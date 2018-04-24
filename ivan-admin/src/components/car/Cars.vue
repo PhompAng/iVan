@@ -69,6 +69,7 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Car'"
       v-on:create="create"></create-button>
     <car-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></car-modal>
   </div>
@@ -225,7 +226,7 @@ export default {
       this.form.model = mockCar()
       this.form.province = ''
       this.form.file = null
-      this.form.time.morning.start.HH = '70'
+      this.form.time.morning.start.HH = '07'
       this.form.time.morning.start.mm = '00'
       this.form.time.morning.end.HH = '11'
       this.form.time.morning.end.mm = '00'

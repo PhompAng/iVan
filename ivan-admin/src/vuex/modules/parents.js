@@ -57,6 +57,9 @@ const getters = {
       arr.push(parent)
     })
     return arr
+  },
+  [getter.GET_PARENT]: state => arg => {
+    return state.parents[arg]
   }
 }
 

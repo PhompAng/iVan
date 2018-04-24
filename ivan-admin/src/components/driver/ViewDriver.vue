@@ -1,14 +1,14 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-xl-3 col-lg-5 col-md-6 col-sm-12">
-        <b-card
-          title="Information"
-          :img-src="driver_picture"
-          img-fluid
-          img-alt="image"
-          img-top>
-          <form>
+    <div class="col">
+      <b-card
+        title="Information"
+        class="mb-3">
+        <div class="row">
+          <div class="col-5">
+            <b-img v-bind:src="driver_picture" fluid alt="Responsive image"/>
+          </div>
+          <form class="col">
             <div class="row">
               <div class="form-group col">
                 <label>Firstname (Thai)</label>
@@ -24,8 +24,14 @@
                 class="form-control"
                 disabled>
               </div>
+              <div class="form-group col">
+                  <label for="email">Email</label>
+                  <input type='email'
+                  v-model="this.driver.email"
+                  class="form-control"
+                  disabled>
+              </div>
             </div>
-
             <div class="row">
               <div class="form-group col">
                 <label>Firstname (English)</label>
@@ -41,16 +47,6 @@
                 class="form-control"
                 disabled>
               </div>
-            </div>
-
-            <div class="row">
-              <div class="form-group col-6">
-                  <label for="email">Email</label>
-                  <input type='email'
-                  v-model="this.driver.email"
-                  class="form-control"
-                  disabled>
-              </div>
               <div class="form-group col">
                   <label for="tel">Telephone</label>
                   <input
@@ -60,6 +56,7 @@
                   disabled>
               </div>
             </div>
+
             <div class="row">
               <div class="form-group col">
                   <label for="line1">Line1</label>
@@ -106,66 +103,84 @@
               </div>
             </div>
           </form>
-        </b-card>
-      </div>
+        </div>
+      </b-card>
 
-      <div class="col">
-        <b-card
-        class="mb-3"
-        title="Location">
-          <div class="row">
-            <div class="form-group col">
-              <gmap-map ref="gmap" class="map" :center="this.driver.location" :zoom="12">
-                  <gmap-marker :position="this.driver.location"></gmap-marker>
-              </gmap-map>
-            </div>
+      <b-card
+      class="mb-3"
+      title="Location">
+        <div class="row">
+          <div class="form-group col">
+            <gmap-map ref="gmap" class="map" :center="this.driver.location" :zoom="12">
+                <gmap-marker :position="this.driver.location"></gmap-marker>
+            </gmap-map>
           </div>
-        </b-card>
+        </div>
+      </b-card>
 
-        <b-card
-        title="Alarm Status"
-        v-if="this.alarm_status">
+      <!-- <b-card
+      title="Alarm Status">
+        <b-container class="row">
+          <p class="alert alert-warning">
+            <strong>All </strong>
+            <span class="text-success">10</span>
+            <strong>Alert </strong>
+            <span class="text-success">1</span>
+          </p>
+        </b-container>
+        <b-table
+        :fields="fields"
+        :items="alarm_status">
+          <template slot="name" slot-scope="data">
+          </template>
+          <template slot="date" slot-scope="data">
+          </template>
+        </b-table>
+      </b-card> -->
+
+      <b-card
+      title="Alarm Status"
+      v-if="this.alarm_status">
+        <div
+        class="alarm-status"
+        v-for="a in this.alarm_status"
+        :key="a.id">
+          <p class="alert alert-danger">
+            <strong>Detection: </strong>
+            <span class="text-danger">{{a.detection}}</span>
+          </p>
+
           <div
-          class="alarm-status"
-          v-for="a in this.alarm_status"
-          :key="a.id">
-            <p class="alert alert-danger">
-              <strong>Detection: </strong>
-              <span class="text-danger">{{a.detection}}</span>
-            </p>
-
-            <div
-            class="alert alert-info"
-            v-for="d in a.data"
-            :key="d.row">
-              <h5 class="text-info">Row {{d.row}}</h5>
-              <div class="row">
-                <div class="col">
-                  <strong>Detection: </strong>
-                  <span class="text-danger">{{d.detection}}</span>
-                </div>
-                <div class="col">
-                  <p>
-                    <strong>PIR: </strong>
-                    <span>{{d.data.pir}}</span>
-                  </p>
-                  <p>
-                    <strong>Ultrasonic: </strong>
-                    <span>{{d.data.ultrasonic}}</span>
-                  </p>
-                </div>
+          class="alert alert-info"
+          v-for="d in a.data"
+          :key="d.row">
+            <h5 class="text-info">Row {{d.row}}</h5>
+            <div class="row">
+              <div class="col">
+                <strong>Detection: </strong>
+                <span class="text-danger">{{d.detection}}</span>
+              </div>
+              <div class="col">
+                <p>
+                  <strong>PIR: </strong>
+                  <span>{{d.data.pir}}</span>
+                </p>
+                <p>
+                  <strong>Ultrasonic: </strong>
+                  <span>{{d.data.ultrasonic}}</span>
+                </p>
               </div>
             </div>
-
-            <p class="text-right text-secondary">
-              <small>
-                {{a.timestamp | time}}
-              </small>
-            </p>
-            <hr>
           </div>
-        </b-card>
-      </div>
+
+          <p class="text-right text-secondary">
+            <small>
+              {{a.timestamp | time}}
+            </small>
+          </p>
+          <hr>
+        </div>
+      </b-card>
     </div>
   </div>
 </template>
@@ -181,7 +196,11 @@ export default {
   name: 'ViewDriver',
   data () {
     return {
-      driver_picture: ''
+      driver_picture: '',
+      fields: {
+        enName: { label: 'English name', sortable: true },
+        date: { label: 'Date', sortable: true }
+      }
     }
   },
   computed: {

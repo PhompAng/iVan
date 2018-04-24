@@ -49,9 +49,9 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Driver'"
       v-on:create="create"></create-button>
     <driver-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></driver-modal>
-
   </div>
 </template>
 

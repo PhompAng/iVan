@@ -20,6 +20,10 @@
       <template slot="enName" slot-scope="data">{{data.item.name.en_first}} {{data.item.name.en_last}}</template>
       <template slot="thName" slot-scope="data">{{data.item.name.th_first}} {{data.item.name.th_last}}</template>
       <template slot="action" slot-scope="data">
+        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
+          <i class="ti-eye"></i>
+          View
+        </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
           <i class="ti-pencil"></i>
           Edit
@@ -28,7 +32,6 @@
           <i class="ti-trash"></i>
           Delete
         </b-button>
-
         <br>
         <!-- <router-link v-if="data.item.car" :to="{name: 'CarAssign', params: {id: data.item.car}}">
           <b-button
@@ -44,6 +47,7 @@
     </b-col>
     <create-button
       :user="this.user"
+      :text="'Add Student'"
       v-on:create="create"></create-button>
     <student-modal :isShow="showModal" :isCreate="isCreate" :form="form" v-on:hide="clear"></student-modal>
   </div>
@@ -136,7 +140,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      this.$router.push({name: 'ViewSchool', params: {id: item.id}})
+      this.$router.push({name: 'ViewStudent', params: {id: item.id}})
     },
     update (item, index, e) {
       this.$store.dispatch(FETCH_PARENT, this.form.school)

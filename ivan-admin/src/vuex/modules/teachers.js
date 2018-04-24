@@ -44,7 +44,8 @@ const updatePhoto = (key, form) => {
 }
 
 const state = {
-  teachers: {}
+  teachers: {},
+  alarm_status: {}
 }
 
 const getters = {
@@ -58,6 +59,22 @@ const getters = {
       teacher['id'] = key
       arr.push(teacher)
     })
+    return arr
+  },
+  [getter.GET_TEACHER]: state => arg => {
+    return state.teachers[arg]
+  },
+  [getter.GET_TEACHER_ALARM_STATUS]: state => {
+    if (!state.alarm_status) {
+      return []
+    }
+    let arr = []
+    Object.entries(state.alarm_status).forEach(([key, val]) => {
+      let alarm = JSON.parse(JSON.stringify(val))
+      alarm['id'] = key
+      arr.push(alarm)
+    })
+    arr.reverse()
     return arr
   }
 }
@@ -123,12 +140,22 @@ const actions = {
         carId: form.car
       }
     })
+  },
+  [action.FETCH_TEACHER_ALARM_STATUS] ({commit}, teacherId) {
+    firebase.database().ref().child('alarm_status/' + teacherId)
+    .orderByKey()
+    .on('value', function (snapshot) {
+      commit(mutation.SET_TEACHER_ALARM_STATUS, snapshot.val())
+    })
   }
 }
 
 const mutations = {
   [mutation.SET_TEACHER] (state, snapshot) {
     state.teachers = JSON.parse(JSON.stringify(snapshot))
+  },
+  [mutation.SET_TEACHER_ALARM_STATUS] (state, snapshot) {
+    state.alarm_status = JSON.parse(JSON.stringify(snapshot))
   }
 }
 
