@@ -25,6 +25,7 @@ import Devices from '@/components/device/Devices'
 import DeviceAssign from '@/components/device/assign/DeviceAssign'
 import Notifications from '@/components/Notifications'
 import ManageRoute from '@/components/car/ManageRoute'
+import AlarmStatus from '@/components/AlarmStatus'
 
 Vue.use(Router)
 Vue.use(VueResource)
@@ -206,6 +207,14 @@ var router = new Router({
     path: '/cars/:id/route',
     name: 'ManageRoute',
     component: ManageRoute,
+    meta: {
+      role: [99, 75]
+    }
+  },
+  {
+    path: '/alarm_status/:id',
+    name: 'AlarmStatus',
+    component: AlarmStatus,
     meta: {
       role: [99, 75]
     }

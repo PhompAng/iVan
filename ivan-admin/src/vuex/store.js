@@ -19,7 +19,8 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const state = {
-  notifications: {}
+  notifications: {},
+  alarmStatus: {}
 }
 
 const getters = {
@@ -35,6 +36,9 @@ const getters = {
     })
     arr.reverse()
     return arr
+  },
+  [getter.GET_ALARM_STATUS]: state => {
+    return state.alarmStatus
   }
 }
 
@@ -44,12 +48,27 @@ const actions = {
     .on('value', function (snapshot) {
       commit(mutation.SET_NOTIFICATION, snapshot.val())
     })
+  },
+  [action.FETCH_ALARM_STATUS] ({commit}, uid) {
+    firebase.database().ref().child('alarm_status_data/' + uid)
+    .once('value')
+    .then((snapshot) => {
+      commit(mutation.SET_ALARM_STATUS, snapshot.val())
+    })
+  },
+  [action.DELETE_ALARM_STATUS] ({commit}, uid) {
+    Vue.http.post('delete_alarm', {
+      uid: uid
+    })
   }
 }
 
 const mutations = {
   [mutation.SET_NOTIFICATION] (state, snapshot) {
     state.notifications = JSON.parse(JSON.stringify(snapshot))
+  },
+  [mutation.SET_ALARM_STATUS] (state, snapshot) {
+    state.alarmStatus = JSON.parse(JSON.stringify(snapshot))
   }
 }
 
