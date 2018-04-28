@@ -11,6 +11,7 @@
         class="notification p-3 border border-top-0"
         v-for="notification in notifications"
         :key="notification.id"
+        @click="alarmStatus(notification.uid)"
         tag="li">
         <i slot="aside" class="ti-alert notification-icon"></i>
         <h5 class="text-danger">ALERT!!</h5>
@@ -72,6 +73,9 @@ export default {
       } else {
         this.school = this.user.school
       }
+    },
+    alarmStatus (uid) {
+      this.$router.push({name: 'AlarmStatus', params: {id: uid}})
     }
   },
   components: {
@@ -83,6 +87,7 @@ export default {
 <style scoped>
 .notification {
   background: #fff;
+  cursor: pointer;
 }
 .notification-icon {
   font-size: 3em;

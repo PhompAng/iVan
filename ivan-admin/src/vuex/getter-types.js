@@ -28,6 +28,7 @@ export const GET_DEVICES = 'getDevices'
 
 export const GET_NOTIFICATIONS = 'getNotifications'
 
+export const GET_ALARM_STATUS = 'getAlarmStatus'
 export const GET_DRIVER_ALARM_STATUS = 'getDriverAlarmStatus'
 export const GET_TEACHER_ALARM_STATUS = 'getTeacherAlarmStatus'
 

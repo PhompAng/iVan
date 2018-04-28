@@ -1,109 +1,116 @@
 <template>
   <div>
-    <div class="col">
-      <b-card
-        title="Information"
-        class="mb-3">
-        <div class="row">
-          <div class="col-5">
-            <b-img v-bind:src="teacher_picture" fluid alt="Responsive image"/>
-          </div>
-          <form class="col">
-            <div class="row">
-              <div class="form-group col">
-                <label>Firstname (Thai)</label>
-                <input
-                v-model="this.teacher.name.th_first"
-                class="form-control"
-                disabled>
-              </div>
-              <div class="form-group col">
-                <label>Lastname (Thai)</label>
-                <input
-                v-model="this.teacher.name.th_last"
-                class="form-control"
-                disabled>
-              </div>
+    <div class="row">
+      <div class="col">
+        <b-card
+          title="Information"
+          class="mb-3">
+          <div class="row">
+            <div class="col-5">
+              <b-img v-bind:src="teacher_picture" fluid alt="Responsive image"/>
             </div>
-            <div class="row">
-              <div class="form-group col">
-                <label>Firstname (English)</label>
-                <input
-                v-model="this.teacher.name.en_first"
-                class="form-control"
-                disabled>
-              </div>
-              <div class="form-group col">
-                <label>Lastname (English)</label>
-                <input
-                v-model="this.teacher.name.en_last"
-                class="form-control"
-                disabled>
-              </div>
-            </div>
-            <div class="row">
-              <div class="form-group col">
-                <label for="email">Email</label>
-                <input type='email'
-                v-model="this.teacher.email"
-                class="form-control"
-                disabled>
-              </div>
-              <div class="form-group col">
-                  <label for="tel">Telephone</label>
+            <form class="col">
+              <div class="row">
+                <div class="form-group col">
+                  <label>Firstname (Thai)</label>
                   <input
-                  v-model="this.teacher.telephone"
-                  type="tel"
+                  v-model="this.teacher.name.th_first"
                   class="form-control"
                   disabled>
-              </div>
-            </div>
-          </form>
-        </div>
-      </b-card>
-      <b-card
-          title="Alarm Status"
-          v-if="this.alarm_status">
-            <div
-            class="alarm-status"
-            v-for="a in this.alarm_status"
-            :key="a.id">
-              <p class="alert alert-danger">
-                <strong>Detection: </strong>
-                <span class="text-danger">{{a.detection}}</span>
-              </p>
-
-              <div
-              class="alert alert-info"
-              v-for="d in a.data"
-              :key="d.row">
-                <h5 class="text-info">Row {{d.row}}</h5>
-                <div class="row">
-                  <div class="col">
-                    <strong>Detection: </strong>
-                    <span class="text-danger">{{d.detection}}</span>
-                  </div>
-                  <div class="col">
-                    <p>
-                      <strong>PIR: </strong>
-                      <span>{{d.data.pir}}</span>
-                    </p>
-                    <p>
-                      <strong>Ultrasonic: </strong>
-                      <span>{{d.data.ultrasonic}}</span>
-                    </p>
-                  </div>
+                </div>
+                <div class="form-group col">
+                  <label>Lastname (Thai)</label>
+                  <input
+                  v-model="this.teacher.name.th_last"
+                  class="form-control"
+                  disabled>
                 </div>
               </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label>Firstname (English)</label>
+                  <input
+                  v-model="this.teacher.name.en_first"
+                  class="form-control"
+                  disabled>
+                </div>
+                <div class="form-group col">
+                  <label>Lastname (English)</label>
+                  <input
+                  v-model="this.teacher.name.en_last"
+                  class="form-control"
+                  disabled>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col">
+                  <label for="email">Email</label>
+                  <input type='email'
+                  v-model="this.teacher.email"
+                  class="form-control"
+                  disabled>
+                </div>
+                <div class="form-group col">
+                    <label for="tel">Telephone</label>
+                    <input
+                    v-model="this.teacher.telephone"
+                    type="tel"
+                    class="form-control"
+                    disabled>
+                </div>
+              </div>
+            </form>
+          </div>
+        </b-card>
+      </div>
+    </div>
 
-              <p class="text-right text-secondary">
-                <small>
-                  {{a.timestamp | time}}
-                </small>
-              </p>
-              <hr>
+    <div class="row">
+      <div class="col-6">
+        <b-card
+        title="Alarm Status"
+        v-if="this.alarm_status">
+          <div
+          class="alarm-status"
+          v-for="a in this.alarm_status"
+          :key="a.id">
+            <p class="alert alert-danger">
+              <strong>Detection: </strong>
+              <span class="text-danger">{{a.detection}}</span>
+            </p>
+
+            <div
+            class="alert alert-info"
+            v-for="d in a.data"
+            :key="d.row">
+              <h5 class="text-info">Row {{d.row}}</h5>
+              <div class="row">
+                <div class="col">
+                  <strong>Detection: </strong>
+                  <span class="text-danger">{{d.detection}}</span>
+                </div>
+                <div class="col">
+                  <p>
+                    <strong>PIR: </strong>
+                    <span>{{d.data.pir}}</span>
+                  </p>
+                  <p>
+                    <strong>Ultrasonic: </strong>
+                    <span>{{d.data.ultrasonic}}</span>
+                  </p>
+                </div>
+              </div>
             </div>
-          </b-card>
+
+            <p class="text-right text-secondary">
+              <small>
+                {{a.timestamp | time}}
+              </small>
+            </p>
+            <hr>
+          </div>
+        </b-card>
+      </div>
     </div>
   </div>
 </template>

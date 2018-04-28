@@ -56,7 +56,10 @@ export const FETCH_NOTIFICATION = 'fetchNotification'
 
 export const SET_ROUTE = 'setRoute'
 
+export const FETCH_ALARM_STATUS = 'fetchAlarmStatus'
 export const FETCH_DRIVER_ALARM_STATUS = 'fetchDriverAlarmStatus'
 export const FETCH_TEACHER_ALARM_STATUS = 'fetchTeacherAlarmStatus'
+export const DELETE_ALARM_STATUS = 'deleteAlarmStatus'
 
 export const FETCH_MOBILITY_STATUS = 'fetchMobilityStatus'
+
