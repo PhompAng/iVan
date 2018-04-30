@@ -63,3 +63,5 @@ export const DELETE_ALARM_STATUS = 'deleteAlarmStatus'
 
 export const FETCH_MOBILITY_STATUS = 'fetchMobilityStatus'
 
+export const PUSH_MAINTENANCE = 'pushMaintenance'
+

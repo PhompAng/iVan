@@ -62,6 +62,12 @@
             Route
           </b-button>
         </router-link>
+        <router-link
+          :to="{name: 'Maintenance', params: {id: data.item.id}}">
+          <b-button size="sm" variant="secondary">
+            Maintenance
+          </b-button>
+        </router-link>
       </template>
     </b-table>
     <b-col class="row justify-content-center">

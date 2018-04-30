@@ -3,8 +3,17 @@ import createQueueChannel from './channel'
 import { DateTime } from 'luxon'
 import { isInRange } from './distanceUtils'
 import { getMorningTime, getEveningTime } from './workingHour'
+import { calculateStar } from './star'
 
 const minDistance = 1000
+const speedLimit = 80
+const baseMobilityStatus = {
+  speed_exceed: 0
+}
+const baseMaintenance = {
+  brake_oil_mileage: 0,
+  engine_oil_mileage: 0
+}
 
 function sendNotification (carId) {
   let payload = {
@@ -82,6 +91,38 @@ async function checkNearHome (waypoints, car, carLocation, timestamp) {
   }
 }
 
+async function getLastMobility (schoolId, carId) {
+  let values = []
+  await admin.database().ref().child('mobility_status').child(schoolId).child(carId).orderByKey().limitToLast(1).once('value')
+  .then(snapshot => {
+    snapshot.forEach(child => {
+      values.push(child.val())
+    })
+  })
+
+  if (values.length > 0) {
+    return values[0]
+  } else {
+    return baseMobilityStatus
+  }
+}
+
+async function getLastMaintenance (carId) {
+  let values = []
+  await admin.database().ref().child('maintenance').child(carId).orderByKey().limitToLast(1).once('value')
+  .then((snapshot) => {
+    snapshot.forEach(child => {
+      values.push(child.val())
+    })
+  })
+
+  if (values.length > 0) {
+    return values[0]
+  } else {
+    return baseMaintenance
+  }
+}
+
 export default (queue) => {
   createQueueChannel(queue)
   .then(channel => {
@@ -108,8 +149,19 @@ export default (queue) => {
           await checkNearHome(waypoints, car, carLocation, timestamp)
         }
 
-        await admin.database().ref().child('mobility_status').child(car.school).child(carId).push(status)
+        let mobilityStatus = await getLastMobility(car.school, carId)
+        if (status.speed > speedLimit) {
+          status.speed_exceed = mobilityStatus.speed_exceed + 1
+        }
 
+        let maintenance = await getLastMaintenance(carId)
+        status.brake_oil_mileage = status.mileage - maintenance.brake_oil_mileage
+        status.engine_oil_mileage = status.mileage - maintenance.engine_oil_mileage
+
+        let star = calculateStar(status)
+        status.star = star
+        await admin.database().ref().child('mobility_status').child(car.school).child(carId).push(status)
+        await admin.database().ref().child('cars').child(carId).child('star').set(star)
         console.log('Success!')
       } catch (err) {
         console.error('Error: ', err)
