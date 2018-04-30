@@ -225,6 +225,9 @@ const actions = {
     .on('value', function (snapshot) {
       commit(mutation.SET_MOBILITY_STATUS, snapshot.val())
     })
+  },
+  [action.PUSH_MAINTENANCE] ({commit}, form) {
+    return firebase.database().ref().child('maintenance').child(form.carId).push(form)
   }
 }
 

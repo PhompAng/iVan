@@ -22,10 +22,10 @@
       <div class="col">
         <b-card header="Waypoint" body-class="waypoint-body">
           <div v-if="this.time == 'morning'" class="waypoint disabled mb-2">
-            <div class="index">
+            <div class="index origin">
               <h4>A</h4>
             </div>
-            <div class="address" v-if="this.driver">
+            <div class="address address-origin" v-if="this.driver">
               <h3>Driver</h3>
               <p>
                 <span>{{ this.driver.address.line1 }}</span>
@@ -40,10 +40,10 @@
           </div>
 
           <div v-if="this.time == 'evening'" class="waypoint disabled mb-2">
-            <div class="index">
+            <div class="index origin">
               <h4>A</h4>
             </div>
-            <div class="address" v-if="this.school">
+            <div class="address address-origin" v-if="this.school">
               <h3>School</h3>
               <p>
                 <span>{{ this.school.address.line1 }}</span>
@@ -81,10 +81,10 @@
           </draggable>
 
           <div v-if="this.time == 'evening'" class="waypoint disabled mb-2">
-            <div class="index">
+            <div class="index destination">
               <h4>{{ this.car ? this.car.students.length + 1 : 1 | toChar }}</h4>
             </div>
-            <div class="address" v-if="this.driver">
+            <div class="address address-destination" v-if="this.driver">
               <h3>Driver</h3>
               <p>
                 <span>{{ this.driver.address.line1 }}</span>
@@ -99,10 +99,10 @@
           </div>
 
           <div v-if="this.time == 'morning'" class="waypoint disabled mb-2">
-            <div class="index">
+            <div class="index destination">
               <h4>{{ this.car ? this.car.students.length + 1 : 1 | toChar }}</h4>
             </div>
-            <div class="address" v-if="this.school">
+            <div class="address address-destination" v-if="this.school">
               <h3>School</h3>
               <p>
                 <span>{{ this.school.address.line1 }}</span>
@@ -403,6 +403,10 @@ export default {
   margin-top: 15px;
   color: #fff;
 }
+.origin, .destination {
+  background: #5C6BC0;
+  border-radius: 0;
+}
 .address {
   flex: 1;
   box-shadow: 0 3px 0 rgba(0, 0, 0, 0.1);
@@ -416,6 +420,9 @@ export default {
   color: #fff;
   margin: -15px -15px 0 -15px;
   border-radius: 3px 3px 0 0;
+}
+.address-origin > h3, .address-destination > h3 {
+  background: #5C6BC0;
 }
 .address > p {
   margin-bottom: 0;
