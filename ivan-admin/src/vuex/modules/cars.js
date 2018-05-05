@@ -36,7 +36,8 @@ const updatePhoto = (key, form) => {
 
 const state = {
   cars: {},
-  mobility_status: {}
+  mobility_status: {},
+  maintenance: {}
 }
 
 const getters = {
@@ -59,6 +60,9 @@ const getters = {
   },
   [getter.GET_CAR]: state => arg => {
     return state.cars[arg]
+  },
+  [getter.GET_MAINTENANCE]: state => {
+    return state.maintenance
   },
   [getter.GET_MOBILITY_STATUS]: state => {
     if (!state.mobility_status) {
@@ -228,6 +232,18 @@ const actions = {
   },
   [action.PUSH_MAINTENANCE] ({commit}, form) {
     return firebase.database().ref().child('maintenance').child(form.carId).push(form)
+  },
+  [action.FETCH_MAINTENANCE] ({commit}, carId) {
+    firebase.database().ref('maintenance/')
+    .child(carId)
+    .orderByKey()
+    .limitToLast(1)
+    .once('value')
+    .then((snapshot) => {
+      snapshot.forEach((child) => {
+        commit(mutation.SET_MAINTENANCE, child.val())
+      })
+    })
   }
 }
 
@@ -237,6 +253,9 @@ const mutations = {
   },
   [mutation.SET_MOBILITY_STATUS] (state, snapshot) {
     state.mobility_status = JSON.parse(JSON.stringify(snapshot))
+  },
+  [mutation.SET_MAINTENANCE] (state, snapshot) {
+    state.maintenance = JSON.parse(JSON.stringify(snapshot))
   }
 }
 

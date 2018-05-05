@@ -38,16 +38,16 @@
         </div>
       </template>
       <template slot="action" slot-scope="data">
-        <!-- <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
-          <i class="ti-eye"></i>
+        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
+          <i class="far fa-eye"></i>
           View
-        </b-button> -->
+        </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
-          <i class="ti-pencil"></i>
+          <i class="far fa-edit"></i>
           Edit
         </b-button>
         <b-button size="sm" variant="danger" @click.stop="remove(data.item, data.index, $event.target)">
-          <i class="ti-trash"></i>
+          <i class="far fa-trash"></i>
           Delete
         </b-button>
         <br>
@@ -154,7 +154,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      // this.$router.push({name: 'Viewdevice', params: {id: item.id}})
+      this.$router.push({name: 'ViewDevice', params: {id: item.id}})
     },
     update (item, index, e) {
       this.$store.dispatch(FETCH_CAR, this.form.school)

@@ -49,11 +49,10 @@
             <label for="parent">Parent</label>
             <b-form-select
             class="mb-3"
-            name="parent" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('parent') }" data-vv-validate-on="none"
+            name="parent"
             v-model="form.parent"
             :options="parents"
             required></b-form-select>
-            <span v-show="errors.has('parent')" class="text-danger">{{ errors.first('parent') }}</span>
           </div>
           <div class="form-group col">
             <label for="file_input">Upload Photo</label>

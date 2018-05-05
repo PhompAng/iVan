@@ -11,19 +11,19 @@
     <ul class="nav-item">
       <li>
         <router-link :to="{name: 'Dashboard'}">
-          <i class="ti-panel"></i>
+          <i class="fal fa-sliders-h-square"></i>
           <span>Dashboard</span>
         </router-link>
       </li>
       <li v-if="user.role >= 99">
         <router-link :to="{name: 'Schools'}">
-          <i class="ti-home"></i>
+          <i class="fal fa-home"></i>
           <span>Schools</span>
         </router-link>
       </li>
       <li>
         <a>
-          <i class="ti-user"></i>
+          <i class="fal fa-user"></i>
           <span>User</span>
         </a>
       </li>
@@ -56,13 +56,13 @@
       </ul>
       <li v-if="user.role >= 60">
         <router-link :to="{name: 'Cars'}">
-          <i class="ti-car"></i>
+          <i class="fal fa-car"></i>
           <span>Cars</span>
         </router-link>
       </li>
       <li>
         <a>
-          <i class="ti-harddrive"></i>
+          <i class="fal fa-hdd"></i>
           <span>Devices</span>
         </a>
       </li>

@@ -36,6 +36,16 @@
             required></b-form-select>
             <span v-show="errors.has('status')" class="text-danger">{{ errors.first('status') }}</span>
           </div>
+          <div class="form-group col">
+            <label for="row">Row</label>
+            <b-form-select
+            class="mb-3"
+            name="row" v-validate="'required'" :class="{'input': true, 'is-invalid': errors.has('row') }"
+            v-model="form.row"
+            :options="row"
+            required></b-form-select>
+            <span v-show="errors.has('row')" class="text-danger">{{ errors.first('row') }}</span>
+          </div>
         </div>
       </form>
     </b-modal>
@@ -56,6 +66,9 @@ export default {
         {value: 'normal', text: 'Normal'},
         {value: 'broken', text: 'Broken'},
         {value: 'missing', text: 'Missing'}
+      ],
+      row: [
+        1, 2, 3, 4
       ]
     }
   },

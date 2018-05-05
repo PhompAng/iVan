@@ -20,6 +20,24 @@ const getters = {
       arr.push(sensor)
     })
     return arr
+  },
+  [getter.GET_SENSOR]: state => arg => {
+    return state.sensors[arg]
+  },
+  [getter.GET_SENSORS_DEVICE]: state => arg => {
+    if (!state.sensors) {
+      return []
+    }
+    let arr = []
+    Object.entries(state.sensors).forEach(([key, val]) => {
+      let sensor = JSON.parse(JSON.stringify(val))
+      sensor['id'] = key
+      sensor['text'] = sensor.serial_number
+      if (arg === sensor['device']) {
+        arr.push(sensor)
+      }
+    })
+    return arr
   }
 }
 

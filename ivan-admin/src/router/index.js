@@ -21,7 +21,9 @@ import ViewStudent from '@/components/student/viewStudent'
 import CarAssign from '@/components/car/assign/CarAssign'
 import Cars from '@/components/car/Cars'
 import Sensors from '@/components/sensor/Sensors'
+import ViewSensor from '@/components/sensor/ViewSensor'
 import Devices from '@/components/device/Devices'
+import ViewDevice from '@/components/device/ViewDevice'
 import DeviceAssign from '@/components/device/assign/DeviceAssign'
 import Notifications from '@/components/Notifications'
 import ManageRoute from '@/components/car/ManageRoute'
@@ -30,7 +32,7 @@ import Maintenance from '@/components/car/Maintenance'
 
 Vue.use(Router)
 Vue.use(VueResource)
-Vue.http.options.root = 'http://127.0.0.1:3000'
+Vue.http.options.root = 'http://35.201.251.192:3000'
 Vue.http.options.xhr = {
   withCredentials: true
 }
@@ -181,9 +183,25 @@ var router = new Router({
     }
   },
   {
+    path: '/sensors/:id',
+    name: 'ViewSensor',
+    component: ViewSensor,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
     path: '/devices',
     name: 'Devices',
     component: Devices,
+    meta: {
+      role: [99, 75, 60]
+    }
+  },
+  {
+    path: '/devices/:id',
+    name: 'ViewDevice',
+    component: ViewDevice,
     meta: {
       role: [99, 75, 60]
     }

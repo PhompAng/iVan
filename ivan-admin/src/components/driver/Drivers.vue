@@ -22,15 +22,15 @@
       <template slot="tel" slot-scope="data">{{data.item.telephone}}</template>
       <template slot="action" slot-scope="data">
         <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
-          <i class="ti-eye"></i>
+          <i class="far fa-eye"></i>
           View
         </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
-          <i class="ti-pencil"></i>
+          <i class="far fa-edit"></i>
           Edit
         </b-button>
         <b-button size="sm" variant="danger" @click.stop="remove(data.item, data.index, $event.target)">
-          <i class="ti-trash"></i>
+          <i class="far fa-trash"></i>
           Delete
         </b-button>
 
@@ -94,7 +94,16 @@ export default {
           en_first: '',
           en_last: ''
         },
+        license: '',
         address: {
+          line1: '',
+          line2: '',
+          district: '',
+          city: '',
+          province: '',
+          postcode: ''
+        },
+        home_address: {
           line1: '',
           line2: '',
           district: '',

@@ -64,7 +64,7 @@ export default {
   computed: {
     ...mapGetters({
       teachers: [GET_TEACHERS],
-      drives: [GET_DRIVERS]
+      drivers: [GET_DRIVERS]
     }),
     school () {
       return this.$store.getters.getSchool(this.$route.params.id)

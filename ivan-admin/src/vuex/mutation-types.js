@@ -25,3 +25,5 @@ export const SET_DRIVER_ALARM_STATUS = 'setDriverAlarmStatus'
 export const SET_TEACHER_ALARM_STATUS = 'setTeacherAlarmStatus'
 
 export const SET_MOBILITY_STATUS = 'setMobilityStatus'
+
+export const SET_MAINTENANCE = 'setMaintenance'
