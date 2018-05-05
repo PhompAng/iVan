@@ -23,8 +23,13 @@ export const GET_CARS = 'getCars'
 export const GET_CAR = 'getCar'
 
 export const GET_SENSORS = 'getSensors'
+export const GET_SENSORS_DEVICE = 'getSensorsDevice'
+export const GET_SENSOR = 'getSensor'
+
+export const GET_MAINTENANCE = 'getMaintenance'
 
 export const GET_DEVICES = 'getDevices'
+export const GET_DEVICE = 'getDevice'
 
 export const GET_NOTIFICATIONS = 'getNotifications'
 

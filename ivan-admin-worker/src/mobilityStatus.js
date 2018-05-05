@@ -30,6 +30,7 @@ function sendNotification (carId) {
 
 function saveHistoryToStudent (waypoint, studentId) {
   let date = DateTime.local().toISODate()
+  delete waypoint.car_history
   admin.database().ref().child('students/' + studentId).child('car_history').child(date).push(waypoint)
 }
 

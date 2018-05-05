@@ -20,6 +20,9 @@ const getters = {
       arr.push(device)
     })
     return arr
+  },
+  [getter.GET_DEVICE]: state => arg => {
+    return state.devices[arg]
   }
 }
 

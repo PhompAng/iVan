@@ -11,7 +11,7 @@
             <div class="alert alert-danger" v-if="this.alarm_status.isReportFalse">
               <h4 class="mb-0 d-inline">FALSE ALARM</h4>
               <b-btn size="sm" variant="danger" class="float-right" @click.stop="deleteFalse(this.alarm_status.uid)">
-                <i class="ti-trash"></i>
+                <i class="far fa-trash"></i>
                 Delete
               </b-btn>
             </div>
@@ -119,7 +119,11 @@ export default {
       })
     },
     staticMap (location) {
-      return 'http://maps.google.com/maps/api/staticmap?markers=' + location.lat + ',' + location.lng + '&zoom=17&size=800x600&sensor=false&scale=2&key=AIzaSyA6kKThlimCYp3zUDeb99R0-inhVwxTmLE'
+      if (location != null) {
+        return 'http://maps.google.com/maps/api/staticmap?markers=' + location.lat + ',' + location.lng + '&zoom=17&size=800x600&sensor=false&scale=2&key=AIzaSyA6kKThlimCYp3zUDeb99R0-inhVwxTmLE'
+      } else {
+        return 'http://maps.google.com/maps/api/staticmap?markers=0,0&zoom=17&size=800x600&sensor=false&scale=2&key=AIzaSyA6kKThlimCYp3zUDeb99R0-inhVwxTmLE'
+      }
     }
   }
 }

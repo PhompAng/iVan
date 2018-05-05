@@ -13,7 +13,7 @@
         :key="notification.id"
         @click="alarmStatus(notification.uid)"
         tag="li">
-        <i slot="aside" class="ti-alert notification-icon"></i>
+        <i slot="aside" class="fal fa-bell"></i>
         <h5 class="text-danger">ALERT!!</h5>
         {{notification.text}}
         <div class=" timestamp">

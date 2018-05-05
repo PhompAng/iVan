@@ -44,6 +44,11 @@
             <b-form-file id="file_input" v-model="form.file"></b-form-file>
             <!-- <span>Selected file: {{form.file && form.file.name}}</span> -->
           </div>
+          <div class="form-group col">
+              <label for="telephone">Telephone</label>
+              <input name="telephone" v-validate="'required|decimal'" :class="{'input': true, 'is-invalid': errors.has('telephone') }" v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
+              <span v-show="errors.has('telephone')" class="text-danger">{{ errors.first('telephone') }}</span>
+            </div>
         </div>
 
         <div v-if="isCreate">
@@ -64,6 +69,26 @@
                 </div>
             </div>
         </div>
+        <p>Home Address</p>
+        <div class="row">
+            <div class="form-group col">
+                <label for="line1">Line1</label>
+                <input v-model="form.home_address.line1" class="form-control" id="line1" placeholder="">
+            </div>
+            <div class="form-group col">
+                <label for="line2">Line2</label>
+                <input v-model="form.home_address.line2" class="form-control" id="line2" placeholder="">
+            </div>
+        </div>
+        <div class="row">
+            <typeahead class="form-group col" :label="this.addressField.district.name" :type="this.addressField.district.type" :query="this.form.home_address.district" v-on:fillAddress="fillHomeAddress" />
+            <typeahead class="form-group col" :label="this.addressField.city.name" :type="this.addressField.city.type" :query="this.form.home_address.city" v-on:fillAddress="fillHomeAddress" />
+        </div>
+        <div class="row">
+            <typeahead class="form-group col" :label="this.addressField.province.name" :type="this.addressField.province.type" :query="this.form.home_address.province" v-on:fillAddress="fillHomeAddress" />
+            <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.home_address.postcode" v-on:fillAddress="fillHomeAddress" />
+        </div>
+        <p>Address</p>
         <div class="row">
             <div class="form-group col">
                 <label for="line1">Line1</label>
@@ -77,15 +102,10 @@
         <div class="row">
             <typeahead class="form-group col" :label="this.addressField.district.name" :type="this.addressField.district.type" :query="this.form.address.district" v-on:fillAddress="fillAddress" />
             <typeahead class="form-group col" :label="this.addressField.city.name" :type="this.addressField.city.type" :query="this.form.address.city" v-on:fillAddress="fillAddress" />
-            <typeahead class="form-group col" :label="this.addressField.province.name" :type="this.addressField.province.type" :query="this.form.address.province" v-on:fillAddress="fillAddress" />
         </div>
         <div class="row">
+            <typeahead class="form-group col" :label="this.addressField.province.name" :type="this.addressField.province.type" :query="this.form.address.province" v-on:fillAddress="fillAddress" />
             <typeahead class="form-group col" :label="this.addressField.postcode.name" :type="this.addressField.postcode.type" :query="this.form.address.postcode" v-on:fillAddress="fillAddress" />
-            <div class="form-group col">
-              <label for="telephone">Telephone</label>
-              <input name="telephone" v-validate="'required|decimal'" :class="{'input': true, 'is-invalid': errors.has('telephone') }" v-model="form.telephone" type="tel" class="form-control" id="tel" placeholder="">
-              <span v-show="errors.has('telephone')" class="text-danger">{{ errors.first('telephone') }}</span>
-            </div>
         </div>
         <div class="row">
             <div class="form-group col">

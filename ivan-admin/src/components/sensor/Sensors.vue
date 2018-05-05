@@ -34,17 +34,20 @@
           No assigned
         </div>
       </template>
+      <template slot="row" slot-scope="data">
+        {{data.item.row}}
+      </template>
       <template slot="action" slot-scope="data">
-        <!-- <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
-          <i class="ti-eye"></i>
+        <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
+          <i class="far fa-eye"></i>
           View
-        </b-button> -->
+        </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
-          <i class="ti-pencil"></i>
+          <i class="far fa-edit"></i>
           Edit
         </b-button>
         <b-button size="sm" variant="danger" @click.stop="remove(data.item, data.index, $event.target)">
-          <i class="ti-trash"></i>
+          <i class="far fa-trash"></i>
           Delete
         </b-button>
         <br>
@@ -90,6 +93,7 @@ export default {
         serial_number: { label: 'Serial Number', sortable: true },
         make_date: { label: 'Installation Date', sortable: true },
         status: { label: 'Status' },
+        row: { label: 'Row' },
         central_module: { label: 'Central Module' },
         action: { label: 'Action' }
       },
@@ -103,6 +107,7 @@ export default {
         serial_number: '',
         make_date: '',
         status: '',
+        row: '',
         school: ''
       }
     }
@@ -150,7 +155,7 @@ export default {
       this.showModal = true
     },
     view (item, index, e) {
-      // this.$router.push({name: 'ViewSensor', params: {id: item.id}})
+      this.$router.push({name: 'ViewSensor', params: {id: item.id}})
     },
     update (item, index, e) {
       let form = JSON.parse(JSON.stringify(item))
@@ -191,6 +196,7 @@ export default {
       this.form.serial_number = mockChassis()
       this.form.make_date = '2017-12-12'
       this.form.status = 'normal'
+      this.form.row = 1
     },
     device: function (id) {
       const device = this.devices.filter(device => device.id === id)[0]

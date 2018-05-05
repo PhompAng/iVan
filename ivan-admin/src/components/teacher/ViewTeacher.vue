@@ -70,45 +70,41 @@
         <b-card
         title="Alarm Status"
         v-if="this.alarm_status">
-          <div
-          class="alarm-status"
+          <b-card
+          no-body
+          class="alarm-status mb-0"
           v-for="a in this.alarm_status"
           :key="a.id">
-            <p class="alert alert-danger">
-              <strong>Detection: </strong>
-              <span class="text-danger">{{a.detection}}</span>
-            </p>
-
-            <div
-            class="alert alert-info"
-            v-for="d in a.data"
-            :key="d.row">
-              <h5 class="text-info">Row {{d.row}}</h5>
-              <div class="row">
-                <div class="col">
-                  <strong>Detection: </strong>
-                  <span class="text-danger">{{d.detection}}</span>
-                </div>
-                <div class="col">
-                  <p>
-                    <strong>PIR: </strong>
-                    <span>{{d.data.pir}}</span>
-                  </p>
-                  <p>
-                    <strong>Ultrasonic: </strong>
-                    <span>{{d.data.ultrasonic}}</span>
-                  </p>
-                </div>
+          <b-card-header header-tag="header" class="p-1" role="tab">
+            <b-btn block variant="link" href="#" v-b-toggle="a.uid">
+              {{a.timestamp | time}}
+            </b-btn>
+          </b-card-header>
+          <b-collapse :id="a.uid" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <div class="alert alert-danger" v-if="a.isReportFalse">
+                <h4 class="mb-0 d-inline">FALSE ALARM</h4>
+                <b-btn size="sm" variant="danger" class="float-right" @click.stop="deleteFalse(a.uid)">
+                  <i class="far fa-trash"></i>
+                  Delete
+                </b-btn>
               </div>
-            </div>
 
-            <p class="text-right text-secondary">
-              <small>
-                {{a.timestamp | time}}
-              </small>
-            </p>
-            <hr>
-          </div>
+              <div class="alert alert-success" v-if="a.confirm">
+                <h4 class="mb-0 d-inline">CONFIRMED</h4>
+              </div>
+
+              <div class="alert alert-secondary">
+                <strong>Detection: </strong>
+                <span class="text-danger">{{a.detection}}</span>
+                <b-btn size="sm" variant="success" class="float-right" @click.stop="view(a.uid)">
+                  <i class="far fa-eye"></i>
+                  View
+                </b-btn>
+              </div>
+            </b-card-body>
+          </b-collapse>
+          </b-card>
         </b-card>
       </div>
     </div>
@@ -119,8 +115,9 @@
 import * as firebase from 'firebase'
 import { GET_TEACHER_ALARM_STATUS } from '@/vuex/getter-types'
 import { mapGetters } from 'vuex'
-import { FETCH_TEACHER_ALARM_STATUS } from '@/vuex/action-types'
+import { FETCH_TEACHER_ALARM_STATUS, DELETE_ALARM_STATUS } from '@/vuex/action-types'
 import { DateTime } from 'luxon'
+import swal from 'sweetalert'
 
 export default {
   name: 'ViewTeacher',
@@ -158,6 +155,23 @@ export default {
         console.log(error)
         this.teacher_picture = 'https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png'
       })
+    },
+    deleteFalse (uid) {
+      swal({
+        title: 'Delete ?',
+        text: 'Once deleted, you will not be able to recover this imaginary file!',
+        icon: 'warning',
+        buttons: true,
+        dangerMode: true
+      })
+      .then((value) => {
+        if (value) {
+          this.$store.dispatch(DELETE_ALARM_STATUS, uid)
+        }
+      })
+    },
+    view (uid) {
+      this.$router.push({name: 'AlarmStatus', params: {id: uid}})
     }
   }
 }

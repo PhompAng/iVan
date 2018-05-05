@@ -23,6 +23,12 @@
       <template slot="model" slot-scope="data">
           {{data.item.model}}
       </template>
+      <template slot="star" slot-scope="data">
+          <span v-if="data.item.star">
+            {{data.item.star | toFixed }} <i class="fal fa-star"></i>
+          </span>
+          <span v-else>-</span>
+      </template>
       <template slot="driver" slot-scope="data">
         <div v-if="data.item.drivers">
           <span v-for="d in data.item.drivers" :key="d.id">
@@ -37,15 +43,15 @@
       </template>
       <template slot="action" slot-scope="data">
         <b-button size="sm" variant="success" @click.stop="view(data.item, data.index, $event.target)">
-          <i class="ti-eye"></i>
+          <i class="far fa-eye"></i>
           View
         </b-button>
         <b-button size="sm" variant="warning" @click.stop="update(data.item, data.index, $event.target)">
-          <i class="ti-pencil"></i>
+          <i class="far fa-edit"></i>
           Edit
         </b-button>
         <b-button size="sm" variant="danger" @click.stop="remove(data.item, data.index, $event.target)">
-          <i class="ti-trash"></i>
+          <i class="far fa-trash"></i>
           Delete
         </b-button>
         <br>
@@ -104,6 +110,7 @@ export default {
       fields: {
         plate_number: { label: 'Plate Number', sortable: true },
         model: { label: 'Model', sortable: true },
+        star: { label: 'Star' },
         driver: { label: 'Driver' },
         action: { label: 'Action' }
       },
@@ -154,6 +161,11 @@ export default {
     }),
     totalRows: function () {
       return this.cars.length
+    }
+  },
+  filters: {
+    toFixed (val) {
+      return val.toFixed(2)
     }
   },
   watch: {

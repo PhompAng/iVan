@@ -142,7 +142,7 @@
               <div class="alert alert-danger" v-if="a.isReportFalse">
                 <h4 class="mb-0 d-inline">FALSE ALARM</h4>
                 <b-btn size="sm" variant="danger" class="float-right" @click.stop="deleteFalse(a.uid)">
-                  <i class="ti-trash"></i>
+                  <i class="far fa-trash"></i>
                   Delete
                 </b-btn>
               </div>
@@ -155,7 +155,7 @@
                 <strong>Detection: </strong>
                 <span class="text-danger">{{a.detection}}</span>
                 <b-btn size="sm" variant="success" class="float-right" @click.stop="view(a.uid)">
-                  <i class="ti-eye"></i>
+                  <i class="far fa-eye"></i>
                   View
                 </b-btn>
               </div>

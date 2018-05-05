@@ -2,6 +2,11 @@
   <b-navbar class="navbar-expand-md" toggleable variant="faded" toggle-breakpoint="md">
 
     <b-nav-toggle @click.native="menuToggle" target="nav_collapse"></b-nav-toggle>
+
+    <b-navbar-brand href="">
+      <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      IVan
+    </b-navbar-brand>
 <!--
     <b-navbar-brand href="">
       <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -14,12 +19,17 @@
         <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
       </b-nav>
 
+      <!-- Left alignd nav items -->
+      <b-navbar-nav class="mr-auto">
+        <b-nav-text v-if="this.school">{{this.school.name.en}}</b-nav-text>
+      </b-navbar-nav>
+
       <!-- Right alignd nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-item>
           <router-link
           :to="{name: 'Notifications'}">
-            <i class="ti-bell" style="font-weight: bold;"></i>
+            <i class="fal fa-bell"></i>
           </router-link>
         </b-nav-item>
         <b-nav-item-dropdown :text="(this.user.displayName ? this.user.displayName:'No name') + this.roleName" right>
@@ -54,6 +64,9 @@
         } else if (this.user.role === 60) {
           return ' (Teacher)'
         }
+      },
+      school () {
+        return this.$store.getters.getSchool(this.user.school)
       }
     },
     methods: {

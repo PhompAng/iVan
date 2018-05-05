@@ -8,18 +8,25 @@
     <div class="row">
       <div class="col">
         <b-card-group deck class="mb-3">
-          <b-card
-            title="Cars">
-            <h1 class="text-center">{{cars.length}}</h1>
-          </b-card>
-          <b-card
-            title="Drivers">
-            <h1 class="text-center">{{drivers.length}}</h1>
-          </b-card>
-          <b-card
-            title="Students">
-            <h1 class="text-center">{{students.length}}</h1>
-          </b-card>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h3 class="card-title"><i class="fal fa-car"></i> Cars</h3>
+              <h1 class="text-center">{{cars.length}}</h1>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h3 class="card-title"><i class="fal fa-user"></i> Drivers</h3>
+              <h1 class="text-center">{{drivers.length}}</h1>
+            </div>
+          </div>
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h3 class="card-title"><i class="fal fa-graduation-cap"></i>
+ Students</h3>
+              <h1 class="text-center">{{students.length}}</h1>
+            </div>
+          </div>
         </b-card-group>
       </div>
     </div>
