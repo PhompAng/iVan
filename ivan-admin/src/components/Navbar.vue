@@ -7,17 +7,7 @@
       <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
       IVan
     </b-navbar-brand>
-<!--
-    <b-navbar-brand href="">
-      <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-      NavBar
-    </b-navbar-brand> -->
-
     <b-collapse is-nav id="nav_collapse">
-      <b-nav is-nav-bar>
-        <!-- <b-nav-item href="#">Link</b-nav-item> -->
-        <!-- <b-nav-item href="#" disabled>Disabled</b-nav-item> -->
-      </b-nav>
 
       <!-- Left alignd nav items -->
       <b-navbar-nav class="mr-auto">

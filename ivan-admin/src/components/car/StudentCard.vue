@@ -1,17 +1,17 @@
 <template>
-  <b-container>
-    <b-card v-bind:title="student.text"
+  <b-card v-bind:title="student.text"
         v-bind:img-src="student_picture"
         class="student"
         img-alt="Img"
         img-top>
         <p class="card-text">
         No : {{student.no}} <br>
-        Car : <b-link v-bind:href="link()">{{car.plate_number}}</b-link>
+        Car : <router-link :to="{name: 'ViewCar', params: {id: this.student.car}}">{{car_plate_number}}</router-link>
         </p>
-        <b-button v-bind:href="linkStudent()" variant="primary">More Information</b-button>
+        <router-link :to="{name: 'ViewStudent', params: {id: this.student.id}}">
+          <b-button variant="primary">More Information</b-button>
+        </router-link>
     </b-card>
-  </b-container>
 </template>
 
 <script>
@@ -20,8 +20,13 @@ import { mapGetters } from 'vuex'
 import { GET_CARS } from '@/vuex/getter-types'
 
 export default {
-  name: 'student',
-  props: ['student'],
+  name: 'student-card',
+  props: {
+    student: {
+      type: Object,
+      required: true
+    }
+  },
   data () {
     return {
       student_picture: ''
@@ -31,8 +36,13 @@ export default {
     ...mapGetters({
       cars: [GET_CARS]
     }),
-    car () {
-      return this.cars.filter(car => car.id === this.student.car)[0]
+    car_plate_number () {
+      let car = this.cars.filter(car => car.id === this.student.car)
+      if (car.length !== 0) {
+        return car[0].plate_number
+      } else {
+        return 'undefined'
+      }
     }
   },
   created () {
@@ -49,12 +59,6 @@ export default {
         console.log(error)
         this.student_picture = 'https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png'
       })
-    },
-    link () {
-      return '/cars/' + this.car.id
-    },
-    linkStudent () {
-      return '/students/' + this.student.id
     }
   }
 }
@@ -62,10 +66,10 @@ export default {
 
 <style scoped>
 .student {
-  max-width: 20rem;
+  max-width: 250px;
 }
-.map {
-  width: 100%;
-  height: 400px;
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
 }
 </style>
