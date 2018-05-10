@@ -109,11 +109,18 @@
       <b-card
       class="mb-3"
       title="Student">
-        <div class="row">
-          <div v-for="student of filterStudent"
-            :key="student.id">
-            <student :student="student"></student>
+        <div v-if="this.filterStudent.length !== 0" class="row">
+          <div class="col">
+            <b-card-group deck>
+              <student-card v-for="student of filterStudent"
+              :key="student.id" :student="student"></student-card>
+            </b-card-group>
           </div>
+        </div>
+        <div v-else>
+          <p class="text-muted">
+            No Student
+          </p>
         </div>
       </b-card>
 
@@ -121,7 +128,7 @@
       class="mb-3"
       title="Location">
         <div class="row">
-          <div class="form-group col">
+          <div class="col">
             <gmap-map ref="gmap" class="map" :center="this.parent.location" :zoom="12">
                 <gmap-marker :position="this.parent.location"></gmap-marker>
             </gmap-map>
@@ -138,7 +145,7 @@ import * as firebase from 'firebase'
 import { DateTime } from 'luxon'
 import { mapGetters } from 'vuex'
 import { GET_STUDENTS } from '@/vuex/getter-types'
-import Student from '@/components/parent/student'
+import StudentCard from '@/components/car/StudentCard'
 
 export default {
   name: 'ViewParent',
@@ -185,15 +192,12 @@ export default {
     }
   },
   components: {
-    Student
+    StudentCard
   }
 }
 </script>
 
 <style scoped>
-.student {
-  max-width: 20rem;
-}
 .map {
   width: 100%;
   height: 400px;

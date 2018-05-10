@@ -8,7 +8,9 @@
       Telephone : {{staff.telephone}} <br>
       Email : {{staff.email}}
       </p>
-      <b-button v-bind:href="link()" variant="primary">More Information</b-button>
+      <router-link :to="{name: this.to, params: {id: this.staff.id}}">
+        <b-button variant="primary">More Information</b-button>
+      </router-link>
   </b-card>
 </template>
 
@@ -16,8 +18,21 @@
 import * as firebase from 'firebase'
 
 export default {
-  name: 'staff',
-  props: ['staff', 'path'],
+  name: 'staff-card',
+  props: {
+    staff: {
+      type: Object,
+      required: true
+    },
+    to: {
+      type: String,
+      required: true
+    },
+    path: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       staff_picture: ''
@@ -37,9 +52,6 @@ export default {
         console.log(error)
         this.staff_picture = 'https://cdn3.iconfinder.com/data/icons/black-easy/512/538474-user_512x512.png'
       })
-    },
-    link () {
-      return '/' + this.path + '/' + this.staff.id
     }
   }
 }
@@ -47,6 +59,10 @@ export default {
 
 <style scoped>
 .staff {
-  max-width: 17rem;
+  max-width: 250px;
+}
+.card-img-top {
+  height: 250px;
+  object-fit: cover;
 }
 </style>

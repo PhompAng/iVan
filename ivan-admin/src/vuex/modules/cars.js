@@ -77,6 +77,9 @@ const getters = {
       obj[key] = arr
     })
     return obj
+  },
+  [getter.GET_CAR_MOBILITY_STATUS]: state => arg => {
+    return Object.values(state.mobility_status[arg]).reverse().slice(0, 10)
   }
 }
 

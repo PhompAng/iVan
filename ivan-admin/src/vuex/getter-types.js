@@ -38,3 +38,4 @@ export const GET_DRIVER_ALARM_STATUS = 'getDriverAlarmStatus'
 export const GET_TEACHER_ALARM_STATUS = 'getTeacherAlarmStatus'
 
 export const GET_MOBILITY_STATUS = 'getMobilityStatus'
+export const GET_CAR_MOBILITY_STATUS = 'getCarMobilityStatus'
