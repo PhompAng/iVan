@@ -1,5 +1,17 @@
 import * as admin from 'firebase-admin'
 
+async function sendNotification (carId, uid) {
+  let payload = {
+    data: {
+      'carId': carId,
+      'uid': uid,
+      'type': 'CONFIRM'
+    }
+  }
+
+  return admin.messaging().sendToTopic(carId, payload)
+}
+
 async function getUpdateChilds (uid, data) {
   let alarmStatusRef = admin.database().ref().child('alarm_status')
   let childs = {}
@@ -27,12 +39,15 @@ export default (app) => {
     try {
       let uid = req.body.uid
       let confirmData = req.body.data
+      let carId = req.body.carId
       confirmData.timestamp = admin.database.ServerValue.TIMESTAMP
       let alarmStatusRef = admin.database().ref().child('alarm_status')
       let alarmStatusDataRef = admin.database().ref().child('alarm_status_data')
       await alarmStatusDataRef.child(uid).child('confirm').set(confirmData)
       let childs = await getUpdateChilds(uid, confirmData)
       await alarmStatusRef.update(childs)
+      let notiResult = await sendNotification(carId, uid)
+      console.log(notiResult)
       res.json('Success')
     } catch (err) {
       console.log(err)
