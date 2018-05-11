@@ -44,6 +44,7 @@ export default (app, channel, queue) => {
           'schoolId': schoolId,
           'lat': alarmStatus.location.lat.toString(),
           'lng': alarmStatus.location.lng.toString(),
+          'uid': req.body.uid,
           'type': 'TEST'
         }
       }
