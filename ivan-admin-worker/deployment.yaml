@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: ivan-admin-worker
 spec:
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -11,10 +11,10 @@ spec:
     spec:
       containers:
       - name: ivan-admin-worker
-        image: phompang/ivan-admin-worker:0.0.11
+        image: phompang/ivan-admin-worker:0.0.14
         resources:
           requests:
-            memory: "32Mi"
+            memory: "24Mi"
             cpu: "10m"
         imagePullPolicy: Always
         ports:

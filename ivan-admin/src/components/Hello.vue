@@ -52,7 +52,7 @@
       <gmap-map
            ref="map"
            :center="center"
-           :zoom="15"
+           :zoom="13"
            style="width: 100%; height: 700px"
            class="col">
            <gmap-marker
@@ -158,7 +158,7 @@ export default {
     },
     resetZoom () {
       this.$refs.map.panTo(this.center)
-      this.$refs.map.$mapObject.setZoom(15)
+      this.$refs.map.$mapObject.setZoom(13)
     }
   },
   components: {
