@@ -74,6 +74,11 @@
             Maintenance
           </b-button>
         </router-link>
+        <a :href="getLiveUrl(data.item)" target="_blank">
+          <b-button size="sm" variant="outline-primary">
+            Live
+          </b-button>
+        </a>
       </template>
     </b-table>
     <b-col class="row justify-content-center">
@@ -252,6 +257,9 @@ export default {
       this.form.time.evening.start.mm = '00'
       this.form.time.evening.end.HH = '23'
       this.form.time.evening.end.mm = '00'
+    },
+    getLiveUrl (data) {
+      return 'https://media-ivan.meranote.in.th/player/' + data.id
     }
   },
   components: {

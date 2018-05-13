@@ -153,6 +153,8 @@ export default (queue) => {
         let mobilityStatus = await getLastMobility(car.school, carId)
         if (status.speed > speedLimit) {
           status.speed_exceed = mobilityStatus.speed_exceed + 1
+        } else {
+          status.speed_exceed = mobilityStatus.speed_exceed
         }
 
         let maintenance = await getLastMaintenance(carId)

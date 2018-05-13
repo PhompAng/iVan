@@ -12,10 +12,10 @@ spec:
     spec:
       containers:
       - name: ivan-backend
-        image: phompang/ivan-backend:0.0.22
+        image: phompang/ivan-backend:0.0.23
         resources:
           requests:
-            memory: "32Mi"
+            memory: "24Mi"
             cpu: "10m"
         imagePullPolicy: Always
         ports:
