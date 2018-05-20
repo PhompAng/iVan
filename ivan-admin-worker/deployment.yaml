@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ivan-admin-worker
-        image: phompang/ivan-admin-worker:0.0.14
+        image: phompang/ivan-admin-worker:0.0.15
         resources:
           requests:
             memory: "24Mi"
