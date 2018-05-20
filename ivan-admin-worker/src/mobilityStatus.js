@@ -15,14 +15,15 @@ const baseMaintenance = {
   engine_oil_mileage: 0
 }
 
-function sendNotification (carId) {
+function sendNotification (carId, studentId) {
   let payload = {
     // notification: {
     //   title: 'WARNING',
     //   body: 'รถใกล้ถึงบ้านแล้วจ้า'
     // },
     data: {
-      'type': 'NOTIFY'
+      'type': 'NOTIFY',
+      'studentId': studentId
     }
   }
   admin.messaging().sendToTopic(carId, payload)
@@ -67,7 +68,7 @@ async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId, tim
       w.timestamp = timestamp
       carHistoryRef.push(w)
       saveHistoryToStudent(w, w.id)
-      sendNotification(carId)
+      sendNotification(carId, w.id)
     }
   } else {
     let waypoint = waypoints[rawCarHistory.numChildren()]
@@ -75,7 +76,7 @@ async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId, tim
     if (waypoint != null && isInRange(waypoint.location, carLocation, minDistance)) {
       carHistoryRef.push(waypoint)
       saveHistoryToStudent(waypoint, waypoint.id)
-      sendNotification(carId)
+      sendNotification(carId, waypoint.id)
     } else {
         // TODO check reach school
     }
