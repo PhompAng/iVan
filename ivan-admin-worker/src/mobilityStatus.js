@@ -15,7 +15,7 @@ const baseMaintenance = {
   engine_oil_mileage: 0
 }
 
-function sendNotification (carId, studentId) {
+function sendNotification (carId, parentId) {
   let payload = {
     // notification: {
     //   title: 'WARNING',
@@ -23,10 +23,39 @@ function sendNotification (carId, studentId) {
     // },
     data: {
       'type': 'NOTIFY',
-      'studentId': studentId
+      'parentId': parentId
     }
   }
   admin.messaging().sendToTopic(carId, payload)
+  .then(function (response) {
+    // See the MessagingTopicResponse reference documentation for the
+    // contents of response.
+    console.log('Successfully sent message:', response)
+  })
+  .catch(function (error) {
+    console.log('Error sending message:', error)
+  })
+}
+
+function mockSchoolNoti (carId) {
+  let payload = {
+    // notification: {
+    //   title: 'WARNING',
+    //   body: 'รถใกล้ถึงบ้านแล้วจ้า'
+    // },
+    data: {
+      'type': 'SCHOOL_NOTIFY'
+    }
+  }
+  admin.messaging().sendToTopic(carId, payload)
+  .then(function (response) {
+    // See the MessagingTopicResponse reference documentation for the
+    // contents of response.
+    console.log('Successfully sent message (mock):', response)
+  })
+  .catch(function (error) {
+    console.log('Error sending message (mock):', error)
+  })
 }
 
 function saveHistoryToStudent (waypoint, studentId) {
@@ -68,17 +97,28 @@ async function saveCarHistory (waypoints, carLocation, carHistoryRef, carId, tim
       w.timestamp = timestamp
       carHistoryRef.push(w)
       saveHistoryToStudent(w, w.id)
-      sendNotification(carId, w.id)
+      console.log(w)
+      sendNotification(carId, w.parent)
     }
   } else {
     let waypoint = waypoints[rawCarHistory.numChildren()]
-    waypoint.timestamp = timestamp
-    if (waypoint != null && isInRange(waypoint.location, carLocation, minDistance)) {
-      carHistoryRef.push(waypoint)
-      saveHistoryToStudent(waypoint, waypoint.id)
-      sendNotification(carId, waypoint.id)
+    if (waypoint != null) {
+      waypoint.timestamp = timestamp
+      if (isInRange(waypoint.location, carLocation, minDistance)) {
+        carHistoryRef.push(waypoint)
+        saveHistoryToStudent(waypoint, waypoint.id)
+        console.log(waypoint)
+        sendNotification(carId, waypoint.parent)
+      }
     } else {
-        // TODO check reach school
+      let waypoint = waypoints[0]
+      if (waypoint != null) {
+        let rawSchool = await admin.database().ref().child('schools/' + waypoint.school).once('value')
+        let school = rawSchool.val()
+        if (isInRange(school.location, carLocation, minDistance)) {
+          mockSchoolNoti(carId)
+        }
+      }
     }
   }
 }

@@ -4,7 +4,7 @@
     class="mb-3"
     title="Information">
       <div class="row">
-        <div class="col-5">
+        <div class="col-3">
           <b-img v-bind:src="car_picture" fluid alt="Responsive image"/>
         </div>
         <form class="col">
